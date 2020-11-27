@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="昨天突发奇想，试着用python中的turtle库设计了“一箭穿心”，没想到效果还挺好的(如图),可以发给心仪的女生看了，哈哈~     代码实现源代码如下： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162impor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python turtle库“一箭穿心”代码实现">
+<meta property="og:url" content="http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="酸辣柠檬无骨鸡爪">
+<meta property="og:description" content="昨天突发奇想，试着用python中的turtle库设计了“一箭穿心”，没想到效果还挺好的(如图),可以发给心仪的女生看了，哈哈~     代码实现源代码如下： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162impor">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yixin-oss/Image/master/img1591346053(1).png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yixin-oss/Image/master/imgxy.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yixin-oss/Image/master/imgturtle%E5%9D%90%E6%A0%87.png">
+<meta property="article:published_time" content="2020-06-05T11:33:08.993Z">
+<meta property="article:modified_time" content="2020-06-12T12:21:01.819Z">
+<meta property="article:author" content="li_yixin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yixin-oss/Image/master/img1591346053(1).png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/hexo-demo/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/hexo-demo/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/hexo-demo/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>python turtle库“一箭穿心”代码实现</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/hexo-demo/lib/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/hexo-demo/lib/meslo-LG/styles.css">
+
+    
+<link rel="stylesheet" href="/hexo-demo/lib/justified-gallery/justifiedGallery.min.css">
+
+    
+<link rel="stylesheet" href="/hexo-demo/css/style.css">
+
+    <!-- rss -->
+    
+    
+    <!-- jquery -->
+    
+<script src="/hexo-demo/lib/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div class="banner">
+<div id="blogtitel" class="blogtitel">酸辣柠檬无骨鸡爪</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    <div class="background">
+      
+        <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/hexo-demo/home/">Home</a></li>
+         
+          <li><a href="/hexo-demo/about/">About</a></li>
+         
+          <li><a href="/hexo-demo/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/tzvetkov75" target="_blank" rel="noopener">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/hexo-demo/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover='$("#i-prev").toggle();' onmouseout='$("#i-prev").toggle();'></i></a></li>
+        
+        
+        <li><a class="icon" href="/hexo-demo/2020/05/19/%E4%BC%AF%E5%8A%AA%E5%88%A9%E6%95%B0/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover='$("#i-next").toggle();' onmouseout='$("#i-next").toggle();'></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover='$("#i-top").toggle();' onmouseout='$("#i-top").toggle();'></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover='$("#i-share").toggle();' onmouseout='$("#i-share").toggle();' onclick='$("#share").toggle();return false;'></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&text=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&is_video=false&description=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=python turtle库“一箭穿心”代码实现&body=Check out this article: http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&name=python turtle库“一箭穿心”代码实现&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">1.</span> <span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指令说明"><span class="toc-number">2.</span> <span class="toc-text">指令说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坐标体系"><span class="toc-number">3.</span> <span class="toc-text">坐标体系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-绝对坐标"><span class="toc-number">3.1.</span> <span class="toc-text">1.绝对坐标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-海龟坐标"><span class="toc-number">3.2.</span> <span class="toc-text">2.海龟坐标</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RGB色彩体系"><span class="toc-number">4.</span> <span class="toc-text">RGB色彩体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#赞助"><span class="toc-number">5.</span> <span class="toc-text">赞助</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+      
+      <div class="content index width mx-auto px2 my4">
+          
+          <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        python turtle库“一箭穿心”代码实现
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">酸辣柠檬无骨鸡爪</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2020-06-05T11:33:08.993Z" itemprop="datePublished">2020-06-05</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>昨天突发奇想，试着用python中的turtle库设计了“一箭穿心”，没想到效果还挺好的(如图),可以发给心仪的女生看了，哈哈~</p>
+<img src="https://raw.githubusercontent.com/yixin-oss/Image/master/img1591346053(1).png">
+
+
+
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>源代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">import turtle as t</span><br><span class="line">t.color(&#39;red&#39;,&#39;pink&#39;)</span><br><span class="line">t.hideturtle()#隐藏画笔形状</span><br><span class="line">t.speed(&#39;fast&#39;)</span><br><span class="line">t.begin_fill()</span><br><span class="line">t.width(4)</span><br><span class="line">t.left(135)</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.pu()</span><br><span class="line">t.goto(50,-30)</span><br><span class="line">t.left(270)</span><br><span class="line">t.pd()</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.end_fill()</span><br><span class="line">t.color(&#39;black&#39;)</span><br><span class="line">t.pu()</span><br><span class="line">t.goto(230,-100)</span><br><span class="line">t.pd()</span><br><span class="line">#尾1.1</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#尾1.2</span><br><span class="line">t.left(80)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#尾间</span><br><span class="line">t.left(135)</span><br><span class="line">t.fd(40)</span><br><span class="line">#尾2.1</span><br><span class="line">t.left(135)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#尾2.2</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#箭身</span><br><span class="line">t.left(135)</span><br><span class="line">t.fd(145)</span><br><span class="line">t.pu()</span><br><span class="line">t.fd(135)</span><br><span class="line">t.pd()</span><br><span class="line">t.fd(100)</span><br><span class="line">#箭矢</span><br><span class="line">t.left(30)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.right(60)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.right(120)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.right(60)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.done()</span><br></pre></td></tr></table></figure>
+
+<p>整体的思路就是运用了turtle库中的各种指令，下面附注一些对turtle库的几处简要说明，代码比较容易，可以尝试编写哦.</p>
+<h3 id="指令说明"><a href="#指令说明" class="headerlink" title="指令说明"></a>指令说明</h3><table>
+<thead>
+<tr>
+<th align="center">指令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">turtle.color(’color1‘,‘color2’)</td>
+<td align="center">color1画笔颜色,color2填充颜色,若无填充可省略’color2’</td>
+</tr>
+<tr>
+<td align="center">turtle.width(size)</td>
+<td align="center">画笔宽度，参数size</td>
+</tr>
+<tr>
+<td align="center">turtle.hideturtle()</td>
+<td align="center">hide，即隐藏画笔形状</td>
+</tr>
+<tr>
+<td align="center">turtle.pu()</td>
+<td align="center">put up，抬起画笔，之后画笔行进轨迹将不再显示</td>
+</tr>
+<tr>
+<td align="center">turtle.pd()</td>
+<td align="center">put down，放下画笔，画笔轨迹继续显示</td>
+</tr>
+<tr>
+<td align="center">turtle.fd(d)</td>
+<td align="center">forward，向正前方前进距离d</td>
+</tr>
+<tr>
+<td align="center">turtle.bd(d)</td>
+<td align="center">backward，向正后方移动距离d</td>
+</tr>
+<tr>
+<td align="center">turtle.left(angle)</td>
+<td align="center">画笔前进方向逆时针转动角度angle</td>
+</tr>
+<tr>
+<td align="center">turtle.right(angle)</td>
+<td align="center">画笔前进方向顺时针转动角度angle</td>
+</tr>
+<tr>
+<td align="center">turtle.goto(x,y)</td>
+<td align="center">画笔移动到坐标位置(x,y)，注意移动轨迹也会显示</td>
+</tr>
+<tr>
+<td align="center">turtle.circle(r,angle)</td>
+<td align="center">以当前画笔方向左侧某处为圆心进行曲线运行，r为曲线半径，angle是曲线圆心角度数（注意运行后画笔方向随之改变）</td>
+</tr>
+<tr>
+<td align="center">turtle.begin_fill()</td>
+<td align="center">开始填充</td>
+</tr>
+<tr>
+<td align="center">turtle.end_fill()</td>
+<td align="center">结束填充</td>
+</tr>
+<tr>
+<td align="center">turtle.speed(’speed‘)</td>
+<td align="center">画笔速度，’speed’可选择’fast’,’fastest’,’slow’等</td>
+</tr>
+</tbody></table>
+<h3 id="坐标体系"><a href="#坐标体系" class="headerlink" title="坐标体系"></a>坐标体系</h3><h4 id="1-绝对坐标"><a href="#1-绝对坐标" class="headerlink" title="1.绝对坐标"></a>1.绝对坐标</h4><img src="https://raw.githubusercontent.com/yixin-oss/Image/master/imgxy.png">
+
+<p>绝对坐标其实就是指平面直角坐标系，利用坐标表示平面中点的位置，与指令turtle.goto(x,y)对应，可以控制画笔移动到某一坐标位置，由于移动轨迹会显示，故可搭配turtle.pu()，turtle.pd()一起使用.</p>
+<h4 id="2-海龟坐标"><a href="#2-海龟坐标" class="headerlink" title="2.海龟坐标"></a>2.海龟坐标</h4><img src="https://raw.githubusercontent.com/yixin-oss/Image/master/imgturtle%E5%9D%90%E6%A0%87.png">
+
+<p>海龟坐标就是站在海龟的角度考虑方向问题，海龟可不认识坐标点哦，只需要考虑前进(forward)还是后退(backward)，向左(left)还是向右(right)，注意水平向右是海龟的默认初始方向，left和right指以当前海龟的方向向左转或者向右转，如果海龟方向比较奇怪的时候可能分不清左右(我个人如此)，故建议用顺(right)逆(left)时针来记(可看表的指针).</p>
+<h3 id="RGB色彩体系"><a href="#RGB色彩体系" class="headerlink" title="RGB色彩体系"></a>RGB色彩体系</h3><p>提到色彩最重要的当然就是画笔颜色和填充颜色，白+彩虹七色就不用多说了，下面介绍几种特殊颜色</p>
+<table>
+<thead>
+<tr>
+<th align="center">词汇</th>
+<th align="center">颜色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">pink</td>
+<td align="center">粉色</td>
+</tr>
+<tr>
+<td align="center">magenta</td>
+<td align="center">洋红</td>
+</tr>
+<tr>
+<td align="center">cyan</td>
+<td align="center">青色</td>
+</tr>
+<tr>
+<td align="center">seashell</td>
+<td align="center">海贝色(很浅)</td>
+</tr>
+<tr>
+<td align="center">gold</td>
+<td align="center">金色</td>
+</tr>
+<tr>
+<td align="center">brown</td>
+<td align="center">棕色</td>
+</tr>
+<tr>
+<td align="center">tomato</td>
+<td align="center">番茄色</td>
+</tr>
+</tbody></table>
+<p>当然还可以根据红蓝绿三个通道颜色组合设计自己想要的颜色，每种颜色的取值默认为小数值，举例用法：turtle.pencolor((0.63,0.12,0.94)) (紫色).</p>
+<h3 id="赞助"><a href="#赞助" class="headerlink" title="赞助"></a>赞助</h3><p>如果对本文有好感，可以点击下方打赏赞助我买包辣条嘛，一两块钱就可以哦，咦嘻嘻~</p>
+
+  </div>
+</article>
+
+
+
+      </div>
+      
+       <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/hexo-demo/home/">Home</a></li>
+         
+          <li><a href="/hexo-demo/about/">About</a></li>
+         
+          <li><a href="/hexo-demo/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/tzvetkov75" target="_blank" rel="noopener">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">1.</span> <span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指令说明"><span class="toc-number">2.</span> <span class="toc-text">指令说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坐标体系"><span class="toc-number">3.</span> <span class="toc-text">坐标体系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-绝对坐标"><span class="toc-number">3.1.</span> <span class="toc-text">1.绝对坐标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-海龟坐标"><span class="toc-number">3.2.</span> <span class="toc-text">2.海龟坐标</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RGB色彩体系"><span class="toc-number">4.</span> <span class="toc-text">RGB色彩体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#赞助"><span class="toc-number">5.</span> <span class="toc-text">赞助</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&text=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&is_video=false&description=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=python turtle库“一箭穿心”代码实现&body=Check out this article: http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&name=python turtle库“一箭穿心”代码实现&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick='$("#toc-footer").toggle();return false;'><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick='$("#share-footer").toggle();return false;'><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick='$("#nav-footer").toggle();return false;'><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+      
+      <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 li_yixin
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/hexo-demo/home/">Home</a></li>
+         
+          <li><a href="/hexo-demo/about/">About</a></li>
+         
+          <li><a href="/hexo-demo/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/tzvetkov75" target="_blank" rel="noopener">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+      
+<script src="/hexo-demo/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/hexo-demo/js/main.js"></script>
+
+<!-- Google Analytics -->
+
+<!-- Disqus Comments -->
+
+
+    </div>
+</body>
+</html>
