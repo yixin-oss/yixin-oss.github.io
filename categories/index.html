@@ -22,19 +22,19 @@
     var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/hexo-demo/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Matlab数据处理之数据降维“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈. 目前，常用的降维技术有两种，主成分分析、因子分析.">
-<meta property="og:type" content="article">
-<meta property="og:title" content="数据降维">
-<meta property="og:url" content="http://yixin-oss.gitee.io/hexo-demo/2020/11/14/%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/index.html">
+  <meta name="description" content="热爱可抵岁月漫长">
+<meta property="og:type" content="website">
+<meta property="og:title" content="分类">
+<meta property="og:url" content="http://yixin-oss.gitee.io/hexo-demo/categories/index.html">
 <meta property="og:site_name" content="酸辣柠檬无骨鸡爪">
-<meta property="og:description" content="Matlab数据处理之数据降维“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈. 目前，常用的降维技术有两种，主成分分析、因子分析.">
+<meta property="og:description" content="热爱可抵岁月漫长">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-14T10:44:10.932Z">
-<meta property="article:modified_time" content="2020-11-27T12:25:34.922Z">
+<meta property="article:published_time" content="2020-11-27T15:05:09.000Z">
+<meta property="article:modified_time" content="2020-11-27T15:06:06.646Z">
 <meta property="article:author" content="李亦新">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yixin-oss.gitee.io/hexo-demo/2020/11/14/%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/">
+<link rel="canonical" href="http://yixin-oss.gitee.io/hexo-demo/categories/">
 
 
 <script id="page-configurations">
@@ -42,12 +42,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>数据降维 | 酸辣柠檬无骨鸡爪</title>
+  <title>分类 | 酸辣柠檬无骨鸡爪
+</title>
   
 
 
@@ -183,141 +184,43 @@
       <div class="main-inner">
         <div class="content-wrap">
           
+  
+  
 
-          <div class="content post posts-expand">
+          <div class="content page posts-expand">
             
 
     
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/hexo-demo/2020/11/14/%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/hexo-demo/images/hexohead.jpg">
-      <meta itemprop="name" content="李亦新">
-      <meta itemprop="description" content="热爱可抵岁月漫长">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="酸辣柠檬无骨鸡爪">
-    </span>
+    
+    
+    <div class="post-block" lang="zh-CN">
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          数据降维
-        </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
+<h1 class="post-title" itemprop="name headline">分类
+</h1>
 
-              <time title="创建时间：2020-11-14 18:44:10" itemprop="dateCreated datePublished" datetime="2020-11-14T18:44:10+08:00">2020-11-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-27 20:25:34" itemprop="dateModified" datetime="2020-11-27T20:25:34+08:00">2020-11-27</time>
-              </span>
+<div class="post-meta">
+  
 
-          
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
+</div>
 
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+</header>
 
       
-        <h1 id="Matlab数据处理之数据降维"><a href="#Matlab数据处理之数据降维" class="headerlink" title="Matlab数据处理之数据降维"></a>Matlab数据处理之数据降维</h1><p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
-<p>目前，常用的降维技术有两种，主成分分析、因子分析.</p>
-<a id="more"></a>
-
-<h2 id="一、主成分分析"><a href="#一、主成分分析" class="headerlink" title="一、主成分分析"></a>一、主成分分析</h2><p>有的问题变量之间存在相关性，它们包含的信息有所重叠，将变量进行线性组合后形成数量较少的新变量，新变量之间不相关，称为主成分.主成分反映原来变量的大量信息且所含信息不重叠，这种方法叫主成分分析.</p>
-<p>主成分分析用较少的变量代替了原来较多的变量，实现了有效的降维，可以使问题简化.</p>
-<p>Steps:</p>
-<ul>
-<li><p>对原数据进行标准化转换.</p>
-</li>
-<li><p>计算样本的相关系数矩阵.</p>
-</li>
-<li><p>计算相关系数矩阵的特征值和特征向量.</p>
-</li>
-<li><p>计算主成分贡献率和累积贡献率，选择重要主成分.主成分的贡献率越大，说明包含原始信息量越大.</p>
-</li>
-<li><p>计算主成分载荷和主成分得分.</p>
-<p><strong>[r,p]=corrcoef(x)</strong> 计算样本的相关系数矩阵</p>
-<h3 id="1-pcacov指令"><a href="#1-pcacov指令" class="headerlink" title="1.pcacov指令"></a>1.pcacov指令</h3><p><strong>[r,p]=corrcoef(x)</strong> 计算样本相关系数矩阵</p>
-<p><strong>coeff=pcacov(v)</strong> v是样本的协方差矩阵或相关系数矩阵，coeff是p个主成分的系数矩阵，第i列是第i个主成分的系数向量.</p>
-<p><strong>[coeff,latent]=pcacov(v)</strong> latent是p个主成分的方差构成的向量.</p>
-<p><strong>[coeff,latent,explained]=pcacov(v)</strong> explained是p个主成分向量的贡献率.</p>
-<h3 id="2-princomp指令"><a href="#2-princomp指令" class="headerlink" title="2.princomp指令"></a>2.princomp指令</h3><p>根据样本的观测值矩阵进行主成分分析.</p>
-<p><strong>[coeff,score]=princomp(x)</strong> x是主成分的系数矩阵，第i列是第i个主成分的系数向量，score是主成分得分矩阵，每行代表一个样本，每列代表一个主成分的得分.</p>
-<p><strong>[coeff,score,latent]=princomp(x)</strong>  latent指样本协方差矩阵的特征向量.</p>
-<p><strong>[coeff,score,latent,tsquare]=princomp(x)</strong> tsquare是样本的Hotelling T^2统计值，表示某样本和样本观测矩阵中心之间的距离，可以用它寻找远离中心的局端数据.</p>
-<p><strong>per=100*latent/sum(latent)</strong> 主成分的贡献率</p>
-<h2 id="二、因子分析"><a href="#二、因子分析" class="headerlink" title="二、因子分析"></a>二、因子分析</h2><p>目的：寻找隐含在现有变量里的若干更基本的有代表性的变量并提取出来.这些更基本的变量叫公共因子.</p>
-<p><strong>Steps:</strong></p>
-<ul>
-<li><p>求样本的相关矩阵</p>
-</li>
-<li><p>求特征值和特征向量.</p>
-</li>
-<li><p>计算方差贡献率和累积方差贡献率.</p>
-</li>
-<li><p>确定因子.</p>
-</li>
-<li><p>进行因子旋转，使因子变量更具有解释性.</p>
-</li>
-<li><p>计算因子得分.</p>
-<p><strong>[lambda,psi,T]=factoran(x,m,paraml,vall,param2,val2)</strong> lambda是因子载荷值；psi是方差值构成的向量；T是旋转矩阵；x是样本数据；m是公共因子数量</p>
-<p><strong>[lambda,psi,T,stats,F]=factoran(x,m)</strong> stats是相关信息统计；F是得分矩阵.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">r&#x3D;corrcoef(x)%相关系数矩阵</span><br><span class="line">[lambda,psi,T]&#x3D;factoran(r,3,&#39;xtype&#39;,&#39;covariance&#39;,&#39;delta&#39;,0,&#39;rotate&#39;,&#39;none&#39;)%设三个公共因子</span><br><span class="line">ctb&#x3D;100*sum(lambda.^2)&#x2F;size(x,2) %计算贡献率</span><br><span class="line">cumctb&#x3D;cumsum(ctb) %计算累积贡献率</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-</li>
-</ul>
-
+      
+      
+      <div class="post-body">
+          
+      </div>
+      
+      
+      
     </div>
+    
 
     
     
     
-
-      <footer class="post-footer">
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/hexo-demo/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/" rel="prev" title="Python函数及变量的定义和使用">
-      <i class="fa fa-chevron-left"></i> Python函数及变量的定义和使用
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
 
 
           </div>
@@ -368,7 +271,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Matlab数据处理之数据降维"><span class="nav-number">1.</span> <span class="nav-text">Matlab数据处理之数据降维</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、主成分分析"><span class="nav-number">1.1.</span> <span class="nav-text">一、主成分分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-pcacov指令"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.pcacov指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-princomp指令"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.princomp指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、因子分析"><span class="nav-number">1.2.</span> <span class="nav-text">二、因子分析</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

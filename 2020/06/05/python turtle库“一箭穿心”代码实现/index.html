@@ -1,189 +1,252 @@
 <!DOCTYPE html>
-<html lang=zh>
+<html lang="zh-CN">
 <head>
-    <!-- so meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="昨天突发奇想，试着用python中的turtle库设计了“一箭穿心”，没想到效果还挺好的(如图),可以发给心仪的女生看了，哈哈~     代码实现源代码如下： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162impor">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/hexo-demo/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/hexo-demo/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/hexo-demo/images/heart.jpg">
+  <link rel="mask-icon" href="/hexo-demo/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/hexo-demo/css/main.css">
+
+
+<link rel="stylesheet" href="/hexo-demo/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/hexo-demo/lib/pace/pace-theme-minimal.min.css">
+  <script src="/hexo-demo/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/hexo-demo/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="昨天突发奇想，试着用python中的turtle库设计了“一箭穿心”，效果还不错,可以发给心仪的女生看，哈哈~">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python turtle库“一箭穿心”代码实现">
 <meta property="og:url" content="http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="酸辣柠檬无骨鸡爪">
-<meta property="og:description" content="昨天突发奇想，试着用python中的turtle库设计了“一箭穿心”，没想到效果还挺好的(如图),可以发给心仪的女生看了，哈哈~     代码实现源代码如下： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162impor">
+<meta property="og:description" content="昨天突发奇想，试着用python中的turtle库设计了“一箭穿心”，效果还不错,可以发给心仪的女生看，哈哈~">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/yixin-oss/Image/master/img1591346053(1).png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yixin-oss/Image/master/imgxy.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yixin-oss/Image/master/imgturtle%E5%9D%90%E6%A0%87.png">
 <meta property="article:published_time" content="2020-06-05T11:33:08.993Z">
-<meta property="article:modified_time" content="2020-06-12T12:21:01.819Z">
-<meta property="article:author" content="li_yixin">
+<meta property="article:modified_time" content="2020-11-27T15:10:44.628Z">
+<meta property="article:author" content="李亦新">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/yixin-oss/Image/master/img1591346053(1).png">
-    
-    
-        
-          
-              <link rel="shortcut icon" href="/hexo-demo/images/favicon.ico">
-          
-        
-        
-          
-            <link rel="icon" type="image/png" href="/hexo-demo/images/favicon-192x192.png" sizes="192x192">
-          
-        
-        
-          
-            <link rel="apple-touch-icon" sizes="180x180" href="/hexo-demo/images/apple-touch-icon.png">
-          
-        
-    
-    <!-- title -->
-    <title>python turtle库“一箭穿心”代码实现</title>
-    <!-- styles -->
-    
-<link rel="stylesheet" href="/hexo-demo/lib/font-awesome/css/font-awesome.min.css">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yixin-oss/Image/master/imgxy.png">
 
-    
-<link rel="stylesheet" href="/hexo-demo/lib/meslo-LG/styles.css">
-
-    
-<link rel="stylesheet" href="/hexo-demo/lib/justified-gallery/justifiedGallery.min.css">
-
-    
-<link rel="stylesheet" href="/hexo-demo/css/style.css">
-
-    <!-- rss -->
-    
-    
-    <!-- jquery -->
-    
-<script src="/hexo-demo/lib/jquery/jquery.min.js"></script>
-
-<meta name="generator" content="Hexo 4.2.1"></head>
-
-<body>
-    <div class="banner">
-<div id="blogtitel" class="blogtitel">酸辣柠檬无骨鸡爪</div>
-<ul id="wrapper" class="wrapper">
-  <div class="sun">
-    <div class="star"></div>
-  </div>
-  <div class="mercury">
-    <div class="planet">
-      <div class="shadow"></div>
-    </div>
-  </div>
-  <div class="venus">
-    <div class="planet">
-      <div class="shadow"></div>
-    </div>
-  </div>
-  <div class="earth">
-    <div class="planet"><div class="shadow"></div></div>
-  </div>
-  <div class="mars">
-    <div class="planet"><div class="shadow"></div></div>
-  </div>
-  <div class="jupiter">
-    <div class="planet"><div class="shadow"></div></div>
-  </div>
-</ul>
-</div>
-
-    <div class="background">
-      
-        <div id="header-post">
-  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
-  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
-  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
-  <span id="menu">
-    <span id="nav">
-      <ul>
-         
-          <li><a href="/hexo-demo/home/">Home</a></li>
-         
-          <li><a href="/hexo-demo/about/">About</a></li>
-         
-          <li><a href="/hexo-demo/archives/">Writing</a></li>
-         
-          <li><a href="http://github.com/tzvetkov75" target="_blank" rel="noopener">Projects</a></li>
-        
-      </ul>
-    </span>
-    <br/>
-    <span id="actions">
-      <ul>
-        
-        <li><a class="icon" href="/hexo-demo/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover='$("#i-prev").toggle();' onmouseout='$("#i-prev").toggle();'></i></a></li>
-        
-        
-        <li><a class="icon" href="/hexo-demo/2020/05/19/%E4%BC%AF%E5%8A%AA%E5%88%A9%E6%95%B0/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover='$("#i-next").toggle();' onmouseout='$("#i-next").toggle();'></i></a></li>
-        
-        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover='$("#i-top").toggle();' onmouseout='$("#i-top").toggle();'></i></a></li>
-        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover='$("#i-share").toggle();' onmouseout='$("#i-share").toggle();' onclick='$("#share").toggle();return false;'></i></a></li>
-      </ul>
-      <span id="i-prev" class="info" style="display:none;">Previous post</span>
-      <span id="i-next" class="info" style="display:none;">Next post</span>
-      <span id="i-top" class="info" style="display:none;">Back to top</span>
-      <span id="i-share" class="info" style="display:none;">Share post</span>
-    </span>
-    <br/>
-    <div id="share" style="display: none">
-      <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&text=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&is_video=false&description=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=python turtle库“一箭穿心”代码实现&body=Check out this article: http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&name=python turtle库“一箭穿心”代码实现&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
-</ul>
-
-    </div>
-    <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">1.</span> <span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指令说明"><span class="toc-number">2.</span> <span class="toc-text">指令说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坐标体系"><span class="toc-number">3.</span> <span class="toc-text">坐标体系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-绝对坐标"><span class="toc-number">3.1.</span> <span class="toc-text">1.绝对坐标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-海龟坐标"><span class="toc-number">3.2.</span> <span class="toc-text">2.海龟坐标</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RGB色彩体系"><span class="toc-number">4.</span> <span class="toc-text">RGB色彩体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#赞助"><span class="toc-number">5.</span> <span class="toc-text">赞助</span></a></li></ol>
-    </div>
-  </span>
-</div>
-
-      
-      <div class="content index width mx-auto px2 my4">
-          
-          <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header>
-    
-    <h1 class="posttitle" itemprop="name headline">
-        python turtle库“一箭穿心”代码实现
-    </h1>
+<link rel="canonical" href="http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/">
 
 
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
 
-    <div class="meta">
-      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">酸辣柠檬无骨鸡爪</span>
-      </span>
-      
-    <div class="postdate">
-        <time datetime="2020-06-05T11:33:08.993Z" itemprop="datePublished">2020-06-05</time>
-    </div>
-
-
-      
-
-    </div>
-  </header>
+  <title>python turtle库“一箭穿心”代码实现 | 酸辣柠檬无骨鸡爪</title>
   
 
-  <div class="content" itemprop="articleBody">
-    <p>昨天突发奇想，试着用python中的turtle库设计了“一箭穿心”，没想到效果还挺好的(如图),可以发给心仪的女生看了，哈哈~</p>
-<img src="https://raw.githubusercontent.com/yixin-oss/Image/master/img1591346053(1).png">
 
 
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/hexo-demo/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">酸辣柠檬无骨鸡爪</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Always be happy</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/hexo-demo/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/hexo-demo/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/hexo-demo/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/hexo-demo/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/hexo-demo/images/hexohead.jpg">
+      <meta itemprop="name" content="李亦新">
+      <meta itemprop="description" content="热爱可抵岁月漫长">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="酸辣柠檬无骨鸡爪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python turtle库“一箭穿心”代码实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-05 19:33:08" itemprop="dateCreated datePublished" datetime="2020-06-05T19:33:08+08:00">2020-06-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-27 23:10:44" itemprop="dateModified" datetime="2020-11-27T23:10:44+08:00">2020-11-27</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>昨天突发奇想，试着用python中的turtle库设计了“一箭穿心”，效果还不错,可以发给心仪的女生看，哈哈~</p>
+<a id="more"></a>
 
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>源代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">import turtle as t</span><br><span class="line">t.color(&#39;red&#39;,&#39;pink&#39;)</span><br><span class="line">t.hideturtle()#隐藏画笔形状</span><br><span class="line">t.speed(&#39;fast&#39;)</span><br><span class="line">t.begin_fill()</span><br><span class="line">t.width(4)</span><br><span class="line">t.left(135)</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.pu()</span><br><span class="line">t.goto(50,-30)</span><br><span class="line">t.left(270)</span><br><span class="line">t.pd()</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.end_fill()</span><br><span class="line">t.color(&#39;black&#39;)</span><br><span class="line">t.pu()</span><br><span class="line">t.goto(230,-100)</span><br><span class="line">t.pd()</span><br><span class="line">#尾1.1</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#尾1.2</span><br><span class="line">t.left(80)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#尾间</span><br><span class="line">t.left(135)</span><br><span class="line">t.fd(40)</span><br><span class="line">#尾2.1</span><br><span class="line">t.left(135)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#尾2.2</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#箭身</span><br><span class="line">t.left(135)</span><br><span class="line">t.fd(145)</span><br><span class="line">t.pu()</span><br><span class="line">t.fd(135)</span><br><span class="line">t.pd()</span><br><span class="line">t.fd(100)</span><br><span class="line">#箭矢</span><br><span class="line">t.left(30)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.right(60)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.right(120)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.right(60)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.done()</span><br></pre></td></tr></table></figure>
@@ -299,95 +362,221 @@
 <p>当然还可以根据红蓝绿三个通道颜色组合设计自己想要的颜色，每种颜色的取值默认为小数值，举例用法：turtle.pencolor((0.63,0.12,0.94)) (紫色).</p>
 <h3 id="赞助"><a href="#赞助" class="headerlink" title="赞助"></a>赞助</h3><p>如果对本文有好感，可以点击下方打赏赞助我买包辣条嘛，一两块钱就可以哦，咦嘻嘻~</p>
 
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/hexo-demo/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/" rel="next" title="Python函数及变量的定义和使用">
+      Python函数及变量的定义和使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
-</article>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">1.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令说明"><span class="nav-number">2.</span> <span class="nav-text">指令说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坐标体系"><span class="nav-number">3.</span> <span class="nav-text">坐标体系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-绝对坐标"><span class="nav-number">3.1.</span> <span class="nav-text">1.绝对坐标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-海龟坐标"><span class="nav-number">3.2.</span> <span class="nav-text">2.海龟坐标</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RGB色彩体系"><span class="nav-number">4.</span> <span class="nav-text">RGB色彩体系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#赞助"><span class="nav-number">5.</span> <span class="nav-text">赞助</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李亦新"
+      src="/hexo-demo/images/hexohead.jpg">
+  <p class="site-author-name" itemprop="name">李亦新</p>
+  <div class="site-description" itemprop="description">热爱可抵岁月漫长</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/hexo-demo/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
 
 
 
       </div>
       
-       <div id="footer-post-container">
-  <div id="footer-post">
+      <div id="music163player">
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=0&id=5353663714&auto=1&height=66"></iframe>
+      </div>
 
-    <div id="nav-footer" style="display: none">
-      <ul>
-         
-          <li><a href="/hexo-demo/home/">Home</a></li>
-         
-          <li><a href="/hexo-demo/about/">About</a></li>
-         
-          <li><a href="/hexo-demo/archives/">Writing</a></li>
-         
-          <li><a href="http://github.com/tzvetkov75" target="_blank" rel="noopener">Projects</a></li>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+    
+    
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+    
+
+    <footer class="footer">
+      <div class="footer-inner">
         
-      </ul>
-    </div>
 
-    <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">1.</span> <span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指令说明"><span class="toc-number">2.</span> <span class="toc-text">指令说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坐标体系"><span class="toc-number">3.</span> <span class="toc-text">坐标体系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-绝对坐标"><span class="toc-number">3.1.</span> <span class="toc-text">1.绝对坐标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-海龟坐标"><span class="toc-number">3.2.</span> <span class="toc-text">2.海龟坐标</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RGB色彩体系"><span class="toc-number">4.</span> <span class="toc-text">RGB色彩体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#赞助"><span class="toc-number">5.</span> <span class="toc-text">赞助</span></a></li></ol>
-    </div>
+        
 
-    <div id="share-footer" style="display: none">
-      <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&text=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&is_video=false&description=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=python turtle库“一箭穿心”代码实现&body=Check out this article: http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&title=python turtle库“一箭穿心”代码实现" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yixin-oss.gitee.io/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/&name=python turtle库“一箭穿心”代码实现&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-</ul>
-
-    </div>
-
-    <div id="actions-footer">
-      <ul>
-        <li id="toc"><a class="icon" href="#" onclick='$("#toc-footer").toggle();return false;'><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
-        <li id="share"><a class="icon" href="#" onclick='$("#share-footer").toggle();return false;'><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
-        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
-        <li id="menu"><a class="icon" href="#" onclick='$("#nav-footer").toggle();return false;'><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
-      </ul>
-    </div>
-
-  </div>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李亦新</span>
 </div>
 
-      
-      <footer id="footer">
-  <div class="footer-left">
-    Copyright &copy; 2020 li_yixin
-  </div>
-  <div class="footer-right">
-    <nav>
-      <ul>
-         
-          <li><a href="/hexo-demo/home/">Home</a></li>
-         
-          <li><a href="/hexo-demo/about/">About</a></li>
-         
-          <li><a href="/hexo-demo/archives/">Writing</a></li>
-         
-          <li><a href="http://github.com/tzvetkov75" target="_blank" rel="noopener">Projects</a></li>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共2.7k字</span>
+</div>
         
-      </ul>
-    </nav>
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="热度">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
   </div>
-</footer>
 
-      
-<script src="/hexo-demo/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+  
+  <script src="/hexo-demo/lib/anime.min.js"></script>
+  <script src="/hexo-demo/lib/velocity/velocity.min.js"></script>
+  <script src="/hexo-demo/lib/velocity/velocity.ui.min.js"></script>
 
+<script src="/hexo-demo/js/utils.js"></script>
 
-<script src="/hexo-demo/js/main.js"></script>
-
-<!-- Google Analytics -->
-
-<!-- Disqus Comments -->
+<script src="/hexo-demo/js/motion.js"></script>
 
 
-    </div>
-</body>
+<script src="/hexo-demo/js/schemes/pisces.js"></script>
+
+
+<script src="/hexo-demo/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/hexo-demo/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/hexo-demo/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/hexo-demo/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
+<!--单击显示文字-->
+  <script type="text/javascript" src="/js/click_show_text.js"></script>
