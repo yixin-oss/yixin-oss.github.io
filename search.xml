@@ -3,30 +3,32 @@
   <entry>
     <title>Python函数及变量的定义和使用</title>
     <url>/hexo-demo/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h1 id="Python函数及变量的定义和使用"><a href="#Python函数及变量的定义和使用" class="headerlink" title="Python函数及变量的定义和使用"></a>Python函数及变量的定义和使用</h1><h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def &lt;函数名&gt;(非可选参数，可选参数):</span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    return &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#e.g.1 这里m是可选参数，默认设为1，可以更改</span><br><span class="line">def fact(n,m&#x3D;1):</span><br><span class="line">    s&#x3D;1</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    return s&#x2F;&#x2F;m</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;fact(10)</span><br><span class="line">&gt;&gt;&gt;362800</span><br><span class="line">&gt;&gt;&gt;fact(10,3)</span><br><span class="line">&gt;&gt;&gt;1209600</span><br></pre></td></tr></table></figure>
-
+    <content><![CDATA[<h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
 <a id="more"></a>
 
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(非可选参数，可选参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">#e.g<span class="number">.1</span> 这里m是可选参数，默认设为<span class="number">1</span>，可以更改</span><br><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">362800</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">1209600</span></span><br></pre></td></tr></table></figure>
+
+<!--more-->
+
 <h2 id="2-可变参数传递"><a href="#2-可变参数传递" class="headerlink" title="2.可变参数传递"></a>2.可变参数传递</h2><p>不确定参数总数量</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def &lt;函数名&gt;(参数，可变参数):</span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    return &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(参数，可变参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#e.g.2  *b代表可变参数，可以有多个值</span><br><span class="line">def fact(n,*b):</span><br><span class="line">    s&#x3D;1</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    for item in b:</span><br><span class="line">        s&#x3D;s&#x2F;&#x2F;item</span><br><span class="line">    return s</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#e.g.2  *b代表可变参数，可以有多个值</span></span><br><span class="line"><span class="attr">def</span> <span class="string">fact(n,*b):</span></span><br><span class="line">    <span class="attr">s</span>=<span class="string">1</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">i in range(1,n+1):</span></span><br><span class="line">        <span class="meta">s*</span>=<span class="string">i</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">item in b:</span></span><br><span class="line">        <span class="attr">s</span>=<span class="string">s//item</span></span><br><span class="line">    <span class="attr">return</span> <span class="string">s</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;fact(9,4)</span><br><span class="line">&gt;&gt;&gt;90720</span><br><span class="line">&gt;&gt;&gt;fact(9,4,7)</span><br><span class="line">&gt;&gt;&gt;12960</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">90720</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>,<span class="number">7</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">12960</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="3-参数传递两种方式：位置传递-amp-名称传递"><a href="#3-参数传递两种方式：位置传递-amp-名称传递" class="headerlink" title="3.参数传递两种方式：位置传递&amp;名称传递"></a>3.参数传递两种方式：位置传递&amp;名称传递</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def fact(n,m&#x3D;1):</span><br><span class="line">    s&#x3D;1</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    return s&#x2F;&#x2F;m</span><br></pre></td></tr></table></figure>
+<h2 id="3-参数传递两种方式：位置传递-amp-名称传递"><a href="#3-参数传递两种方式：位置传递-amp-名称传递" class="headerlink" title="3.参数传递两种方式：位置传递&amp;名称传递"></a>3.参数传递两种方式：位置传递&amp;名称传递</h2><figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;fact(10,5)#位置传递</span><br><span class="line">&gt;&gt;&gt;725760</span><br><span class="line">&gt;&gt;&gt;fact(m&#x3D;5,n&#x3D;10)</span><br><span class="line">&gt;&gt;&gt;725760</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)<span class="comment">#位置传递</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(m=<span class="number">5</span>,n=<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="4-函数返回值"><a href="#4-函数返回值" class="headerlink" title="4.函数返回值"></a>4.函数返回值</h2><p>函数可以返回0个或多个结果.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def fact(n,m&#x3D;1):</span><br><span class="line">    s&#x3D;1</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    return s&#x2F;&#x2F;m,n,m</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m,n,m</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;fact(10,5)</span><br><span class="line">&gt;&gt;&gt;(725760, 10, 5) #元组形式</span><br><span class="line">&gt;&gt;&gt;a,b,c&#x3D;fact(10,5)</span><br><span class="line">&gt;&gt;&gt;print(a,b,c)</span><br><span class="line">&gt;&gt;&gt;725760 10 5</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;(<span class="number">725760</span>, <span class="number">10</span>, <span class="number">5</span>) <span class="comment">#元组形式</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;a,b,c=fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;print(a,b,c)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span> <span class="number">10</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="5-全局变量和局部变量"><a href="#5-全局变量和局部变量" class="headerlink" title="5.全局变量和局部变量"></a>5.全局变量和局部变量</h2><ul>
 <li>局部变量是函数内部的占位符，可与全局变量重名，但不同</li>
@@ -34,44 +36,111 @@
 <li>可以使用global关键字在函数内部使用全局变量</li>
 <li>局部变量为组合数据类型且在函数内为真实创建，等同于全局变量</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">n,s&#x3D;10,100 #s是全局变量</span><br><span class="line">def fact(n)：</span><br><span class="line">    s&#x3D;1  #s是局部变量，与全局变量s不同</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    return s #s是局部变量</span><br><span class="line">#函数运行结束后，局部变量会被释放</span><br><span class="line">print(fact(n),s) #此处s是全局变量，s&#x3D;100</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span> <span class="comment">#s是全局变量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span></span>：</span><br><span class="line">    s=<span class="number">1</span>  <span class="comment">#s是局部变量，与全局变量s不同</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>)<span class="symbol">:</span></span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s <span class="comment">#s是局部变量</span></span><br><span class="line"><span class="comment">#函数运行结束后，局部变量会被释放</span></span><br><span class="line">print(fact(n),s) <span class="comment">#此处s是全局变量，s=100</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 3628800 100</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; <span class="number">3628800</span> <span class="number">100</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">n,s&#x3D;10,100</span><br><span class="line">def fact(n):</span><br><span class="line">    global s  #使用global保留字声明s是全局变量s</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    return s  #此处s指全局变量s</span><br><span class="line">print(fact(n),s)  #此处全局变量s被函数修改</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> s  <span class="comment">#使用global保留字声明s是全局变量s</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s  <span class="comment">#此处s指全局变量s</span></span><br><span class="line">print(fact(n),s)  <span class="comment">#此处全局变量s被函数修改</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;362880000 362880000</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="number">362880000</span> <span class="number">362880000</span></span><br></pre></td></tr></table></figure>
 
 <p>局部变量为组合数据类型且未创建，等同于全局变量</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ls&#x3D;[&#39;F&#39;,&#39;f&#39;] #通过使用[]真实创建一个全局变量列表ls</span><br><span class="line">def func(a):</span><br><span class="line">    ls.append(a) #此处ls是列表类型，未真实创建，则等同于全局变量</span><br><span class="line">    return</span><br><span class="line">func(&#39;C&#39;)  #全局变量ls被修改</span><br><span class="line">print(ls)</span><br></pre></td></tr></table></figure>
+<figure class="highlight autoit"><table><tr><td class="code"><pre><span class="line">ls=[<span class="string">'F'</span>,<span class="string">'f'</span>] <span class="meta">#通过使用[]真实创建一个全局变量列表ls</span></span><br><span class="line">def <span class="function"><span class="keyword">func</span><span class="params">(a)</span>:</span></span><br><span class="line">    ls.append(a) <span class="meta">#此处ls是列表类型，未真实创建，则等同于全局变量</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(<span class="string">'C'</span>)</span>  #全局变量<span class="title">ls</span>被修改</span></span><br><span class="line">print(ls)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;[&#39;F&#39;, &#39;f&#39;, &#39;C&#39;]</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>, <span class="string">'C'</span>]</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ls&#x3D;[&#39;F&#39;,&#39;f&#39;]</span><br><span class="line">def func(a):</span><br><span class="line">    ls&#x3D;[]  #此处ls是列表类型，真实创建，ls是局部变量</span><br><span class="line">    ls.append(a)</span><br><span class="line">    return</span><br><span class="line">print(func(&#39;C&#39;)) #修改了局部变量ls</span><br><span class="line">print(ls) #输出全局变量ls</span><br></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ls</span>=[<span class="string">'F'</span>,<span class="string">'f'</span>]</span><br><span class="line">def func(<span class="keyword">a</span>):</span><br><span class="line">    <span class="keyword">ls</span>=[]  #此处<span class="keyword">ls</span>是列表类型，真实创建，<span class="keyword">ls</span>是局部变量</span><br><span class="line">    <span class="keyword">ls</span>.<span class="keyword">append</span>(<span class="keyword">a</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="keyword">print</span>(func(<span class="string">'C'</span>)) #修改了局部变量<span class="keyword">ls</span></span><br><span class="line"><span class="keyword">print</span>(<span class="keyword">ls</span>) #输出全局变量<span class="keyword">ls</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;[&#39;F&#39;, &#39;f&#39;]</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>]</span><br></pre></td></tr></table></figure>
 
 <h2 id="6-lambda函数"><a href="#6-lambda函数" class="headerlink" title="6. lambda函数"></a>6. lambda函数</h2><p>lambda函数是一种匿名函数，即没有名字的函数.使用lambda保留字定义，函数名是返回结果；lambda函数用于定义简单的，能够在一行内定义的函数；lambda函数主要用作一些特定函数或方法的参数.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;函数名&gt; &#x3D; lambda&lt;参数&gt;:&lt;表达式&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">函数名</span>&gt;</span> = lambda<span class="tag">&lt;<span class="name">参数</span>&gt;</span>:<span class="tag">&lt;<span class="name">表达式</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">f&#x3D;lambda x,y : x+y</span><br><span class="line">f(6,8)</span><br></pre></td></tr></table></figure>
+<figure class="highlight gml"><table><tr><td class="code"><pre><span class="line">f=lambda <span class="symbol">x</span>,<span class="symbol">y</span> : <span class="symbol">x</span>+<span class="symbol">y</span></span><br><span class="line">f(<span class="number">6</span>,<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;14</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">14</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">f&#x3D;lambda : &#39;没有参数的lambda函数！&#39;</span><br><span class="line">print(f())</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">f</span>=lambda : <span class="string">'没有参数的lambda函数！'</span></span><br><span class="line"><span class="builtin-name">print</span>(f())</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;没有参数的lambda函数！</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;没有参数的lambda函数！</span><br></pre></td></tr></table></figure>
 
 ]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
   </entry>
   <entry>
-    <title>python turtle库“一箭穿心”代码实现</title>
+    <title>Matlab数据处理--数据降维</title>
+    <url>/hexo-demo/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
+    <content><![CDATA[<p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
+<p>目前，常用的降维技术有两种，主成分分析、因子分析.</p>
+<a id="more"></a>
+
+<h2 id="一、主成分分析"><a href="#一、主成分分析" class="headerlink" title="一、主成分分析"></a>一、主成分分析</h2><p>有的问题变量之间存在相关性，它们包含的信息有所重叠，将变量进行线性组合后形成数量较少的新变量，新变量之间不相关，称为主成分.主成分反映原来变量的大量信息且所含信息不重叠，这种方法叫主成分分析.</p>
+<p>主成分分析用较少的变量代替了原来较多的变量，实现了有效的降维，可以使问题简化.</p>
+<p>Steps:</p>
+<ul>
+<li><p>对原数据进行标准化转换.</p>
+</li>
+<li><p>计算样本的相关系数矩阵.</p>
+</li>
+<li><p>计算相关系数矩阵的特征值和特征向量.</p>
+</li>
+<li><p>计算主成分贡献率和累积贡献率，选择重要主成分.主成分的贡献率越大，说明包含原始信息量越大.</p>
+</li>
+<li><p>计算主成分载荷和主成分得分.</p>
+<p><strong>[r,p]=corrcoef(x)</strong> 计算样本的相关系数矩阵</p>
+<h3 id="1-pcacov指令"><a href="#1-pcacov指令" class="headerlink" title="1.pcacov指令"></a>1.pcacov指令</h3><p><strong>[r,p]=corrcoef(x)</strong> 计算样本相关系数矩阵</p>
+<p><strong>coeff=pcacov(v)</strong> v是样本的协方差矩阵或相关系数矩阵，coeff是p个主成分的系数矩阵，第i列是第i个主成分的系数向量.</p>
+<p><strong>[coeff,latent]=pcacov(v)</strong> latent是p个主成分的方差构成的向量.</p>
+<p><strong>[coeff,latent,explained]=pcacov(v)</strong> explained是p个主成分向量的贡献率.</p>
+<h3 id="2-princomp指令"><a href="#2-princomp指令" class="headerlink" title="2.princomp指令"></a>2.princomp指令</h3><p>根据样本的观测值矩阵进行主成分分析.</p>
+<p><strong>[coeff,score]=princomp(x)</strong> x是主成分的系数矩阵，第i列是第i个主成分的系数向量，score是主成分得分矩阵，每行代表一个样本，每列代表一个主成分的得分.</p>
+<p><strong>[coeff,score,latent]=princomp(x)</strong>  latent指样本协方差矩阵的特征向量.</p>
+<p><strong>[coeff,score,latent,tsquare]=princomp(x)</strong> tsquare是样本的Hotelling T^2统计值，表示某样本和样本观测矩阵中心之间的距离，可以用它寻找远离中心的局端数据.</p>
+<p><strong>per=100*latent/sum(latent)</strong> 主成分的贡献率</p>
+<h2 id="二、因子分析"><a href="#二、因子分析" class="headerlink" title="二、因子分析"></a>二、因子分析</h2><p>目的：寻找隐含在现有变量里的若干更基本的有代表性的变量并提取出来.这些更基本的变量叫公共因子.</p>
+<p><strong>Steps:</strong></p>
+<ul>
+<li><p>求样本的相关矩阵</p>
+</li>
+<li><p>求特征值和特征向量.</p>
+</li>
+<li><p>计算方差贡献率和累积方差贡献率.</p>
+</li>
+<li><p>确定因子.</p>
+</li>
+<li><p>进行因子旋转，使因子变量更具有解释性.</p>
+</li>
+<li><p>计算因子得分.</p>
+<p><strong>[lambda,psi,T]=factoran(x,m,paraml,vall,param2,val2)</strong> lambda是因子载荷值；psi是方差值构成的向量；T是旋转矩阵；x是样本数据；m是公共因子数量</p>
+<p><strong>[lambda,psi,T,stats,F]=factoran(x,m)</strong> stats是相关信息统计；F是得分矩阵.</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">r=corrcoef(x)<span class="comment">%相关系数矩阵</span></span><br><span class="line">[lambda,<span class="built_in">psi</span>,T]=factoran(r,<span class="number">3</span>,<span class="string">'xtype'</span>,<span class="string">'covariance'</span>,<span class="string">'delta'</span>,<span class="number">0</span>,<span class="string">'rotate'</span>,<span class="string">'none'</span>)<span class="comment">%设三个公共因子</span></span><br><span class="line">ctb=<span class="number">100</span>*sum(lambda.^<span class="number">2</span>)/<span class="built_in">size</span>(x,<span class="number">2</span>) <span class="comment">%计算贡献率</span></span><br><span class="line">cumctb=cumsum(ctb) <span class="comment">%计算累积贡献率</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Matlab与数据分析</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>数据分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python turtle库&quot;一箭穿心&quot;代码实现</title>
     <url>/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p>昨天突发奇想，试着用python中的turtle库设计了“一箭穿心”，效果还不错,可以发给心仪的女生看，哈哈~</p>
+    <content><![CDATA[<p>利用python中的turtle库实现“一箭穿心”简单绘图</p>
 <a id="more"></a>
 
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>源代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import turtle as t</span><br><span class="line">t.color(&#39;red&#39;,&#39;pink&#39;)</span><br><span class="line">t.hideturtle()#隐藏画笔形状</span><br><span class="line">t.speed(&#39;fast&#39;)</span><br><span class="line">t.begin_fill()</span><br><span class="line">t.width(4)</span><br><span class="line">t.left(135)</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.pu()</span><br><span class="line">t.goto(50,-30)</span><br><span class="line">t.left(270)</span><br><span class="line">t.pd()</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(100)</span><br><span class="line">t.circle(50,180)</span><br><span class="line">t.end_fill()</span><br><span class="line">t.color(&#39;black&#39;)</span><br><span class="line">t.pu()</span><br><span class="line">t.goto(230,-100)</span><br><span class="line">t.pd()</span><br><span class="line">#尾1.1</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#尾1.2</span><br><span class="line">t.left(80)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#尾间</span><br><span class="line">t.left(135)</span><br><span class="line">t.fd(40)</span><br><span class="line">#尾2.1</span><br><span class="line">t.left(135)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#尾2.2</span><br><span class="line">t.left(90)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.fd(-40)</span><br><span class="line">#箭身</span><br><span class="line">t.left(135)</span><br><span class="line">t.fd(145)</span><br><span class="line">t.pu()</span><br><span class="line">t.fd(135)</span><br><span class="line">t.pd()</span><br><span class="line">t.fd(100)</span><br><span class="line">#箭矢</span><br><span class="line">t.left(30)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.right(60)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.right(120)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.right(60)</span><br><span class="line">t.fd(40)</span><br><span class="line">t.done()</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">turtle</span> <span class="selector-tag">as</span> <span class="selector-tag">t</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.color</span>(<span class="string">'red'</span>,<span class="string">'pink'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.hideturtle</span>()#隐藏画笔形状</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.speed</span>(<span class="string">'fast'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.begin_fill</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.width</span>(<span class="number">4</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.goto</span>(<span class="number">50</span>,-<span class="number">30</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">270</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.end_fill</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.color</span>(<span class="string">'black'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.goto</span>(<span class="number">230</span>,-<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line">#尾<span class="selector-tag">1</span><span class="selector-class">.1</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">1</span><span class="selector-class">.2</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">80</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾间</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">2</span><span class="selector-class">.1</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">2</span><span class="selector-class">.2</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#箭身</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">145</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line">#箭矢</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">30</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">60</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">120</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">60</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.done</span>()</span><br></pre></td></tr></table></figure>
 
 <p>整体的思路就是运用了turtle库中的各种指令，下面附注一些对turtle库的几处简要说明，代码比较容易，可以尝试编写哦.</p>
 <h3 id="指令说明"><a href="#指令说明" class="headerlink" title="指令说明"></a>指令说明</h3><table>
@@ -184,59 +253,35 @@
 <p>当然还可以根据红蓝绿三个通道颜色组合设计自己想要的颜色，每种颜色的取值默认为小数值，举例用法：turtle.pencolor((0.63,0.12,0.94)) (紫色).</p>
 <h3 id="赞助"><a href="#赞助" class="headerlink" title="赞助"></a>赞助</h3><p>如果对本文有好感，可以点击下方打赏赞助我买包辣条嘛，一两块钱就可以哦，咦嘻嘻~</p>
 ]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
   </entry>
   <entry>
-    <title>数据降维</title>
-    <url>/hexo-demo/2020/11/14/%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
-    <content><![CDATA[<h1 id="Matlab数据处理之数据降维"><a href="#Matlab数据处理之数据降维" class="headerlink" title="Matlab数据处理之数据降维"></a>Matlab数据处理之数据降维</h1><p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
-<p>目前，常用的降维技术有两种，主成分分析、因子分析.</p>
+    <title>稀疏自编码器重构数据点的Matlab实现</title>
+    <url>/hexo-demo/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>以下代码源自MathWorks官方文档<a href="https://www.mathworks.com/help/deeplearning/ref/trainautoencoder.html?s_tid=gn_loc_drop" target="_blank" rel="noopener">trainAutoencoder</a>的Examples.目标是实现1000个数据点的重构,并给出重构与原数据对比图.</p>
 <a id="more"></a>
 
-<h2 id="一、主成分分析"><a href="#一、主成分分析" class="headerlink" title="一、主成分分析"></a>一、主成分分析</h2><p>有的问题变量之间存在相关性，它们包含的信息有所重叠，将变量进行线性组合后形成数量较少的新变量，新变量之间不相关，称为主成分.主成分反映原来变量的大量信息且所含信息不重叠，这种方法叫主成分分析.</p>
-<p>主成分分析用较少的变量代替了原来较多的变量，实现了有效的降维，可以使问题简化.</p>
-<p>Steps:</p>
-<ul>
-<li><p>对原数据进行标准化转换.</p>
-</li>
-<li><p>计算样本的相关系数矩阵.</p>
-</li>
-<li><p>计算相关系数矩阵的特征值和特征向量.</p>
-</li>
-<li><p>计算主成分贡献率和累积贡献率，选择重要主成分.主成分的贡献率越大，说明包含原始信息量越大.</p>
-</li>
-<li><p>计算主成分载荷和主成分得分.</p>
-<p><strong>[r,p]=corrcoef(x)</strong> 计算样本的相关系数矩阵</p>
-<h3 id="1-pcacov指令"><a href="#1-pcacov指令" class="headerlink" title="1.pcacov指令"></a>1.pcacov指令</h3><p><strong>[r,p]=corrcoef(x)</strong> 计算样本相关系数矩阵</p>
-<p><strong>coeff=pcacov(v)</strong> v是样本的协方差矩阵或相关系数矩阵，coeff是p个主成分的系数矩阵，第i列是第i个主成分的系数向量.</p>
-<p><strong>[coeff,latent]=pcacov(v)</strong> latent是p个主成分的方差构成的向量.</p>
-<p><strong>[coeff,latent,explained]=pcacov(v)</strong> explained是p个主成分向量的贡献率.</p>
-<h3 id="2-princomp指令"><a href="#2-princomp指令" class="headerlink" title="2.princomp指令"></a>2.princomp指令</h3><p>根据样本的观测值矩阵进行主成分分析.</p>
-<p><strong>[coeff,score]=princomp(x)</strong> x是主成分的系数矩阵，第i列是第i个主成分的系数向量，score是主成分得分矩阵，每行代表一个样本，每列代表一个主成分的得分.</p>
-<p><strong>[coeff,score,latent]=princomp(x)</strong>  latent指样本协方差矩阵的特征向量.</p>
-<p><strong>[coeff,score,latent,tsquare]=princomp(x)</strong> tsquare是样本的Hotelling T^2统计值，表示某样本和样本观测矩阵中心之间的距离，可以用它寻找远离中心的局端数据.</p>
-<p><strong>per=100*latent/sum(latent)</strong> 主成分的贡献率</p>
-<h2 id="二、因子分析"><a href="#二、因子分析" class="headerlink" title="二、因子分析"></a>二、因子分析</h2><p>目的：寻找隐含在现有变量里的若干更基本的有代表性的变量并提取出来.这些更基本的变量叫公共因子.</p>
-<p><strong>Steps:</strong></p>
-<ul>
-<li><p>求样本的相关矩阵</p>
-</li>
-<li><p>求特征值和特征向量.</p>
-</li>
-<li><p>计算方差贡献率和累积方差贡献率.</p>
-</li>
-<li><p>确定因子.</p>
-</li>
-<li><p>进行因子旋转，使因子变量更具有解释性.</p>
-</li>
-<li><p>计算因子得分.</p>
-<p><strong>[lambda,psi,T]=factoran(x,m,paraml,vall,param2,val2)</strong> lambda是因子载荷值；psi是方差值构成的向量；T是旋转矩阵；x是样本数据；m是公共因子数量</p>
-<p><strong>[lambda,psi,T,stats,F]=factoran(x,m)</strong> stats是相关信息统计；F是得分矩阵.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">r&#x3D;corrcoef(x)%相关系数矩阵</span><br><span class="line">[lambda,psi,T]&#x3D;factoran(r,3,&#39;xtype&#39;,&#39;covariance&#39;,&#39;delta&#39;,0,&#39;rotate&#39;,&#39;none&#39;)%设三个公共因子</span><br><span class="line">ctb&#x3D;100*sum(lambda.^2)&#x2F;size(x,2) %计算贡献率</span><br><span class="line">cumctb&#x3D;cumsum(ctb) %计算累积贡献率</span><br></pre></td></tr></table></figure>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">%Reconstruct Observations Using Sparse Autoencoder</span></span><br><span class="line"><span class="comment">%用稀疏自编码器重建对象</span></span><br><span class="line"><span class="comment">% 生成训练集，1000个点</span></span><br><span class="line">rng(<span class="number">0</span>,<span class="string">'twister'</span>); <span class="comment">%保证可重复性</span></span><br><span class="line">n = <span class="number">1000</span>;         <span class="comment">%训练数据个数</span></span><br><span class="line">r = <span class="built_in">linspace</span>(<span class="number">-10</span>,<span class="number">10</span>,n)';      <span class="comment">%训练集区间</span></span><br><span class="line">x = <span class="number">1</span> + r*<span class="number">5e-2</span> + <span class="built_in">sin</span>(r)./r + <span class="number">0.2</span>*<span class="built_in">randn</span>(n,<span class="number">1</span>); <span class="comment">%取值</span></span><br><span class="line"><span class="comment">% 使用训练数据训练自动编码器</span></span><br><span class="line">hiddenSize = <span class="number">25</span>;    <span class="comment">%隐藏单元数</span></span><br><span class="line">autoenc = trainAutoencoder(x',hiddenSize,...</span><br><span class="line">        <span class="string">'EncoderTransferFunction'</span>,<span class="string">'satlin'</span>,... <span class="comment">% 编码函数</span></span><br><span class="line">        <span class="string">'DecoderTransferFunction'</span>,<span class="string">'purelin'</span>,...<span class="comment">% 解码函数</span></span><br><span class="line">        <span class="string">'L2WeightRegularization'</span>,<span class="number">0.01</span>,...      <span class="comment">% L2权重调整器的系数</span></span><br><span class="line">        <span class="string">'SparsityRegularization'</span>,<span class="number">4</span>,...         <span class="comment">% 稀疏正则项的系数   </span></span><br><span class="line">        <span class="string">'SparsityProportion'</span>,<span class="number">0.10</span>);            <span class="comment">% 稀疏比例</span></span><br><span class="line"><span class="comment">% 生成测试集,1000个点</span></span><br><span class="line">n = <span class="number">1000</span>;</span><br><span class="line">r = <span class="built_in">sort</span>(<span class="number">-10</span> + <span class="number">20</span>*<span class="built_in">rand</span>(n,<span class="number">1</span>));</span><br><span class="line">xtest = <span class="number">1</span> + r*<span class="number">5e-2</span> + <span class="built_in">sin</span>(r)./r + <span class="number">0.4</span>*<span class="built_in">randn</span>(n,<span class="number">1</span>);</span><br><span class="line"><span class="comment">%利用训练后的网络对测试集进行预测</span></span><br><span class="line">xReconstructed = predict(autoenc,xtest');</span><br><span class="line"><span class="comment">% 绘制结果图</span></span><br><span class="line"><span class="built_in">figure</span>;</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>);<span class="built_in">plot</span>(xtest,<span class="string">'r.'</span>);title(<span class="string">'测试数据'</span>)</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>);<span class="built_in">plot</span>(xReconstructed,<span class="string">'go'</span>); title(<span class="string">'重构数据'</span>)</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,[<span class="number">3</span>,<span class="number">4</span>]);</span><br><span class="line"><span class="built_in">plot</span>(xtest,<span class="string">'r.'</span>);<span class="comment">% 红色圆点代表原数据</span></span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"><span class="built_in">plot</span>(xReconstructed,<span class="string">'go'</span>); <span class="comment">% 绿色圆圈代表新建数据</span></span><br><span class="line">title(<span class="string">'新旧数据对比'</span>)</span><br></pre></td></tr></table></figure>
 
-</li>
-</ul>
-</li>
-</ul>
+<p><strong>运行结果</strong></p>
+<p>trainAutoencoder函数在运行时会显示训练窗口.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E8%AE%AD%E7%BB%83%E7%AA%97%E5%8F%A3.jpg" alt></p>
+<p>重构数据与原数据前后对比.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/compare.jpg" alt></p>
+<p>从图中可以看到重构数据与原数据的分布趋势基本相同，数据点位置与原数据也基本重合，稀疏自编码器对数据点的重构效果较好。</p>
 ]]></content>
+      <categories>
+        <category>智能计算</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>机器学习</tag>
+        <tag>自编码器</tag>
+      </tags>
   </entry>
 </search>

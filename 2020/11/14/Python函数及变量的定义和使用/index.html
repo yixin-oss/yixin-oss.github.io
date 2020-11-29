@@ -14,24 +14,26 @@
 
 
 <link rel="stylesheet" href="/hexo-demo/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
   <link rel="stylesheet" href="/hexo-demo/lib/pace/pace-theme-minimal.min.css">
   <script src="/hexo-demo/lib/pace/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/hexo-demo/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/hexo-demo/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Python函数及变量的定义和使用1.可选参数传递函数参数可有可无，但必须有括号. 123def &lt;函数名&gt;(非可选参数，可选参数):    &lt;函数体&gt;    return &lt;返回值&gt;  123456#e.g.1 这里m是可选参数，默认设为1，可以更改def fact(n,m&#x3D;1):    s&#x3D;1    for i in range(1,n+">
+  <meta name="description" content="1.可选参数传递函数参数可有可无，但必须有括号.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python函数及变量的定义和使用">
 <meta property="og:url" content="http://yixin-oss.gitee.io/hexo-demo/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/index.html">
-<meta property="og:site_name" content="酸辣柠檬无骨鸡爪">
-<meta property="og:description" content="Python函数及变量的定义和使用1.可选参数传递函数参数可有可无，但必须有括号. 123def &lt;函数名&gt;(非可选参数，可选参数):    &lt;函数体&gt;    return &lt;返回值&gt;  123456#e.g.1 这里m是可选参数，默认设为1，可以更改def fact(n,m&#x3D;1):    s&#x3D;1    for i in range(1,n+">
+<meta property="og:site_name" content="Daytoy">
+<meta property="og:description" content="1.可选参数传递函数参数可有可无，但必须有括号.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-14T10:15:59.321Z">
-<meta property="article:modified_time" content="2020-11-27T12:25:55.849Z">
-<meta property="article:author" content="李亦新">
+<meta property="article:modified_time" content="2020-11-28T16:16:20.117Z">
+<meta property="article:author" content="亦新">
+<meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yixin-oss.gitee.io/hexo-demo/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/">
@@ -47,7 +49,7 @@
   };
 </script>
 
-  <title>Python函数及变量的定义和使用 | 酸辣柠檬无骨鸡爪</title>
+  <title>Python函数及变量的定义和使用 | Daytoy</title>
   
 
 
@@ -81,7 +83,7 @@
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <div class="container">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -98,7 +100,7 @@
 
     <a href="/hexo-demo/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">酸辣柠檬无骨鸡爪</h1>
+      <h1 class="site-title">Daytoy</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
       <p class="site-subtitle" itemprop="description">Always be happy</p>
@@ -177,6 +179,7 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
 
     <main class="main">
@@ -194,13 +197,13 @@
     <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/hexo-demo/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/hexo-demo/images/hexohead.jpg">
-      <meta itemprop="name" content="李亦新">
+      <meta itemprop="image" content="/hexo-demo/images/hexohead.gif">
+      <meta itemprop="name" content="亦新">
       <meta itemprop="description" content="热爱可抵岁月漫长">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="酸辣柠檬无骨鸡爪">
+      <meta itemprop="name" content="Daytoy">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -210,27 +213,21 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
+                <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-14 18:15:59" itemprop="dateCreated datePublished" datetime="2020-11-14T18:15:59+08:00">2020-11-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/hexo-demo/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">python学习笔记</span></a>
                 </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-27 20:25:55" itemprop="dateModified" datetime="2020-11-27T20:25:55+08:00">2020-11-27</time>
-              </span>
+            </span>
 
-          
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+          <br>
+            <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
+                <i class="far fa-file-word"></i>
               </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
             </span>
 
         </div>
@@ -242,30 +239,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Python函数及变量的定义和使用"><a href="#Python函数及变量的定义和使用" class="headerlink" title="Python函数及变量的定义和使用"></a>Python函数及变量的定义和使用</h1><h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def &lt;函数名&gt;(非可选参数，可选参数):</span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    return &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#e.g.1 这里m是可选参数，默认设为1，可以更改</span><br><span class="line">def fact(n,m&#x3D;1):</span><br><span class="line">    s&#x3D;1</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    return s&#x2F;&#x2F;m</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;fact(10)</span><br><span class="line">&gt;&gt;&gt;362800</span><br><span class="line">&gt;&gt;&gt;fact(10,3)</span><br><span class="line">&gt;&gt;&gt;1209600</span><br></pre></td></tr></table></figure>
-
+        <h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
 <a id="more"></a>
 
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(非可选参数，可选参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#e.g<span class="number">.1</span> 这里m是可选参数，默认设为<span class="number">1</span>，可以更改</span><br><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">362800</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">1209600</span></span><br></pre></td></tr></table></figure>
+
+<!--more-->
+
 <h2 id="2-可变参数传递"><a href="#2-可变参数传递" class="headerlink" title="2.可变参数传递"></a>2.可变参数传递</h2><p>不确定参数总数量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def &lt;函数名&gt;(参数，可变参数):</span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    return &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(参数，可变参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#e.g.2  *b代表可变参数，可以有多个值</span><br><span class="line">def fact(n,*b):</span><br><span class="line">    s&#x3D;1</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    for item in b:</span><br><span class="line">        s&#x3D;s&#x2F;&#x2F;item</span><br><span class="line">    return s</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#e.g.2  *b代表可变参数，可以有多个值</span></span><br><span class="line"><span class="attr">def</span> <span class="string">fact(n,*b):</span></span><br><span class="line">    <span class="attr">s</span>=<span class="string">1</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">i in range(1,n+1):</span></span><br><span class="line">        <span class="meta">s*</span>=<span class="string">i</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">item in b:</span></span><br><span class="line">        <span class="attr">s</span>=<span class="string">s//item</span></span><br><span class="line">    <span class="attr">return</span> <span class="string">s</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;fact(9,4)</span><br><span class="line">&gt;&gt;&gt;90720</span><br><span class="line">&gt;&gt;&gt;fact(9,4,7)</span><br><span class="line">&gt;&gt;&gt;12960</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">90720</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>,<span class="number">7</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">12960</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="3-参数传递两种方式：位置传递-amp-名称传递"><a href="#3-参数传递两种方式：位置传递-amp-名称传递" class="headerlink" title="3.参数传递两种方式：位置传递&amp;名称传递"></a>3.参数传递两种方式：位置传递&amp;名称传递</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def fact(n,m&#x3D;1):</span><br><span class="line">    s&#x3D;1</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    return s&#x2F;&#x2F;m</span><br></pre></td></tr></table></figure>
+<h2 id="3-参数传递两种方式：位置传递-amp-名称传递"><a href="#3-参数传递两种方式：位置传递-amp-名称传递" class="headerlink" title="3.参数传递两种方式：位置传递&amp;名称传递"></a>3.参数传递两种方式：位置传递&amp;名称传递</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;fact(10,5)#位置传递</span><br><span class="line">&gt;&gt;&gt;725760</span><br><span class="line">&gt;&gt;&gt;fact(m&#x3D;5,n&#x3D;10)</span><br><span class="line">&gt;&gt;&gt;725760</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)<span class="comment">#位置传递</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(m=<span class="number">5</span>,n=<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="4-函数返回值"><a href="#4-函数返回值" class="headerlink" title="4.函数返回值"></a>4.函数返回值</h2><p>函数可以返回0个或多个结果.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def fact(n,m&#x3D;1):</span><br><span class="line">    s&#x3D;1</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    return s&#x2F;&#x2F;m,n,m</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m,n,m</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;fact(10,5)</span><br><span class="line">&gt;&gt;&gt;(725760, 10, 5) #元组形式</span><br><span class="line">&gt;&gt;&gt;a,b,c&#x3D;fact(10,5)</span><br><span class="line">&gt;&gt;&gt;print(a,b,c)</span><br><span class="line">&gt;&gt;&gt;725760 10 5</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;(<span class="number">725760</span>, <span class="number">10</span>, <span class="number">5</span>) <span class="comment">#元组形式</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;a,b,c=fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;print(a,b,c)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span> <span class="number">10</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="5-全局变量和局部变量"><a href="#5-全局变量和局部变量" class="headerlink" title="5.全局变量和局部变量"></a>5.全局变量和局部变量</h2><ul>
 <li>局部变量是函数内部的占位符，可与全局变量重名，但不同</li>
@@ -273,33 +272,33 @@
 <li>可以使用global关键字在函数内部使用全局变量</li>
 <li>局部变量为组合数据类型且在函数内为真实创建，等同于全局变量</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">n,s&#x3D;10,100 #s是全局变量</span><br><span class="line">def fact(n)：</span><br><span class="line">    s&#x3D;1  #s是局部变量，与全局变量s不同</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    return s #s是局部变量</span><br><span class="line">#函数运行结束后，局部变量会被释放</span><br><span class="line">print(fact(n),s) #此处s是全局变量，s&#x3D;100</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span> <span class="comment">#s是全局变量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span></span>：</span><br><span class="line">    s=<span class="number">1</span>  <span class="comment">#s是局部变量，与全局变量s不同</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>)<span class="symbol">:</span></span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s <span class="comment">#s是局部变量</span></span><br><span class="line"><span class="comment">#函数运行结束后，局部变量会被释放</span></span><br><span class="line">print(fact(n),s) <span class="comment">#此处s是全局变量，s=100</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 3628800 100</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; <span class="number">3628800</span> <span class="number">100</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">n,s&#x3D;10,100</span><br><span class="line">def fact(n):</span><br><span class="line">    global s  #使用global保留字声明s是全局变量s</span><br><span class="line">    for i in range(1,n+1):</span><br><span class="line">        s*&#x3D;i</span><br><span class="line">    return s  #此处s指全局变量s</span><br><span class="line">print(fact(n),s)  #此处全局变量s被函数修改</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> s  <span class="comment">#使用global保留字声明s是全局变量s</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s  <span class="comment">#此处s指全局变量s</span></span><br><span class="line">print(fact(n),s)  <span class="comment">#此处全局变量s被函数修改</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;362880000 362880000</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="number">362880000</span> <span class="number">362880000</span></span><br></pre></td></tr></table></figure>
 
 <p>局部变量为组合数据类型且未创建，等同于全局变量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ls&#x3D;[&#39;F&#39;,&#39;f&#39;] #通过使用[]真实创建一个全局变量列表ls</span><br><span class="line">def func(a):</span><br><span class="line">    ls.append(a) #此处ls是列表类型，未真实创建，则等同于全局变量</span><br><span class="line">    return</span><br><span class="line">func(&#39;C&#39;)  #全局变量ls被修改</span><br><span class="line">print(ls)</span><br></pre></td></tr></table></figure>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ls=[<span class="string">'F'</span>,<span class="string">'f'</span>] <span class="meta">#通过使用[]真实创建一个全局变量列表ls</span></span><br><span class="line">def <span class="function"><span class="keyword">func</span><span class="params">(a)</span>:</span></span><br><span class="line">    ls.append(a) <span class="meta">#此处ls是列表类型，未真实创建，则等同于全局变量</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(<span class="string">'C'</span>)</span>  #全局变量<span class="title">ls</span>被修改</span></span><br><span class="line">print(ls)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;[&#39;F&#39;, &#39;f&#39;, &#39;C&#39;]</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>, <span class="string">'C'</span>]</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ls&#x3D;[&#39;F&#39;,&#39;f&#39;]</span><br><span class="line">def func(a):</span><br><span class="line">    ls&#x3D;[]  #此处ls是列表类型，真实创建，ls是局部变量</span><br><span class="line">    ls.append(a)</span><br><span class="line">    return</span><br><span class="line">print(func(&#39;C&#39;)) #修改了局部变量ls</span><br><span class="line">print(ls) #输出全局变量ls</span><br></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ls</span>=[<span class="string">'F'</span>,<span class="string">'f'</span>]</span><br><span class="line">def func(<span class="keyword">a</span>):</span><br><span class="line">    <span class="keyword">ls</span>=[]  #此处<span class="keyword">ls</span>是列表类型，真实创建，<span class="keyword">ls</span>是局部变量</span><br><span class="line">    <span class="keyword">ls</span>.<span class="keyword">append</span>(<span class="keyword">a</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="keyword">print</span>(func(<span class="string">'C'</span>)) #修改了局部变量<span class="keyword">ls</span></span><br><span class="line"><span class="keyword">print</span>(<span class="keyword">ls</span>) #输出全局变量<span class="keyword">ls</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;[&#39;F&#39;, &#39;f&#39;]</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>]</span><br></pre></td></tr></table></figure>
 
 <h2 id="6-lambda函数"><a href="#6-lambda函数" class="headerlink" title="6. lambda函数"></a>6. lambda函数</h2><p>lambda函数是一种匿名函数，即没有名字的函数.使用lambda保留字定义，函数名是返回结果；lambda函数用于定义简单的，能够在一行内定义的函数；lambda函数主要用作一些特定函数或方法的参数.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;函数名&gt; &#x3D; lambda&lt;参数&gt;:&lt;表达式&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">函数名</span>&gt;</span> = lambda<span class="tag">&lt;<span class="name">参数</span>&gt;</span>:<span class="tag">&lt;<span class="name">表达式</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f&#x3D;lambda x,y : x+y</span><br><span class="line">f(6,8)</span><br></pre></td></tr></table></figure>
+<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f=lambda <span class="symbol">x</span>,<span class="symbol">y</span> : <span class="symbol">x</span>+<span class="symbol">y</span></span><br><span class="line">f(<span class="number">6</span>,<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;14</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">14</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f&#x3D;lambda : &#39;没有参数的lambda函数！&#39;</span><br><span class="line">print(f())</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">f</span>=lambda : <span class="string">'没有参数的lambda函数！'</span></span><br><span class="line"><span class="builtin-name">print</span>(f())</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;没有参数的lambda函数！</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;没有参数的lambda函数！</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -307,8 +306,41 @@
     
     
     
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>Your support will encourage me to continue to write!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/hexo-demo/images/wechatpay.jpg" alt="亦新 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/hexo-demo/images/alipay.jpg" alt="亦新 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
 
       <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/hexo-demo/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          </div>
 
         
 
@@ -316,12 +348,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/" rel="prev" title="python turtle库“一箭穿心”代码实现">
-      <i class="fa fa-chevron-left"></i> python turtle库“一箭穿心”代码实现
+    <a href="/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/" rel="prev" title="python turtle库"一箭穿心"代码实现">
+      <i class="fa fa-chevron-left"></i> python turtle库"一箭穿心"代码实现
     </a></div>
       <div class="post-nav-item">
-    <a href="/hexo-demo/2020/11/14/%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/" rel="next" title="数据降维">
-      数据降维 <i class="fa fa-chevron-right"></i>
+    <a href="/hexo-demo/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/" rel="next" title="Matlab数据处理--数据降维">
+      Matlab数据处理--数据降维 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -381,15 +413,15 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python函数及变量的定义和使用"><span class="nav-number">1.</span> <span class="nav-text">Python函数及变量的定义和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-可选参数传递"><span class="nav-number">1.1.</span> <span class="nav-text">1.可选参数传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-可变参数传递"><span class="nav-number">1.2.</span> <span class="nav-text">2.可变参数传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-参数传递两种方式：位置传递-amp-名称传递"><span class="nav-number">1.3.</span> <span class="nav-text">3.参数传递两种方式：位置传递&amp;名称传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-函数返回值"><span class="nav-number">1.4.</span> <span class="nav-text">4.函数返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-全局变量和局部变量"><span class="nav-number">1.5.</span> <span class="nav-text">5.全局变量和局部变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-lambda函数"><span class="nav-number">1.6.</span> <span class="nav-text">6. lambda函数</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-可选参数传递"><span class="nav-number">1.</span> <span class="nav-text">1.可选参数传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-可变参数传递"><span class="nav-number">2.</span> <span class="nav-text">2.可变参数传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-参数传递两种方式：位置传递-amp-名称传递"><span class="nav-number">3.</span> <span class="nav-text">3.参数传递两种方式：位置传递&amp;名称传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-函数返回值"><span class="nav-number">4.</span> <span class="nav-text">4.函数返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-全局变量和局部变量"><span class="nav-number">5.</span> <span class="nav-text">5.全局变量和局部变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-lambda函数"><span class="nav-number">6.</span> <span class="nav-text">6. lambda函数</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="李亦新"
-      src="/hexo-demo/images/hexohead.jpg">
-  <p class="site-author-name" itemprop="name">李亦新</p>
+    <img class="site-author-image" itemprop="image" alt="亦新"
+      src="/hexo-demo/images/hexohead.gif">
+  <p class="site-author-name" itemprop="name">亦新</p>
   <div class="site-description" itemprop="description">热爱可抵岁月漫长</div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -397,9 +429,21 @@
       <div class="site-state-item site-state-posts">
           <a href="/hexo-demo/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/hexo-demo/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/hexo-demo/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -423,7 +467,6 @@
     
     <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
     
-
     <footer class="footer">
       <div class="footer-inner">
         
@@ -437,34 +480,35 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">李亦新</span>
+  <span class="author" itemprop="copyrightHolder">亦新</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">6k</span>
 </div>
 
-<div class="theme-info">
-  <div class="powered-by"></div>
-  <span class="post-count">博客全站共2.7k字</span>
-</div>
+<!-- 网站运行时间的设置 -->
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+    <script>
+        var now = new Date();
+        function createtime() {
+            var grt= new Date("11/14/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+            now.setTime(now.getTime()+250);
+            days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+            hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+            if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+            mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+            seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+            snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+            document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+            document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+    setInterval("createtime()",250);
+    </script>
         
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="热度">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
 
 
 
@@ -479,18 +523,18 @@
 
   
   <script src="/hexo-demo/lib/anime.min.js"></script>
-  <script src="/hexo-demo/lib/velocity/velocity.min.js"></script>
-  <script src="/hexo-demo/lib/velocity/velocity.ui.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
 <script src="/hexo-demo/js/utils.js"></script>
-
-<script src="/hexo-demo/js/motion.js"></script>
 
 
 <script src="/hexo-demo/js/schemes/pisces.js"></script>
 
 
 <script src="/hexo-demo/js/next-boot.js"></script>
+
+<script src="/hexo-demo/js/bookmark.js"></script>
 
 
 
@@ -521,5 +565,9 @@
 
 <script src="/hexo-demo/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/hexo-demo/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
-<!--单击显示文字-->
-  <script type="text/javascript" src="/js/click_show_text.js"></script>
+
+
+  
+    <script src="/js/cursor/love.min.js"></script>
+  
+

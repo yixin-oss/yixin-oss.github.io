@@ -23,17 +23,25 @@
     var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/hexo-demo/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="热爱可抵岁月漫长">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Daytoy">
-<meta property="og:url" content="http://yixin-oss.gitee.io/hexo-demo/archives/2020/11/index.html">
+  <meta name="description" content="以下代码源自MathWorks官方文档trainAutoencoder的Examples.目标是实现1000个数据点的重构,并给出重构与原数据对比图.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="稀疏自编码器重构数据点的Matlab实现">
+<meta property="og:url" content="http://yixin-oss.gitee.io/hexo-demo/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="Daytoy">
-<meta property="og:description" content="热爱可抵岁月漫长">
+<meta property="og:description" content="以下代码源自MathWorks官方文档trainAutoencoder的Examples.目标是实现1000个数据点的重构,并给出重构与原数据对比图.">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E8%AE%AD%E7%BB%83%E7%AA%97%E5%8F%A3.jpg">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/compare.jpg">
+<meta property="article:published_time" content="2020-11-28T09:31:27.200Z">
+<meta property="article:modified_time" content="2020-11-29T03:27:55.974Z">
 <meta property="article:author" content="亦新">
+<meta property="article:tag" content="Matlab">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="自编码器">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E8%AE%AD%E7%BB%83%E7%AA%97%E5%8F%A3.jpg">
 
-<link rel="canonical" href="http://yixin-oss.gitee.io/hexo-demo/archives/2020/11/">
+<link rel="canonical" href="http://yixin-oss.gitee.io/hexo-demo/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/">
 
 
 <script id="page-configurations">
@@ -41,12 +49,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | Daytoy</title>
+  <title>稀疏自编码器重构数据点的Matlab实现 | Daytoy</title>
   
 
 
@@ -184,90 +192,129 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 4 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/hexo-demo/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/hexo-demo/images/hexohead.gif">
+      <meta itemprop="name" content="亦新">
+      <meta itemprop="description" content="热爱可抵岁月漫长">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daytoy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          稀疏自编码器重构数据点的Matlab实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/hexo-demo/categories/%E6%99%BA%E8%83%BD%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">智能计算</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
-    </div>
+        <p>以下代码源自MathWorks官方文档<a href="https://www.mathworks.com/help/deeplearning/ref/trainautoencoder.html?s_tid=gn_loc_drop" target="_blank" rel="noopener">trainAutoencoder</a>的Examples.目标是实现1000个数据点的重构,并给出重构与原数据对比图.</p>
+<a id="more"></a>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%Reconstruct Observations Using Sparse Autoencoder</span></span><br><span class="line"><span class="comment">%用稀疏自编码器重建对象</span></span><br><span class="line"><span class="comment">% 生成训练集，1000个点</span></span><br><span class="line">rng(<span class="number">0</span>,<span class="string">'twister'</span>); <span class="comment">%保证可重复性</span></span><br><span class="line">n = <span class="number">1000</span>;         <span class="comment">%训练数据个数</span></span><br><span class="line">r = <span class="built_in">linspace</span>(<span class="number">-10</span>,<span class="number">10</span>,n)';      <span class="comment">%训练集区间</span></span><br><span class="line">x = <span class="number">1</span> + r*<span class="number">5e-2</span> + <span class="built_in">sin</span>(r)./r + <span class="number">0.2</span>*<span class="built_in">randn</span>(n,<span class="number">1</span>); <span class="comment">%取值</span></span><br><span class="line"><span class="comment">% 使用训练数据训练自动编码器</span></span><br><span class="line">hiddenSize = <span class="number">25</span>;    <span class="comment">%隐藏单元数</span></span><br><span class="line">autoenc = trainAutoencoder(x',hiddenSize,...</span><br><span class="line">        <span class="string">'EncoderTransferFunction'</span>,<span class="string">'satlin'</span>,... <span class="comment">% 编码函数</span></span><br><span class="line">        <span class="string">'DecoderTransferFunction'</span>,<span class="string">'purelin'</span>,...<span class="comment">% 解码函数</span></span><br><span class="line">        <span class="string">'L2WeightRegularization'</span>,<span class="number">0.01</span>,...      <span class="comment">% L2权重调整器的系数</span></span><br><span class="line">        <span class="string">'SparsityRegularization'</span>,<span class="number">4</span>,...         <span class="comment">% 稀疏正则项的系数   </span></span><br><span class="line">        <span class="string">'SparsityProportion'</span>,<span class="number">0.10</span>);            <span class="comment">% 稀疏比例</span></span><br><span class="line"><span class="comment">% 生成测试集,1000个点</span></span><br><span class="line">n = <span class="number">1000</span>;</span><br><span class="line">r = <span class="built_in">sort</span>(<span class="number">-10</span> + <span class="number">20</span>*<span class="built_in">rand</span>(n,<span class="number">1</span>));</span><br><span class="line">xtest = <span class="number">1</span> + r*<span class="number">5e-2</span> + <span class="built_in">sin</span>(r)./r + <span class="number">0.4</span>*<span class="built_in">randn</span>(n,<span class="number">1</span>);</span><br><span class="line"><span class="comment">%利用训练后的网络对测试集进行预测</span></span><br><span class="line">xReconstructed = predict(autoenc,xtest');</span><br><span class="line"><span class="comment">% 绘制结果图</span></span><br><span class="line"><span class="built_in">figure</span>;</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>);<span class="built_in">plot</span>(xtest,<span class="string">'r.'</span>);title(<span class="string">'测试数据'</span>)</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>);<span class="built_in">plot</span>(xReconstructed,<span class="string">'go'</span>); title(<span class="string">'重构数据'</span>)</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,[<span class="number">3</span>,<span class="number">4</span>]);</span><br><span class="line"><span class="built_in">plot</span>(xtest,<span class="string">'r.'</span>);<span class="comment">% 红色圆点代表原数据</span></span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"><span class="built_in">plot</span>(xReconstructed,<span class="string">'go'</span>); <span class="comment">% 绿色圆圈代表新建数据</span></span><br><span class="line">title(<span class="string">'新旧数据对比'</span>)</span><br></pre></td></tr></table></figure>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-11-28T17:31:27+08:00"
-              content="2020-11-28">
-          11-28
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/hexo-demo/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/" itemprop="url">
-            <span itemprop="name">稀疏自编码器重构数据点的Matlab实现</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-11-14T18:44:10+08:00"
-              content="2020-11-14">
-          11-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/hexo-demo/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/" itemprop="url">
-            <span itemprop="name">Matlab数据处理--数据降维</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-11-14T18:15:59+08:00"
-              content="2020-11-14">
-          11-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/hexo-demo/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/" itemprop="url">
-            <span itemprop="name">Python函数及变量的定义和使用</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+<p><strong>运行结果</strong></p>
+<p>trainAutoencoder函数在运行时会显示训练窗口.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E8%AE%AD%E7%BB%83%E7%AA%97%E5%8F%A3.jpg" alt></p>
+<p>重构数据与原数据前后对比.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/compare.jpg" alt></p>
+<p>从图中可以看到重构数据与原数据的分布趋势基本相同，数据点位置与原数据也基本重合，稀疏自编码器对数据点的重构效果较好。</p>
 
     </div>
+
+    
+    
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>Your support will encourage me to continue to write!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/hexo-demo/images/wechatpay.jpg" alt="亦新 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/hexo-demo/images/alipay.jpg" alt="亦新 支付宝">
+        <p>支付宝</p>
+      </div>
+
   </div>
-  
-  
-  
+</div>
 
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/hexo-demo/tags/Matlab/" rel="tag"><i class="fa fa-tag"></i> Matlab</a>
+              <a href="/hexo-demo/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 机器学习</a>
+              <a href="/hexo-demo/tags/%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8/" rel="tag"><i class="fa fa-tag"></i> 自编码器</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/hexo-demo/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/" rel="prev" title="Matlab数据处理--数据降维">
+      <i class="fa fa-chevron-left"></i> Matlab数据处理--数据降维
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
