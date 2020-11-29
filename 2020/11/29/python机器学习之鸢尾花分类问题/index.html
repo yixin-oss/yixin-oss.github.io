@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/daytoy/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/daytoy/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/daytoy/images/heart.jpg">
+  <link rel="mask-icon" href="/daytoy/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/daytoy/css/main.css">
+
+
+<link rel="stylesheet" href="/daytoy/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/daytoy/lib/pace/pace-theme-minimal.min.css">
+  <script src="/daytoy/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/daytoy/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="已知：鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm. 目标：构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python机器学习之鸢尾花分类问题">
+<meta property="og:url" content="http://yixin-oss.gitee.io/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Daytoy">
+<meta property="og:description" content="已知：鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm. 目标：构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-29T05:04:39.906Z">
+<meta property="article:modified_time" content="2020-11-29T05:08:31.333Z">
+<meta property="article:author" content="亦新">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yixin-oss.gitee.io/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python机器学习之鸢尾花分类问题 | Daytoy</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/daytoy/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Daytoy</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Always be happy</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/daytoy/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/daytoy/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/daytoy/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/daytoy/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
+      <meta itemprop="name" content="亦新">
+      <meta itemprop="description" content="热爱可抵岁月漫长">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daytoy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python机器学习之鸢尾花分类问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/daytoy/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">python学习笔记</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.6k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font size="4" face="楷体"><strong>已知：</strong>鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm.</font></p>
+<p><font size="4" face="楷体"><strong>目标：</strong>构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.</font></p>
+<a id="more"></a>
+
+<p><font size="4" face="楷体"><strong>分析：</strong>有已知品种的测量数据，这是一个监督学习问题，数据集中每朵花分属于三个类别，这是三分类问题.</font></p>
+<p><font size="4" face="楷体">以下代码均在 <strong>Jupyter Notebook</strong>  中编写及运行.</font></p>
+<p><font size="5" face="楷体"> 必要的库调用</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> mglearn</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">mglearn库可在Jupyter Notebook 代码块中直接运行以下命令行下载，其它的库下载方式同理，下载成功后即可调用.</font></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> mglearn</span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">数据准备</font></p>
+<p><font size="4" face="楷体">数据集包含在scikit-learn的datasets模块中，可调用load_iris函数加载数据.<br>    </font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line">iris_dataset=load_iris()</span><br><span class="line"><span class="comment">#这里返回的是Bunch对象，与字典类似，包含键和值.</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">利用print和.format方法可以查看数据集的相关信息.</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'Keys of iris_dataset:\n&#123;&#125;'</span>.format(iris_dataset.keys()))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Keys of iris_dataset:</span><br><span class="line"><span class="function"><span class="title">dict_keys</span><span class="params">([<span class="string">'data'</span>, <span class="string">'target'</span>, <span class="string">'frame'</span>, <span class="string">'target_names'</span>, <span class="string">'DESCR'</span>, <span class="string">'feature_names'</span>, <span class="string">'filename'</span>])</span></span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">DESCR键对应的值是数据集的简要说明.</font></p>
+<p><font size="4" face="楷体">targets_names键对应的值是字符串数组，包含预测花的品种:</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'Target names:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>]))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">Target</span> <span class="selector-tag">names</span>: <span class="selector-attr">[<span class="string">'setosa'</span> <span class="string">'versicolor'</span> <span class="string">'virginica'</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">feature_names键对应值是字符串列表，对每个特征进行说明:</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'feature_names'</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="symbol">'sepal</span> length (<span class="name">cm</span>)', <span class="symbol">'sepal</span> width (<span class="name">cm</span>)', <span class="symbol">'petal</span> length (<span class="name">cm</span>)', <span class="symbol">'petal</span> width (<span class="name">cm</span>)']</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">数据包含在target和data字段中，data是测量数据，格式为Numpy数组:</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(type(iris_dataset[<span class="string">'data'</span>]))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'numpy.ndarray'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">data数组每行对应一朵花，列代表每朵花四个测量数据:</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iris_dataset[<span class="string">'data'</span>].shape</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">150</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">数组中共包含150朵不同的花测量数据.</font></p>
+<p><font size="4" face="楷体">查看前5朵花数据：</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'data'</span>][:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="number">5.1</span> <span class="number">3.5</span> <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.9</span> <span class="number">3.</span>  <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.7</span> <span class="number">3.2</span> <span class="number">1.3</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.6</span> <span class="number">3.1</span> <span class="number">1.5</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">5.</span>  <span class="number">3.6</span> <span class="number">1.4</span> <span class="number">0.2</span>]]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">target数组包含每朵花测量的品种，是一维Numpy数组,每朵花对应其中一个数据：</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>].shape)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">150</span>,)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">品种已转换成0~2整数.</font></p>
+<p><font size="5" face="楷体">训练数据与测试数据</font></p>
+<p><font size="4" face="楷体">将收集好的带标签数据按比例分成两部分:<strong>训练数据</strong>（构建机器学习模型）、<strong>测试数据</strong>（评估模型性能）</font></p>
+<p><font size="4" face="楷体">由于原始数据点是按标签排序的，如果只取数据后一部分数据作测试，无法评估模型好坏，因此要将数据打乱，确保测试数据包含所有类别的数据.</font></p>
+<p><font size="4" face="楷体">这里用到了scikit-learn库中的train_test_split函数，将数据集打乱拆分，将75%数据作为训练集，其余25%数据为测试集.</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">这里利用random_state参数指定随机数升成器种子，确保每次运行函数输出固定不变.</font></p>
+<p><font size="4" face="楷体">查看输出数据的形状</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'X_train shape:&#123;&#125;'</span>.format(X_train.shape))</span><br><span class="line">print(<span class="string">'y_train shape:&#123;&#125;'</span>.format(y_train.shape))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X_train shape:(<span class="number">112</span>, <span class="number">4</span>)</span><br><span class="line">y_train shape:(<span class="number">112</span>,)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(X_test.shape)</span><br><span class="line">print(y_test.shape)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">38</span>, <span class="number">4</span>)</span><br><span class="line">(<span class="name">38</span>,)</span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">构建模型:k近邻算法</font></p>
+<p><font size="4" face="楷体">含义：考虑训练集中与新数据最近的任意k个邻居，而不是只考虑最近的一个.用这些邻居中数量最多的类别作出预测.<br></font></p>
+<p><font size="4" face="楷体">现在只考虑1个邻居的情况.</font></p>
+<p><font size="4" face="楷体">scikit-learn中所有机器学习模型都是在各自类中实现的，k近邻算法在neighbors模块的KNeighborsClassifiter类中实现.<br>    将类实化为对象需要设置模型参数.<br></font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(n_neighbors=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">knn对象对算法进行了封装，既包括用训练数据构建模型的算法，也包括对新数据点进行预测的算法，还包括算法从训练数据提取的信息.</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#基于训练集构建模型，需要调用knn对象的fit方法</span></span><br><span class="line">knn.fit(X_train,y_train)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果：</font></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">KNeighborsClassifier</span><span class="params">(n_neighbors=<span class="number">1</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">作出预测</font></p>
+<p><font size="4" face="楷体">对一朵新的已知测量数据的鸢尾花进行预测:</font></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x_new=np.<span class="built_in">array</span>([[<span class="number">5</span>,<span class="number">2.9</span>,<span class="number">1</span>,<span class="number">0.2</span>]])</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">调用knn对象predict方法进行预测：</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">prediction=knn.predict(x_new)</span><br><span class="line">print(<span class="string">'Prediction:&#123;&#125;'</span>.format(prediction))</span><br><span class="line">print(<span class="string">'Predicted target name:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>][prediction]))</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">预测结果：</font></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">Prediction</span>:<span class="selector-attr">[0]</span></span><br><span class="line"><span class="selector-tag">Predicted</span> <span class="selector-tag">target</span> <span class="selector-tag">name</span>:<span class="selector-attr">[<span class="string">'setosa'</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">评估模型</font></p>
+<p><font size="4" face="楷体">对测试数据进行预测并与实际标签对比.</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y_pred=knn.predict(X_test)</span><br><span class="line">print(y_pred)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果:</font></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">使用knn对象的score对象计算测试集精度：</font></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(score)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果</font></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.9736842105263158</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">这个模型测试集的精度约为0.97，就是说对于测试集中鸢尾花的预测有97%是正确的.高精度意味着模型可信.</font></p>
+<p><font size="5" face="楷体">汇总</font></p>
+<p><font size="4" face="楷体">整个训练和评估过程所必需的代码：</font></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets import load_iris</span><br><span class="line"><span class="attribute">iris_dataset</span>=load_iris()</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection import train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],<span class="attribute">random_state</span>=0)</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors import KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(<span class="attribute">n_neighbors</span>=1)</span><br><span class="line">knn.fit(X_train,y_train)</span><br><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">"Test set score:&#123;&#125;"</span>.format(score))</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>Your support will encourage me to continue to write!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/wechatpay.jpg" alt="亦新 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/alipay.jpg" alt="亦新 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/daytoy/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/daytoy/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/daytoy/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/" rel="prev" title="稀疏自编码器重构数据点的Matlab实现">
+      <i class="fa fa-chevron-left"></i> 稀疏自编码器重构数据点的Matlab实现
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="亦新"
+      src="/daytoy/images/hexohead.gif">
+  <p class="site-author-name" itemprop="name">亦新</p>
+  <div class="site-description" itemprop="description">热爱可抵岁月漫长</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/daytoy/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/daytoy/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/daytoy/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      
+      <div id="music163player">
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=0&id=5353663714&auto=1&height=66"></iframe>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+    
+    
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+    
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦新</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">10k</span>
+</div>
+
+<!-- 网站运行时间的设置 -->
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+    <script>
+        var now = new Date();
+        function createtime() {
+            var grt= new Date("11/14/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+            now.setTime(now.getTime()+250);
+            days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+            hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+            if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+            mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+            seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+            snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+            document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+            document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/daytoy/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/daytoy/js/utils.js"></script>
+
+
+<script src="/daytoy/js/schemes/pisces.js"></script>
+
+
+<script src="/daytoy/js/next-boot.js"></script>
+
+<script src="/daytoy/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/daytoy/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/daytoy/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/daytoy/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
+
+
+  
+    <script src="/js/cursor/love.min.js"></script>
+  
+

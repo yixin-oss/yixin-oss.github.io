@@ -1,8 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Matlab数据处理--数据降维</title>
+    <url>/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
+    <content><![CDATA[<p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
+<p>目前，常用的降维技术有两种，主成分分析、因子分析.</p>
+<a id="more"></a>
+
+<h2 id="一、主成分分析"><a href="#一、主成分分析" class="headerlink" title="一、主成分分析"></a>一、主成分分析</h2><p>有的问题变量之间存在相关性，它们包含的信息有所重叠，将变量进行线性组合后形成数量较少的新变量，新变量之间不相关，称为主成分.主成分反映原来变量的大量信息且所含信息不重叠，这种方法叫主成分分析.</p>
+<p>主成分分析用较少的变量代替了原来较多的变量，实现了有效的降维，可以使问题简化.</p>
+<p>Steps:</p>
+<ul>
+<li><p>对原数据进行标准化转换.</p>
+</li>
+<li><p>计算样本的相关系数矩阵.</p>
+</li>
+<li><p>计算相关系数矩阵的特征值和特征向量.</p>
+</li>
+<li><p>计算主成分贡献率和累积贡献率，选择重要主成分.主成分的贡献率越大，说明包含原始信息量越大.</p>
+</li>
+<li><p>计算主成分载荷和主成分得分.</p>
+<p><strong>[r,p]=corrcoef(x)</strong> 计算样本的相关系数矩阵</p>
+<h3 id="1-pcacov指令"><a href="#1-pcacov指令" class="headerlink" title="1.pcacov指令"></a>1.pcacov指令</h3><p><strong>[r,p]=corrcoef(x)</strong> 计算样本相关系数矩阵</p>
+<p><strong>coeff=pcacov(v)</strong> v是样本的协方差矩阵或相关系数矩阵，coeff是p个主成分的系数矩阵，第i列是第i个主成分的系数向量.</p>
+<p><strong>[coeff,latent]=pcacov(v)</strong> latent是p个主成分的方差构成的向量.</p>
+<p><strong>[coeff,latent,explained]=pcacov(v)</strong> explained是p个主成分向量的贡献率.</p>
+<h3 id="2-princomp指令"><a href="#2-princomp指令" class="headerlink" title="2.princomp指令"></a>2.princomp指令</h3><p>根据样本的观测值矩阵进行主成分分析.</p>
+<p><strong>[coeff,score]=princomp(x)</strong> x是主成分的系数矩阵，第i列是第i个主成分的系数向量，score是主成分得分矩阵，每行代表一个样本，每列代表一个主成分的得分.</p>
+<p><strong>[coeff,score,latent]=princomp(x)</strong>  latent指样本协方差矩阵的特征向量.</p>
+<p><strong>[coeff,score,latent,tsquare]=princomp(x)</strong> tsquare是样本的Hotelling T^2统计值，表示某样本和样本观测矩阵中心之间的距离，可以用它寻找远离中心的局端数据.</p>
+<p><strong>per=100*latent/sum(latent)</strong> 主成分的贡献率</p>
+<h2 id="二、因子分析"><a href="#二、因子分析" class="headerlink" title="二、因子分析"></a>二、因子分析</h2><p>目的：寻找隐含在现有变量里的若干更基本的有代表性的变量并提取出来.这些更基本的变量叫公共因子.</p>
+<p><strong>Steps:</strong></p>
+<ul>
+<li><p>求样本的相关矩阵</p>
+</li>
+<li><p>求特征值和特征向量.</p>
+</li>
+<li><p>计算方差贡献率和累积方差贡献率.</p>
+</li>
+<li><p>确定因子.</p>
+</li>
+<li><p>进行因子旋转，使因子变量更具有解释性.</p>
+</li>
+<li><p>计算因子得分.</p>
+<p><strong>[lambda,psi,T]=factoran(x,m,paraml,vall,param2,val2)</strong> lambda是因子载荷值；psi是方差值构成的向量；T是旋转矩阵；x是样本数据；m是公共因子数量</p>
+<p><strong>[lambda,psi,T,stats,F]=factoran(x,m)</strong> stats是相关信息统计；F是得分矩阵.</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">r=corrcoef(x)<span class="comment">%相关系数矩阵</span></span><br><span class="line">[lambda,<span class="built_in">psi</span>,T]=factoran(r,<span class="number">3</span>,<span class="string">'xtype'</span>,<span class="string">'covariance'</span>,<span class="string">'delta'</span>,<span class="number">0</span>,<span class="string">'rotate'</span>,<span class="string">'none'</span>)<span class="comment">%设三个公共因子</span></span><br><span class="line">ctb=<span class="number">100</span>*sum(lambda.^<span class="number">2</span>)/<span class="built_in">size</span>(x,<span class="number">2</span>) <span class="comment">%计算贡献率</span></span><br><span class="line">cumctb=cumsum(ctb) <span class="comment">%计算累积贡献率</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Matlab与数据分析</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>数据分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python函数及变量的定义和使用</title>
+    <url>/daytoy/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
+<a id="more"></a>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(非可选参数，可选参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">#e.g<span class="number">.1</span> 这里m是可选参数，默认设为<span class="number">1</span>，可以更改</span><br><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">362800</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">1209600</span></span><br></pre></td></tr></table></figure>
+
+<!--more-->
+
+<h2 id="2-可变参数传递"><a href="#2-可变参数传递" class="headerlink" title="2.可变参数传递"></a>2.可变参数传递</h2><p>不确定参数总数量</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(参数，可变参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#e.g.2  *b代表可变参数，可以有多个值</span></span><br><span class="line"><span class="attr">def</span> <span class="string">fact(n,*b):</span></span><br><span class="line">    <span class="attr">s</span>=<span class="string">1</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">i in range(1,n+1):</span></span><br><span class="line">        <span class="meta">s*</span>=<span class="string">i</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">item in b:</span></span><br><span class="line">        <span class="attr">s</span>=<span class="string">s//item</span></span><br><span class="line">    <span class="attr">return</span> <span class="string">s</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">90720</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>,<span class="number">7</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">12960</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-参数传递两种方式：位置传递-amp-名称传递"><a href="#3-参数传递两种方式：位置传递-amp-名称传递" class="headerlink" title="3.参数传递两种方式：位置传递&amp;名称传递"></a>3.参数传递两种方式：位置传递&amp;名称传递</h2><figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)<span class="comment">#位置传递</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(m=<span class="number">5</span>,n=<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-函数返回值"><a href="#4-函数返回值" class="headerlink" title="4.函数返回值"></a>4.函数返回值</h2><p>函数可以返回0个或多个结果.</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m,n,m</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;(<span class="number">725760</span>, <span class="number">10</span>, <span class="number">5</span>) <span class="comment">#元组形式</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;a,b,c=fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;print(a,b,c)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span> <span class="number">10</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-全局变量和局部变量"><a href="#5-全局变量和局部变量" class="headerlink" title="5.全局变量和局部变量"></a>5.全局变量和局部变量</h2><ul>
+<li>局部变量是函数内部的占位符，可与全局变量重名，但不同</li>
+<li>函数运算结束后，局部变量被释放</li>
+<li>可以使用global关键字在函数内部使用全局变量</li>
+<li>局部变量为组合数据类型且在函数内为真实创建，等同于全局变量</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span> <span class="comment">#s是全局变量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span></span>：</span><br><span class="line">    s=<span class="number">1</span>  <span class="comment">#s是局部变量，与全局变量s不同</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>)<span class="symbol">:</span></span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s <span class="comment">#s是局部变量</span></span><br><span class="line"><span class="comment">#函数运行结束后，局部变量会被释放</span></span><br><span class="line">print(fact(n),s) <span class="comment">#此处s是全局变量，s=100</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; <span class="number">3628800</span> <span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> s  <span class="comment">#使用global保留字声明s是全局变量s</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s  <span class="comment">#此处s指全局变量s</span></span><br><span class="line">print(fact(n),s)  <span class="comment">#此处全局变量s被函数修改</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="number">362880000</span> <span class="number">362880000</span></span><br></pre></td></tr></table></figure>
+
+<p>局部变量为组合数据类型且未创建，等同于全局变量</p>
+<figure class="highlight autoit"><table><tr><td class="code"><pre><span class="line">ls=[<span class="string">'F'</span>,<span class="string">'f'</span>] <span class="meta">#通过使用[]真实创建一个全局变量列表ls</span></span><br><span class="line">def <span class="function"><span class="keyword">func</span><span class="params">(a)</span>:</span></span><br><span class="line">    ls.append(a) <span class="meta">#此处ls是列表类型，未真实创建，则等同于全局变量</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(<span class="string">'C'</span>)</span>  #全局变量<span class="title">ls</span>被修改</span></span><br><span class="line">print(ls)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>, <span class="string">'C'</span>]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ls</span>=[<span class="string">'F'</span>,<span class="string">'f'</span>]</span><br><span class="line">def func(<span class="keyword">a</span>):</span><br><span class="line">    <span class="keyword">ls</span>=[]  #此处<span class="keyword">ls</span>是列表类型，真实创建，<span class="keyword">ls</span>是局部变量</span><br><span class="line">    <span class="keyword">ls</span>.<span class="keyword">append</span>(<span class="keyword">a</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="keyword">print</span>(func(<span class="string">'C'</span>)) #修改了局部变量<span class="keyword">ls</span></span><br><span class="line"><span class="keyword">print</span>(<span class="keyword">ls</span>) #输出全局变量<span class="keyword">ls</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-lambda函数"><a href="#6-lambda函数" class="headerlink" title="6. lambda函数"></a>6. lambda函数</h2><p>lambda函数是一种匿名函数，即没有名字的函数.使用lambda保留字定义，函数名是返回结果；lambda函数用于定义简单的，能够在一行内定义的函数；lambda函数主要用作一些特定函数或方法的参数.</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">函数名</span>&gt;</span> = lambda<span class="tag">&lt;<span class="name">参数</span>&gt;</span>:<span class="tag">&lt;<span class="name">表达式</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gml"><table><tr><td class="code"><pre><span class="line">f=lambda <span class="symbol">x</span>,<span class="symbol">y</span> : <span class="symbol">x</span>+<span class="symbol">y</span></span><br><span class="line">f(<span class="number">6</span>,<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">14</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">f</span>=lambda : <span class="string">'没有参数的lambda函数！'</span></span><br><span class="line"><span class="builtin-name">print</span>(f())</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;没有参数的lambda函数！</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python turtle库&quot;一箭穿心&quot;代码实现</title>
-    <url>/hexo-demo/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/</url>
+    <url>/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<p>利用python中的turtle库实现“一箭穿心”简单绘图</p>
 <a id="more"></a>
 
@@ -128,68 +261,121 @@
       </tags>
   </entry>
   <entry>
-    <title>Python函数及变量的定义和使用</title>
-    <url>/hexo-demo/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
+    <title>python机器学习之鸢尾花分类问题</title>
+    <url>/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p><font size="4" face="楷体"><strong>已知：</strong>鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm.</font></p>
+<p><font size="4" face="楷体"><strong>目标：</strong>构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.</font></p>
 <a id="more"></a>
 
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(非可选参数，可选参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体"><strong>分析：</strong>有已知品种的测量数据，这是一个监督学习问题，数据集中每朵花分属于三个类别，这是三分类问题.</font></p>
+<p><font size="4" face="楷体">以下代码均在 <strong>Jupyter Notebook</strong>  中编写及运行.</font></p>
+<p><font size="5" face="楷体"> 必要的库调用</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> mglearn</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">#e.g<span class="number">.1</span> 这里m是可选参数，默认设为<span class="number">1</span>，可以更改</span><br><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">mglearn库可在Jupyter Notebook 代码块中直接运行以下命令行下载，其它的库下载方式同理，下载成功后即可调用.</font></p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> mglearn</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">362800</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">1209600</span></span><br></pre></td></tr></table></figure>
+<p><font size="5" face="楷体">数据准备</font></p>
+<p><font size="4" face="楷体">数据集包含在scikit-learn的datasets模块中，可调用load_iris函数加载数据.<br>    </font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line">iris_dataset=load_iris()</span><br><span class="line"><span class="comment">#这里返回的是Bunch对象，与字典类似，包含键和值.</span></span><br></pre></td></tr></table></figure>
 
-<!--more-->
+<p><font size="4" face="楷体">利用print和.format方法可以查看数据集的相关信息.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Keys of iris_dataset:\n&#123;&#125;'</span>.format(iris_dataset.keys()))</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-可变参数传递"><a href="#2-可变参数传递" class="headerlink" title="2.可变参数传递"></a>2.可变参数传递</h2><p>不确定参数总数量</p>
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(参数，可变参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">Keys of iris_dataset:</span><br><span class="line"><span class="function"><span class="title">dict_keys</span><span class="params">([<span class="string">'data'</span>, <span class="string">'target'</span>, <span class="string">'frame'</span>, <span class="string">'target_names'</span>, <span class="string">'DESCR'</span>, <span class="string">'feature_names'</span>, <span class="string">'filename'</span>])</span></span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#e.g.2  *b代表可变参数，可以有多个值</span></span><br><span class="line"><span class="attr">def</span> <span class="string">fact(n,*b):</span></span><br><span class="line">    <span class="attr">s</span>=<span class="string">1</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">i in range(1,n+1):</span></span><br><span class="line">        <span class="meta">s*</span>=<span class="string">i</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">item in b:</span></span><br><span class="line">        <span class="attr">s</span>=<span class="string">s//item</span></span><br><span class="line">    <span class="attr">return</span> <span class="string">s</span></span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">DESCR键对应的值是数据集的简要说明.</font></p>
+<p><font size="4" face="楷体">targets_names键对应的值是字符串数组，包含预测花的品种:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Target names:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>]))</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">90720</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>,<span class="number">7</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">12960</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Target</span> <span class="selector-tag">names</span>: <span class="selector-attr">[<span class="string">'setosa'</span> <span class="string">'versicolor'</span> <span class="string">'virginica'</span>]</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="3-参数传递两种方式：位置传递-amp-名称传递"><a href="#3-参数传递两种方式：位置传递-amp-名称传递" class="headerlink" title="3.参数传递两种方式：位置传递&amp;名称传递"></a>3.参数传递两种方式：位置传递&amp;名称传递</h2><figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">feature_names键对应值是字符串列表，对每个特征进行说明:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'feature_names'</span>])</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)<span class="comment">#位置传递</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(m=<span class="number">5</span>,n=<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">[<span class="symbol">'sepal</span> length (<span class="name">cm</span>)', <span class="symbol">'sepal</span> width (<span class="name">cm</span>)', <span class="symbol">'petal</span> length (<span class="name">cm</span>)', <span class="symbol">'petal</span> width (<span class="name">cm</span>)']</span><br></pre></td></tr></table></figure>
 
-<h2 id="4-函数返回值"><a href="#4-函数返回值" class="headerlink" title="4.函数返回值"></a>4.函数返回值</h2><p>函数可以返回0个或多个结果.</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m,n,m</span></span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">数据包含在target和data字段中，data是测量数据，格式为Numpy数组:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(type(iris_dataset[<span class="string">'data'</span>]))</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;(<span class="number">725760</span>, <span class="number">10</span>, <span class="number">5</span>) <span class="comment">#元组形式</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;a,b,c=fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;print(a,b,c)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span> <span class="number">10</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'numpy.ndarray'</span>&gt;</span><br></pre></td></tr></table></figure>
 
-<h2 id="5-全局变量和局部变量"><a href="#5-全局变量和局部变量" class="headerlink" title="5.全局变量和局部变量"></a>5.全局变量和局部变量</h2><ul>
-<li>局部变量是函数内部的占位符，可与全局变量重名，但不同</li>
-<li>函数运算结束后，局部变量被释放</li>
-<li>可以使用global关键字在函数内部使用全局变量</li>
-<li>局部变量为组合数据类型且在函数内为真实创建，等同于全局变量</li>
-</ul>
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span> <span class="comment">#s是全局变量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span></span>：</span><br><span class="line">    s=<span class="number">1</span>  <span class="comment">#s是局部变量，与全局变量s不同</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>)<span class="symbol">:</span></span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s <span class="comment">#s是局部变量</span></span><br><span class="line"><span class="comment">#函数运行结束后，局部变量会被释放</span></span><br><span class="line">print(fact(n),s) <span class="comment">#此处s是全局变量，s=100</span></span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">data数组每行对应一朵花，列代表每朵花四个测量数据:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">iris_dataset[<span class="string">'data'</span>].shape</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; <span class="number">3628800</span> <span class="number">100</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">150</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> s  <span class="comment">#使用global保留字声明s是全局变量s</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s  <span class="comment">#此处s指全局变量s</span></span><br><span class="line">print(fact(n),s)  <span class="comment">#此处全局变量s被函数修改</span></span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">数组中共包含150朵不同的花测量数据.</font></p>
+<p><font size="4" face="楷体">查看前5朵花数据：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'data'</span>][:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="number">362880000</span> <span class="number">362880000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[[<span class="number">5.1</span> <span class="number">3.5</span> <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.9</span> <span class="number">3.</span>  <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.7</span> <span class="number">3.2</span> <span class="number">1.3</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.6</span> <span class="number">3.1</span> <span class="number">1.5</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">5.</span>  <span class="number">3.6</span> <span class="number">1.4</span> <span class="number">0.2</span>]]</span><br></pre></td></tr></table></figure>
 
-<p>局部变量为组合数据类型且未创建，等同于全局变量</p>
-<figure class="highlight autoit"><table><tr><td class="code"><pre><span class="line">ls=[<span class="string">'F'</span>,<span class="string">'f'</span>] <span class="meta">#通过使用[]真实创建一个全局变量列表ls</span></span><br><span class="line">def <span class="function"><span class="keyword">func</span><span class="params">(a)</span>:</span></span><br><span class="line">    ls.append(a) <span class="meta">#此处ls是列表类型，未真实创建，则等同于全局变量</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(<span class="string">'C'</span>)</span>  #全局变量<span class="title">ls</span>被修改</span></span><br><span class="line">print(ls)</span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">target数组包含每朵花测量的品种，是一维Numpy数组,每朵花对应其中一个数据：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>].shape)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>, <span class="string">'C'</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">150</span>,)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ls</span>=[<span class="string">'F'</span>,<span class="string">'f'</span>]</span><br><span class="line">def func(<span class="keyword">a</span>):</span><br><span class="line">    <span class="keyword">ls</span>=[]  #此处<span class="keyword">ls</span>是列表类型，真实创建，<span class="keyword">ls</span>是局部变量</span><br><span class="line">    <span class="keyword">ls</span>.<span class="keyword">append</span>(<span class="keyword">a</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="keyword">print</span>(func(<span class="string">'C'</span>)) #修改了局部变量<span class="keyword">ls</span></span><br><span class="line"><span class="keyword">print</span>(<span class="keyword">ls</span>) #输出全局变量<span class="keyword">ls</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>])</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
 
-<h2 id="6-lambda函数"><a href="#6-lambda函数" class="headerlink" title="6. lambda函数"></a>6. lambda函数</h2><p>lambda函数是一种匿名函数，即没有名字的函数.使用lambda保留字定义，函数名是返回结果；lambda函数用于定义简单的，能够在一行内定义的函数；lambda函数主要用作一些特定函数或方法的参数.</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">函数名</span>&gt;</span> = lambda<span class="tag">&lt;<span class="name">参数</span>&gt;</span>:<span class="tag">&lt;<span class="name">表达式</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">品种已转换成0~2整数.</font></p>
+<p><font size="5" face="楷体">训练数据与测试数据</font></p>
+<p><font size="4" face="楷体">将收集好的带标签数据按比例分成两部分:<strong>训练数据</strong>（构建机器学习模型）、<strong>测试数据</strong>（评估模型性能）</font></p>
+<p><font size="4" face="楷体">由于原始数据点是按标签排序的，如果只取数据后一部分数据作测试，无法评估模型好坏，因此要将数据打乱，确保测试数据包含所有类别的数据.</font></p>
+<p><font size="4" face="楷体">这里用到了scikit-learn库中的train_test_split函数，将数据集打乱拆分，将75%数据作为训练集，其余25%数据为测试集.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight gml"><table><tr><td class="code"><pre><span class="line">f=lambda <span class="symbol">x</span>,<span class="symbol">y</span> : <span class="symbol">x</span>+<span class="symbol">y</span></span><br><span class="line">f(<span class="number">6</span>,<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">这里利用random_state参数指定随机数升成器种子，确保每次运行函数输出固定不变.</font></p>
+<p><font size="4" face="楷体">查看输出数据的形状</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'X_train shape:&#123;&#125;'</span>.format(X_train.shape))</span><br><span class="line">print(<span class="string">'y_train shape:&#123;&#125;'</span>.format(y_train.shape))</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">14</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">X_train shape:(<span class="number">112</span>, <span class="number">4</span>)</span><br><span class="line">y_train shape:(<span class="number">112</span>,)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">f</span>=lambda : <span class="string">'没有参数的lambda函数！'</span></span><br><span class="line"><span class="builtin-name">print</span>(f())</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(X_test.shape)</span><br><span class="line">print(y_test.shape)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;没有参数的lambda函数！</span><br></pre></td></tr></table></figure>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">38</span>, <span class="number">4</span>)</span><br><span class="line">(<span class="name">38</span>,)</span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">构建模型:k近邻算法</font></p>
+<p><font size="4" face="楷体">含义：考虑训练集中与新数据最近的任意k个邻居，而不是只考虑最近的一个.用这些邻居中数量最多的类别作出预测.<br></font></p>
+<p><font size="4" face="楷体">现在只考虑1个邻居的情况.</font></p>
+<p><font size="4" face="楷体">scikit-learn中所有机器学习模型都是在各自类中实现的，k近邻算法在neighbors模块的KNeighborsClassifiter类中实现.<br>    将类实化为对象需要设置模型参数.<br></font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(n_neighbors=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">knn对象对算法进行了封装，既包括用训练数据构建模型的算法，也包括对新数据点进行预测的算法，还包括算法从训练数据提取的信息.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#基于训练集构建模型，需要调用knn对象的fit方法</span></span><br><span class="line">knn.fit(X_train,y_train)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果：</font></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">KNeighborsClassifier</span><span class="params">(n_neighbors=<span class="number">1</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">作出预测</font></p>
+<p><font size="4" face="楷体">对一朵新的已知测量数据的鸢尾花进行预测:</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">x_new=np.<span class="built_in">array</span>([[<span class="number">5</span>,<span class="number">2.9</span>,<span class="number">1</span>,<span class="number">0.2</span>]])</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">调用knn对象predict方法进行预测：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">prediction=knn.predict(x_new)</span><br><span class="line">print(<span class="string">'Prediction:&#123;&#125;'</span>.format(prediction))</span><br><span class="line">print(<span class="string">'Predicted target name:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>][prediction]))</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">预测结果：</font></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Prediction</span>:<span class="selector-attr">[0]</span></span><br><span class="line"><span class="selector-tag">Predicted</span> <span class="selector-tag">target</span> <span class="selector-tag">name</span>:<span class="selector-attr">[<span class="string">'setosa'</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">评估模型</font></p>
+<p><font size="4" face="楷体">对测试数据进行预测并与实际标签对比.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_pred=knn.predict(X_test)</span><br><span class="line">print(y_pred)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果:</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">使用knn对象的score对象计算测试集精度：</font></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(score)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">0.9736842105263158</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">这个模型测试集的精度约为0.97，就是说对于测试集中鸢尾花的预测有97%是正确的.高精度意味着模型可信.</font></p>
+<p><font size="5" face="楷体">汇总</font></p>
+<p><font size="4" face="楷体">整个训练和评估过程所必需的代码：</font></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets import load_iris</span><br><span class="line"><span class="attribute">iris_dataset</span>=load_iris()</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection import train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],<span class="attribute">random_state</span>=0)</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors import KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(<span class="attribute">n_neighbors</span>=1)</span><br><span class="line">knn.fit(X_train,y_train)</span><br><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">"Test set score:&#123;&#125;"</span>.format(score))</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -197,72 +383,12 @@
       </categories>
       <tags>
         <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Matlab数据处理--数据降维</title>
-    <url>/hexo-demo/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
-    <content><![CDATA[<p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
-<p>目前，常用的降维技术有两种，主成分分析、因子分析.</p>
-<a id="more"></a>
-
-<h2 id="一、主成分分析"><a href="#一、主成分分析" class="headerlink" title="一、主成分分析"></a>一、主成分分析</h2><p>有的问题变量之间存在相关性，它们包含的信息有所重叠，将变量进行线性组合后形成数量较少的新变量，新变量之间不相关，称为主成分.主成分反映原来变量的大量信息且所含信息不重叠，这种方法叫主成分分析.</p>
-<p>主成分分析用较少的变量代替了原来较多的变量，实现了有效的降维，可以使问题简化.</p>
-<p>Steps:</p>
-<ul>
-<li><p>对原数据进行标准化转换.</p>
-</li>
-<li><p>计算样本的相关系数矩阵.</p>
-</li>
-<li><p>计算相关系数矩阵的特征值和特征向量.</p>
-</li>
-<li><p>计算主成分贡献率和累积贡献率，选择重要主成分.主成分的贡献率越大，说明包含原始信息量越大.</p>
-</li>
-<li><p>计算主成分载荷和主成分得分.</p>
-<p><strong>[r,p]=corrcoef(x)</strong> 计算样本的相关系数矩阵</p>
-<h3 id="1-pcacov指令"><a href="#1-pcacov指令" class="headerlink" title="1.pcacov指令"></a>1.pcacov指令</h3><p><strong>[r,p]=corrcoef(x)</strong> 计算样本相关系数矩阵</p>
-<p><strong>coeff=pcacov(v)</strong> v是样本的协方差矩阵或相关系数矩阵，coeff是p个主成分的系数矩阵，第i列是第i个主成分的系数向量.</p>
-<p><strong>[coeff,latent]=pcacov(v)</strong> latent是p个主成分的方差构成的向量.</p>
-<p><strong>[coeff,latent,explained]=pcacov(v)</strong> explained是p个主成分向量的贡献率.</p>
-<h3 id="2-princomp指令"><a href="#2-princomp指令" class="headerlink" title="2.princomp指令"></a>2.princomp指令</h3><p>根据样本的观测值矩阵进行主成分分析.</p>
-<p><strong>[coeff,score]=princomp(x)</strong> x是主成分的系数矩阵，第i列是第i个主成分的系数向量，score是主成分得分矩阵，每行代表一个样本，每列代表一个主成分的得分.</p>
-<p><strong>[coeff,score,latent]=princomp(x)</strong>  latent指样本协方差矩阵的特征向量.</p>
-<p><strong>[coeff,score,latent,tsquare]=princomp(x)</strong> tsquare是样本的Hotelling T^2统计值，表示某样本和样本观测矩阵中心之间的距离，可以用它寻找远离中心的局端数据.</p>
-<p><strong>per=100*latent/sum(latent)</strong> 主成分的贡献率</p>
-<h2 id="二、因子分析"><a href="#二、因子分析" class="headerlink" title="二、因子分析"></a>二、因子分析</h2><p>目的：寻找隐含在现有变量里的若干更基本的有代表性的变量并提取出来.这些更基本的变量叫公共因子.</p>
-<p><strong>Steps:</strong></p>
-<ul>
-<li><p>求样本的相关矩阵</p>
-</li>
-<li><p>求特征值和特征向量.</p>
-</li>
-<li><p>计算方差贡献率和累积方差贡献率.</p>
-</li>
-<li><p>确定因子.</p>
-</li>
-<li><p>进行因子旋转，使因子变量更具有解释性.</p>
-</li>
-<li><p>计算因子得分.</p>
-<p><strong>[lambda,psi,T]=factoran(x,m,paraml,vall,param2,val2)</strong> lambda是因子载荷值；psi是方差值构成的向量；T是旋转矩阵；x是样本数据；m是公共因子数量</p>
-<p><strong>[lambda,psi,T,stats,F]=factoran(x,m)</strong> stats是相关信息统计；F是得分矩阵.</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">r=corrcoef(x)<span class="comment">%相关系数矩阵</span></span><br><span class="line">[lambda,<span class="built_in">psi</span>,T]=factoran(r,<span class="number">3</span>,<span class="string">'xtype'</span>,<span class="string">'covariance'</span>,<span class="string">'delta'</span>,<span class="number">0</span>,<span class="string">'rotate'</span>,<span class="string">'none'</span>)<span class="comment">%设三个公共因子</span></span><br><span class="line">ctb=<span class="number">100</span>*sum(lambda.^<span class="number">2</span>)/<span class="built_in">size</span>(x,<span class="number">2</span>) <span class="comment">%计算贡献率</span></span><br><span class="line">cumctb=cumsum(ctb) <span class="comment">%计算累积贡献率</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Matlab与数据分析</category>
-      </categories>
-      <tags>
-        <tag>Matlab</tag>
-        <tag>数据分析</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
     <title>稀疏自编码器重构数据点的Matlab实现</title>
-    <url>/hexo-demo/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/</url>
+    <url>/daytoy/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<p>以下代码源自MathWorks官方文档<a href="https://www.mathworks.com/help/deeplearning/ref/trainautoencoder.html?s_tid=gn_loc_drop" target="_blank" rel="noopener">trainAutoencoder</a>的Examples.目标是实现1000个数据点的重构,并给出重构与原数据对比图.</p>
 <a id="more"></a>
 
