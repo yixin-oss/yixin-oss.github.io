@@ -1,67 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Matlab数据处理--数据降维</title>
-    <url>/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
-    <content><![CDATA[<p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
-<p>目前，常用的降维技术有两种，主成分分析、因子分析.</p>
-<a id="more"></a>
-
-<h2 id="一、主成分分析"><a href="#一、主成分分析" class="headerlink" title="一、主成分分析"></a>一、主成分分析</h2><p>有的问题变量之间存在相关性，它们包含的信息有所重叠，将变量进行线性组合后形成数量较少的新变量，新变量之间不相关，称为主成分.主成分反映原来变量的大量信息且所含信息不重叠，这种方法叫主成分分析.</p>
-<p>主成分分析用较少的变量代替了原来较多的变量，实现了有效的降维，可以使问题简化.</p>
-<p>Steps:</p>
-<ul>
-<li><p>对原数据进行标准化转换.</p>
-</li>
-<li><p>计算样本的相关系数矩阵.</p>
-</li>
-<li><p>计算相关系数矩阵的特征值和特征向量.</p>
-</li>
-<li><p>计算主成分贡献率和累积贡献率，选择重要主成分.主成分的贡献率越大，说明包含原始信息量越大.</p>
-</li>
-<li><p>计算主成分载荷和主成分得分.</p>
-<p><strong>[r,p]=corrcoef(x)</strong> 计算样本的相关系数矩阵</p>
-<h3 id="1-pcacov指令"><a href="#1-pcacov指令" class="headerlink" title="1.pcacov指令"></a>1.pcacov指令</h3><p><strong>[r,p]=corrcoef(x)</strong> 计算样本相关系数矩阵</p>
-<p><strong>coeff=pcacov(v)</strong> v是样本的协方差矩阵或相关系数矩阵，coeff是p个主成分的系数矩阵，第i列是第i个主成分的系数向量.</p>
-<p><strong>[coeff,latent]=pcacov(v)</strong> latent是p个主成分的方差构成的向量.</p>
-<p><strong>[coeff,latent,explained]=pcacov(v)</strong> explained是p个主成分向量的贡献率.</p>
-<h3 id="2-princomp指令"><a href="#2-princomp指令" class="headerlink" title="2.princomp指令"></a>2.princomp指令</h3><p>根据样本的观测值矩阵进行主成分分析.</p>
-<p><strong>[coeff,score]=princomp(x)</strong> x是主成分的系数矩阵，第i列是第i个主成分的系数向量，score是主成分得分矩阵，每行代表一个样本，每列代表一个主成分的得分.</p>
-<p><strong>[coeff,score,latent]=princomp(x)</strong>  latent指样本协方差矩阵的特征向量.</p>
-<p><strong>[coeff,score,latent,tsquare]=princomp(x)</strong> tsquare是样本的Hotelling T^2统计值，表示某样本和样本观测矩阵中心之间的距离，可以用它寻找远离中心的局端数据.</p>
-<p><strong>per=100*latent/sum(latent)</strong> 主成分的贡献率</p>
-<h2 id="二、因子分析"><a href="#二、因子分析" class="headerlink" title="二、因子分析"></a>二、因子分析</h2><p>目的：寻找隐含在现有变量里的若干更基本的有代表性的变量并提取出来.这些更基本的变量叫公共因子.</p>
-<p><strong>Steps:</strong></p>
-<ul>
-<li><p>求样本的相关矩阵</p>
-</li>
-<li><p>求特征值和特征向量.</p>
-</li>
-<li><p>计算方差贡献率和累积方差贡献率.</p>
-</li>
-<li><p>确定因子.</p>
-</li>
-<li><p>进行因子旋转，使因子变量更具有解释性.</p>
-</li>
-<li><p>计算因子得分.</p>
-<p><strong>[lambda,psi,T]=factoran(x,m,paraml,vall,param2,val2)</strong> lambda是因子载荷值；psi是方差值构成的向量；T是旋转矩阵；x是样本数据；m是公共因子数量</p>
-<p><strong>[lambda,psi,T,stats,F]=factoran(x,m)</strong> stats是相关信息统计；F是得分矩阵.</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">r=corrcoef(x)<span class="comment">%相关系数矩阵</span></span><br><span class="line">[lambda,<span class="built_in">psi</span>,T]=factoran(r,<span class="number">3</span>,<span class="string">'xtype'</span>,<span class="string">'covariance'</span>,<span class="string">'delta'</span>,<span class="number">0</span>,<span class="string">'rotate'</span>,<span class="string">'none'</span>)<span class="comment">%设三个公共因子</span></span><br><span class="line">ctb=<span class="number">100</span>*sum(lambda.^<span class="number">2</span>)/<span class="built_in">size</span>(x,<span class="number">2</span>) <span class="comment">%计算贡献率</span></span><br><span class="line">cumctb=cumsum(ctb) <span class="comment">%计算累积贡献率</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Matlab与数据分析</category>
-      </categories>
-      <tags>
-        <tag>Matlab</tag>
-        <tag>数据分析</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Windows10安装TensorFlow</title>
     <url>/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/</url>
     <content><![CDATA[<h2 id="1-Anaconda下载及安装"><a href="#1-Anaconda下载及安装" class="headerlink" title="1. Anaconda下载及安装"></a>1. Anaconda下载及安装</h2><p><a href="https://www.anaconda.com/products/individual#macos" target="_blank" rel="noopener">Anaconda官网</a></p>
@@ -158,6 +97,67 @@
       </tags>
   </entry>
   <entry>
+    <title>Matlab数据处理--数据降维</title>
+    <url>/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
+    <content><![CDATA[<p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
+<p>目前，常用的降维技术有两种，主成分分析、因子分析.</p>
+<a id="more"></a>
+
+<h2 id="一、主成分分析"><a href="#一、主成分分析" class="headerlink" title="一、主成分分析"></a>一、主成分分析</h2><p>有的问题变量之间存在相关性，它们包含的信息有所重叠，将变量进行线性组合后形成数量较少的新变量，新变量之间不相关，称为主成分.主成分反映原来变量的大量信息且所含信息不重叠，这种方法叫主成分分析.</p>
+<p>主成分分析用较少的变量代替了原来较多的变量，实现了有效的降维，可以使问题简化.</p>
+<p>Steps:</p>
+<ul>
+<li><p>对原数据进行标准化转换.</p>
+</li>
+<li><p>计算样本的相关系数矩阵.</p>
+</li>
+<li><p>计算相关系数矩阵的特征值和特征向量.</p>
+</li>
+<li><p>计算主成分贡献率和累积贡献率，选择重要主成分.主成分的贡献率越大，说明包含原始信息量越大.</p>
+</li>
+<li><p>计算主成分载荷和主成分得分.</p>
+<p><strong>[r,p]=corrcoef(x)</strong> 计算样本的相关系数矩阵</p>
+<h3 id="1-pcacov指令"><a href="#1-pcacov指令" class="headerlink" title="1.pcacov指令"></a>1.pcacov指令</h3><p><strong>[r,p]=corrcoef(x)</strong> 计算样本相关系数矩阵</p>
+<p><strong>coeff=pcacov(v)</strong> v是样本的协方差矩阵或相关系数矩阵，coeff是p个主成分的系数矩阵，第i列是第i个主成分的系数向量.</p>
+<p><strong>[coeff,latent]=pcacov(v)</strong> latent是p个主成分的方差构成的向量.</p>
+<p><strong>[coeff,latent,explained]=pcacov(v)</strong> explained是p个主成分向量的贡献率.</p>
+<h3 id="2-princomp指令"><a href="#2-princomp指令" class="headerlink" title="2.princomp指令"></a>2.princomp指令</h3><p>根据样本的观测值矩阵进行主成分分析.</p>
+<p><strong>[coeff,score]=princomp(x)</strong> x是主成分的系数矩阵，第i列是第i个主成分的系数向量，score是主成分得分矩阵，每行代表一个样本，每列代表一个主成分的得分.</p>
+<p><strong>[coeff,score,latent]=princomp(x)</strong>  latent指样本协方差矩阵的特征向量.</p>
+<p><strong>[coeff,score,latent,tsquare]=princomp(x)</strong> tsquare是样本的Hotelling T^2统计值，表示某样本和样本观测矩阵中心之间的距离，可以用它寻找远离中心的局端数据.</p>
+<p><strong>per=100*latent/sum(latent)</strong> 主成分的贡献率</p>
+<h2 id="二、因子分析"><a href="#二、因子分析" class="headerlink" title="二、因子分析"></a>二、因子分析</h2><p>目的：寻找隐含在现有变量里的若干更基本的有代表性的变量并提取出来.这些更基本的变量叫公共因子.</p>
+<p><strong>Steps:</strong></p>
+<ul>
+<li><p>求样本的相关矩阵</p>
+</li>
+<li><p>求特征值和特征向量.</p>
+</li>
+<li><p>计算方差贡献率和累积方差贡献率.</p>
+</li>
+<li><p>确定因子.</p>
+</li>
+<li><p>进行因子旋转，使因子变量更具有解释性.</p>
+</li>
+<li><p>计算因子得分.</p>
+<p><strong>[lambda,psi,T]=factoran(x,m,paraml,vall,param2,val2)</strong> lambda是因子载荷值；psi是方差值构成的向量；T是旋转矩阵；x是样本数据；m是公共因子数量</p>
+<p><strong>[lambda,psi,T,stats,F]=factoran(x,m)</strong> stats是相关信息统计；F是得分矩阵.</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">r=corrcoef(x)<span class="comment">%相关系数矩阵</span></span><br><span class="line">[lambda,<span class="built_in">psi</span>,T]=factoran(r,<span class="number">3</span>,<span class="string">'xtype'</span>,<span class="string">'covariance'</span>,<span class="string">'delta'</span>,<span class="number">0</span>,<span class="string">'rotate'</span>,<span class="string">'none'</span>)<span class="comment">%设三个公共因子</span></span><br><span class="line">ctb=<span class="number">100</span>*sum(lambda.^<span class="number">2</span>)/<span class="built_in">size</span>(x,<span class="number">2</span>) <span class="comment">%计算贡献率</span></span><br><span class="line">cumctb=cumsum(ctb) <span class="comment">%计算累积贡献率</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Matlab与数据分析</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>数据分析</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python函数及变量的定义和使用</title>
     <url>/daytoy/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
@@ -227,6 +227,443 @@
       </categories>
       <tags>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人工智能：Tensorflow2笔记(一)</title>
+    <url>/daytoy/2020/12/04/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%EF%BC%9ATensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%80)/</url>
+    <content><![CDATA[<h2 id="人工智能"><a href="#人工智能" class="headerlink" title="人工智能"></a>人工智能</h2><p>让机器具备人的思维和意识.</p>
+<h3 id="人工智能三学派："><a href="#人工智能三学派：" class="headerlink" title="人工智能三学派："></a>人工智能三学派：</h3><ul>
+<li><p>行为主义：基于控制论，构建感知-动作控制系统.（控制论，如平衡、行走、避障等自适应控制系统，实例：让机器人抬起一只脚，如何控制整体平衡）</p>
+</li>
+<li><p>符号主义：基于算数逻辑表达式，求解问题先把问题描述为表达式，再求表达式.(公式描述、实现理性思维，如专家系统)</p>
+</li>
+<li><p>连接主义：仿生学，模仿神经元连接关系.(仿脑神经元连接，实现感性思维，如神经网络)</p>
+<a id="more"></a>
+
+</li>
+</ul>
+<h2 id="神经网络设计过程"><a href="#神经网络设计过程" class="headerlink" title="神经网络设计过程"></a>神经网络设计过程</h2><p>√ 准备数据：采集大量“特征、标签”数据，数据量越大越好</p>
+<p>√ 搭建网络：搭建神经网络结构</p>
+<p>√优化参数： 训练网络获取最佳参数（反向传播过程）</p>
+<p>√ 应用网络： 将网络保存为模型，输入新数据，输出分类或预测结果（前向传播过程）</p>
+<p>简单来说，神经网络的设计过程就是给出模型参数随机初始值，将收集特征数据作为输入层利用模型求预测标签结果，与正确结果作比较计算偏差（损失函数），此时的偏差（损失函数）为模型中参数的函数，可以利用优化方法中的<strong>梯度下降法</strong>求出使偏差最小的模型参数返回给网络模型，再次利用数据重复这个过程，这样就实现了模型中的参数动态更新.(神经网络的训练实质就是利用数据不断更新模型的参数.)</p>
+<ul>
+<li><p>损失函数：预测值与标准结果的差距.</p>
+<p>损失函数可以定量判断模型参数的优劣，当损失函数输出最小时，参数出现最优值.(求解函数最小值实质就是一个优化问题，用到所提到的<strong>梯度下降法</strong>.)</p>
+<p>常用的损失函数：均方误差<br>$$<br>MSE(y,y_{correct})=\frac{\sum_{k=0}^{n}(y-y_{correct})^2}{n}<br>$$</p>
+</li>
+<li><p>梯度下降</p>
+<p>沿损失函数梯度下降的方向，寻找损失函数最小值，得到最佳参数的迭代方法.</p>
+<p>梯度下降法的关键是设置<strong>步长</strong> 和<strong>参数</strong>.</p>
+<p><strong>梯度：</strong>函数对各参数求偏导后的向量.函数梯度下降的方向是函数减小的方向.</p>
+<p>参数迭代公式：<br>$$<br>w_{t+1}=w_{t}-lr*\frac{\partial loss}{\partial w_t}<br>$$</p>
+</li>
+</ul>
+<p>  <strong>学习率lr：</strong>实质是梯度下降方向的步长，设置过小，梯度下降收敛缓慢；过大，在最小值附近震荡，甚至不收敛.</p>
+<ul>
+<li><p>反向传播：实质就是参数更新</p>
+<p>逐层求损失函数对每层神经元参数的偏导，迭代更新所有参数.</p>
+<p>e.g. 损失函数<br>$$<br>loss=(w+1)^2\<br>\frac{\partial loss}{\partial w}=2w+2<br>$$<br>参数初始化为5，学习率0.2，则</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607053527(1).jpg" alt></p>
+</li>
+</ul>
+<p>这里0开始是第一次迭代寻找参数最优值，经过几次迭代，损失函数最小值为0，参数w最优值为-1.</p>
+<p>TensorFlow实现上述过程：</p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">import tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">w = tf.<span class="constructor">Variable(<span class="params">tf</span>.<span class="params">constant</span>(5, <span class="params">dtype</span>=<span class="params">tf</span>.<span class="params">float32</span>)</span>)</span><br><span class="line">lr = <span class="number">0.2</span></span><br><span class="line">epoch = <span class="number">40</span></span><br><span class="line"></span><br><span class="line">for epoch <span class="keyword">in</span> range(epoch):</span><br><span class="line">    <span class="keyword">with</span> tf.<span class="constructor">GradientTape()</span> <span class="keyword">as</span> tape:</span><br><span class="line">        loss = tf.square(w+<span class="number">1</span>)</span><br><span class="line">    grads = tape.gradient(loss, w)</span><br><span class="line"></span><br><span class="line">    w.assign<span class="constructor">_sub(<span class="params">lr</span> <span class="operator">*</span> <span class="params">grads</span>)</span></span><br><span class="line">print('After %s epoch,w is %f,loss is %f'% (epoch, w.numpy<span class="literal">()</span>, loss))</span><br></pre></td></tr></table></figure>
+
+<h2 id="张量（Tensor）"><a href="#张量（Tensor）" class="headerlink" title="张量（Tensor）"></a>张量（Tensor）</h2><p>多维数组（列表）</p>
+<p>阶：张量的维数</p>
+<table>
+<thead>
+<tr>
+<th align="center">维数</th>
+<th align="center">阶</th>
+<th align="center">名字</th>
+<th align="center">例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0-D</td>
+<td align="center">0</td>
+<td align="center">标量 scalar</td>
+<td align="center">s=123,数123</td>
+</tr>
+<tr>
+<td align="center">1-D</td>
+<td align="center">1</td>
+<td align="center">向量 vector</td>
+<td align="center">v=[1,2,3],向量（1,2,3）</td>
+</tr>
+<tr>
+<td align="center">2-D</td>
+<td align="center">2</td>
+<td align="center">矩阵 matrix</td>
+<td align="center">m=[[1,2,3],[4,5,6],[7,8,9]],3行3列矩阵</td>
+</tr>
+<tr>
+<td align="center">2-D</td>
+<td align="center">n</td>
+<td align="center">张量 tensor</td>
+<td align="center">t=[[[…n个</td>
+</tr>
+</tbody></table>
+<p>故张量为维数可以通过数单边括号个数得到，张量可以表示0阶~n阶数组</p>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><ul>
+<li><p>tf.int, tf.float…整数浮点数类型 </p>
+<p>tf.int32, tf.float32, tf.float64</p>
+</li>
+<li><p>tf.bool布尔数类型</p>
+<p>tf.constant([True,False])</p>
+</li>
+<li><p>tf.string 字符串类型</p>
+<p>tf.constant(‘’Hello World!”)</p>
+</li>
+</ul>
+<h3 id="创建张量"><a href="#创建张量" class="headerlink" title="创建张量"></a>创建张量</h3><ul>
+<li>创建一个张量</li>
+</ul>
+<p><strong>tf.constant(内容， dtype=数据类型（可选）)</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">x1 = tf.constant([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], dtype=tf.float64)</span><br><span class="line">print(x1)</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">tf.Tensor([<span class="number">1.</span> <span class="number">2.</span> <span class="number">3.</span>], shape=(<span class="number">3</span>,), dtype=<span class="built_in">float</span>64)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>将numpy数据类型转换为Tensor数据类型</p>
+<p><strong>tf.convert_to_tensor(数据名， dtype=数据类型)</strong></p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a = np.arange(<span class="number">0</span>, <span class="number">5</span>)</span><br><span class="line">b = tf.convert_to_tensor(a, dtype=tf.int64)</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">[<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span><br><span class="line">tf.Tensor([<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">int</span>64)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>创建全为0的张量</p>
+<p><strong>tf.zeros(维度)</strong></p>
+</li>
+<li><p>创建全为1的张量</p>
+<p><strong>tf.ones(维度)</strong></p>
+</li>
+<li><p>创建全为指定值的张量</p>
+<p><strong>tf.fill(维度，指定值)</strong></p>
+</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">a</span> = tf.zeros([<span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="selector-tag">b</span> = tf.ones(<span class="number">4</span>)</span><br><span class="line">c = tf.fill([<span class="number">2</span>, <span class="number">2</span>], <span class="number">9</span>)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(a)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(b)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(c)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]], shape=(<span class="number">2</span>, <span class="number">3</span>), dtype=<span class="built_in">float</span>32)</span><br><span class="line">tf.Tensor([<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>], shape=(<span class="number">4</span>,), dtype=<span class="built_in">float</span>32)</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">9</span> <span class="number">9</span>]</span><br><span class="line"> [<span class="number">9</span> <span class="number">9</span>]], shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=<span class="built_in">int</span>32)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>生成正态分布随机数，默认均值0，标准差1</p>
+<p><strong>tf.random.normal(维度， mean=均值， stddev=标准差)</strong></p>
+</li>
+<li><p>生成截断式正态分布随机数：保证生成值在均值附近</p>
+<p><strong>tf.random.truncated_normal(维度， mean=均值， stddev=标准差)</strong></p>
+</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line"></span><br><span class="line">p = tf.random.normal([2, 2], <span class="attribute">mean</span>=0, <span class="attribute">stddev</span>=1)</span><br><span class="line"><span class="builtin-name">print</span>(p)</span><br><span class="line"></span><br><span class="line">p1 = tf.random.truncated_normal([2, 2], <span class="attribute">mean</span>=0, <span class="attribute">stddev</span>=1)</span><br><span class="line"><span class="builtin-name">print</span>(p1)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[ <span class="number">8.3016290e-04</span> <span class="number">-1.2167720e+00</span>]</span><br><span class="line"> [ <span class="number">2.1969645e-01</span> <span class="number">-3.4597743e-01</span>]], shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=<span class="built_in">float</span>32)</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[ <span class="number">1.7608268</span> <span class="number">-1.3735857</span>]</span><br><span class="line"> [<span class="number">-0.7695601</span>  <span class="number">0.6406028</span>]], shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>生成均匀分布随机数</p>
+<p><strong>tf.random.uniform(维度，minval=最小值， maxval=最大值)</strong></p>
+</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">f = tf.random.uniform([2, 2], <span class="attribute">minval</span>=0, <span class="attribute">maxval</span>=1)</span><br><span class="line"><span class="builtin-name">print</span>(f)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">0.36967945</span> <span class="number">0.7651223</span> ]</span><br><span class="line"> [<span class="number">0.53542113</span> <span class="number">0.6690651</span> ]], shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用函数I"><a href="#常用函数I" class="headerlink" title="常用函数I"></a>常用函数I</h3><ul>
+<li><p>强制tensor转换为该数据类型</p>
+<p><strong>tf.cast(张量名， dtype=数据类型)</strong></p>
+</li>
+<li><p>计算张量维度上元素最小值</p>
+<p><strong>tf.reduce_min()</strong></p>
+</li>
+<li><p>计算张量维度上元素最大值</p>
+<p><strong>tf.reduce_max()</strong></p>
+</li>
+<li><p>理解axis</p>
+<p>调整axis等于0或1控制执行维度.</p>
+<p>axis=0代表跨行（经度）（竖排）；axis=1代表跨列（纬度）（横排）；不指定则所有元素参与计算.</p>
+</li>
+<li><p>计算指定维度平均值</p>
+<p><strong>tf.reduce_mean(张量名， axis=操作轴)</strong></p>
+</li>
+<li><p>指定维度和</p>
+<p><strong>tf.reduce_sum(张量名， axis=操作轴)</strong></p>
+<figure class="highlight sas"><table><tr><td class="code"><pre><span class="line">import tensorflow <span class="meta">as</span> tf</span><br><span class="line">import numpy <span class="meta">as</span> np</span><br><span class="line"><span class="meta">x</span> = tf.constant([[1, 2, 3],</span><br><span class="line">                [2, 2, 3]])</span><br><span class="line">p<span class="meta">rint(</span><span class="meta">x</span>)</span><br><span class="line"></span><br><span class="line">p<span class="meta">rint(</span>tf.reduce<span class="meta">_mean(</span><span class="meta">x</span>))</span><br><span class="line"></span><br><span class="line">p<span class="meta">rint(</span>tf.reduce<span class="meta">_sum(</span><span class="meta">x</span>, axis=1))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">2</span> <span class="number">2</span> <span class="number">3</span>]], shape=(<span class="number">2</span>, <span class="number">3</span>), dtype=<span class="built_in">int</span>32)</span><br><span class="line">tf.Tensor(<span class="number">2</span>, shape=(), dtype=<span class="built_in">int</span>32)</span><br><span class="line">tf.Tensor([<span class="number">6</span> <span class="number">7</span>], shape=(<span class="number">2</span>,), dtype=<span class="built_in">int</span>32)</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p><strong>tf.Variable</strong></p>
+<p><strong>tf.Variable(初始值)</strong>将变量<strong>标记为“可训练”</strong>，被标记的变量会在反向传播中记录梯度信息.神经网络训练中，常用该函数标记待训练参数.</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line"><span class="attribute">w</span>=tf.Variable(tf.random.normal([2, 2], <span class="attribute">mean</span>=0, <span class="attribute">stddev</span>=1))</span><br><span class="line"><span class="builtin-name">print</span>(w)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&lt;tf.Variable <span class="string">'Variable:0'</span> shape=(<span class="number">2</span>, <span class="number">2</span>) dtype=<span class="built_in">float</span>32, numpy=</span><br><span class="line"><span class="built_in">array</span>([[ <span class="number">1.8879577</span> ,  <span class="number">0.790655</span>  ],</span><br><span class="line">       [<span class="number">-3.0929613</span> ,  <span class="number">0.50161296</span>]], dtype=<span class="built_in">float</span>32)&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TensorFlow中的数学运算"><a href="#TensorFlow中的数学运算" class="headerlink" title="TensorFlow中的数学运算"></a>TensorFlow中的数学运算</h3><table>
+<thead>
+<tr>
+<th align="center">tf.</th>
+<th align="center">对应元素</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">add</td>
+<td align="center">+</td>
+</tr>
+<tr>
+<td align="center">subtract</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">multiply</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="center">divide</td>
+<td align="center">/</td>
+</tr>
+<tr>
+<td align="center">square</td>
+<td align="center">^2</td>
+</tr>
+<tr>
+<td align="center">pow</td>
+<td align="center">^n</td>
+</tr>
+<tr>
+<td align="center">sqrt</td>
+<td align="center">开方</td>
+</tr>
+<tr>
+<td align="center">matmul</td>
+<td align="center">矩阵乘法</td>
+</tr>
+</tbody></table>
+<h3 id="常用函数II"><a href="#常用函数II" class="headerlink" title="常用函数II"></a>常用函数II</h3><p><strong>tf.data.Dataset.from_tensor_slices</strong> 切分传入张量的第一维度，生成输入特征/标签对，构建数据集（Numpy和Tensor格式都可用该语句读入数据）</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line">#将特征与标签配对，并逐对打印输出</span><br><span class="line">features = tf.constant([[<span class="number">12</span>, <span class="number">23</span>, <span class="number">10</span>, <span class="number">17</span>], [<span class="number">10</span>, <span class="number">30</span>, <span class="number">21</span>, <span class="number">19</span>], [<span class="number">13</span>, <span class="number">10</span>, <span class="number">22</span>, <span class="number">17</span>], [<span class="number">29</span>, <span class="number">33</span>,<span class="number">39</span>,<span class="number">49</span>]])</span><br><span class="line">labels=tf.constant([<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>])</span><br><span class="line">dataset=tf.data.Dataset.from_tensor_slices((features, labels))</span><br><span class="line">print(dataset)</span><br><span class="line"><span class="keyword">for</span> element <span class="keyword">in</span> dataset :</span><br><span class="line">    print(element)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">每对中特征有四个数据：</span><br><span class="line">&lt;TensorSliceDataset shapes: ((<span class="number">4</span>,), ()), types: (tf.<span class="built_in">int</span>32, tf.<span class="built_in">int</span>32)&gt;</span><br><span class="line">(&lt;tf.Tensor: shape=(<span class="number">4</span>,), dtype=<span class="built_in">int</span>32, numpy=<span class="built_in">array</span>([<span class="number">12</span>, <span class="number">23</span>, <span class="number">10</span>, <span class="number">17</span>])&gt;, &lt;tf.Tensor: shape=(), dtype=<span class="built_in">int</span>32, numpy=<span class="number">0</span>&gt;)</span><br><span class="line">(&lt;tf.Tensor: shape=(<span class="number">4</span>,), dtype=<span class="built_in">int</span>32, numpy=<span class="built_in">array</span>([<span class="number">10</span>, <span class="number">30</span>, <span class="number">21</span>, <span class="number">19</span>])&gt;, &lt;tf.Tensor: shape=(), dtype=<span class="built_in">int</span>32, numpy=<span class="number">1</span>&gt;)</span><br><span class="line">(&lt;tf.Tensor: shape=(<span class="number">4</span>,), dtype=<span class="built_in">int</span>32, numpy=<span class="built_in">array</span>([<span class="number">13</span>, <span class="number">10</span>, <span class="number">22</span>, <span class="number">17</span>])&gt;, &lt;tf.Tensor: shape=(), dtype=<span class="built_in">int</span>32, numpy=<span class="number">1</span>&gt;)</span><br><span class="line">(&lt;tf.Tensor: shape=(<span class="number">4</span>,), dtype=<span class="built_in">int</span>32, numpy=<span class="built_in">array</span>([<span class="number">29</span>, <span class="number">33</span>, <span class="number">39</span>, <span class="number">49</span>])&gt;, &lt;tf.Tensor: shape=(), dtype=<span class="built_in">int</span>32, numpy=<span class="number">3</span>&gt;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>tf.GradientTape</strong></p>
+<p>with结构记录计算过程，gradient求出张量梯度</p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.<span class="constructor">GradientTape()</span> <span class="keyword">as</span> tape:</span><br><span class="line">    若干计算过程</span><br><span class="line">grad = tape.gradient(函数,对谁求导)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">    w=tf.Variable(tf.constant(<span class="number">3.0</span>))</span><br><span class="line">    loss = tf.pow(w, <span class="number">2</span>)</span><br><span class="line">grad = tape.gradient(loss, w)</span><br><span class="line">print(grad)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">tf.Tensor(<span class="number">6.0</span>, shape=(), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<p><strong>enumerate</strong></p>
+<p>python内建函数，遍历每个元素（列表、元组、字符串），组合为：<strong>索引 元素</strong>， 常在for循环使用.</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">seq=[<span class="string">'zero'</span>, <span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>]</span><br><span class="line"><span class="keyword">for</span> i, <span class="keyword">element</span> <span class="keyword">in</span> enumerate(seq):</span><br><span class="line">    print(i, <span class="keyword">element</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行结果：</span><br><span class="line"><span class="number">0</span> zero</span><br><span class="line"><span class="number">1</span> one</span><br><span class="line"><span class="number">2</span> two</span><br><span class="line"><span class="number">3</span> three</span><br></pre></td></tr></table></figure>
+
+<p><strong>tf.one_hot</strong></p>
+<p>独热编码：在分类问题中用于做标签，标记类别：1：是，0：非.</p>
+<p>e.g.</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">0狗尾鸢尾</th>
+<th align="center">1杂色鸢尾</th>
+<th align="center">2弗吉尼亚鸢尾</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">标签</td>
+<td align="center">1</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">独热编码</td>
+<td align="center">0.</td>
+<td align="center">1.</td>
+<td align="center">0.</td>
+</tr>
+</tbody></table>
+<p>tf.one_hot(数据， depth=几分类)函数将待转换数据转换为one-hot形式数据输出.</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">classes = <span class="number">3</span></span><br><span class="line">labels = tf.constant([<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>])#输入元素最小是<span class="number">0</span>，最大是<span class="number">2</span></span><br><span class="line">output = tf.one_hot(labels, depth=classes)</span><br><span class="line">print(output)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">1.</span> <span class="number">0.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">0.</span> <span class="number">0.</span> <span class="number">1.</span>]], shape=(<span class="number">3</span>, <span class="number">3</span>), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<p><strong>tf.nn.softmax(x)</strong></p>
+<p>使输出符合概率分布<br>$$<br>Softmax(y_i)=\frac{e^{y_i}}{\sum_{j=0}^{n}e^{y_i}}<br>$$</p>
+</li>
+</ul>
+<p>  n分类的n个输出通过softmax()函数，符合概率分布<br>  $$<br>  \forall x \quad P(X=x)\in [0,1],\quad \sum_{x}P(X=x)=1<br>  $$<br>  也就是每个输出值变为0~1之间概率值，概率值和为1.</p>
+  <figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">import tensorflow <span class="keyword">as</span> <span class="keyword">tf</span></span><br><span class="line"><span class="keyword">y</span> = <span class="keyword">tf</span>.constant([<span class="number">1.01</span>, <span class="number">2.01</span>, -<span class="number">0.66</span>])</span><br><span class="line">y_pro = <span class="keyword">tf</span>.<span class="keyword">nn</span>.softmax(<span class="keyword">y</span>)</span><br><span class="line"><span class="keyword">print</span>(<span class="string">"After softmax,y_pro is:"</span>, y_pro)</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">输出结果：</span><br><span class="line">After softmax,y_pro <span class="keyword">is</span>: tf.Tensor([<span class="number">0.25598174</span> <span class="number">0.69583046</span> <span class="number">0.0481878</span> ], shape=(<span class="number">3</span>,), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<p>  <strong>assign_sub</strong></p>
+<p>  用于参数自更新（自减）</p>
+<p>  调用assign_sub前，先用tf.Variable定义变量w为可训练（可自更新）.</p>
+<p>  w.assign_sub(w要自减的内容)</p>
+<p>  e.g.</p>
+<p>  w.assign_sub(1):  w-=1 i.e. w=w-1</p>
+<p>  <strong>tf.argmax(张量名，axis=操作轴)</strong></p>
+<p>  返回张量沿指定维度最大值的索引</p>
+  <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line"><span class="keyword">import</span> numpy as np</span><br><span class="line">test = np.<span class="built_in">array</span>([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>], [<span class="number">8</span>, <span class="number">7</span>, <span class="number">2</span>]])</span><br><span class="line">print(test)</span><br><span class="line">print(tf.argmax(test, axis=<span class="number">0</span>)) #返回每一列最大值索引</span><br><span class="line">print(tf.argmax(test, axis=<span class="number">1</span>)) #返回每一行最大值索引</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">[[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span><br><span class="line"> [<span class="number">5</span> <span class="number">4</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">8</span> <span class="number">7</span> <span class="number">2</span>]]</span><br><span class="line"></span><br><span class="line">tf.Tensor([<span class="number">3</span> <span class="number">3</span> <span class="number">1</span>], shape=(<span class="number">3</span>,), dtype=<span class="built_in">int</span>64)</span><br><span class="line">tf.Tensor([<span class="number">2</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span>], shape=(<span class="number">4</span>,), dtype=<span class="built_in">int</span>64)</span><br></pre></td></tr></table></figure>
+
+<h3 id="鸢尾花数据集读入"><a href="#鸢尾花数据集读入" class="headerlink" title="鸢尾花数据集读入"></a>鸢尾花数据集读入</h3><ul>
+<li><p>数据集介绍</p>
+<p>共150组数据，每组4个输入特征：花萼长、花萼宽、花瓣长、花瓣宽，同时给出每组特征对应鸢尾花类别，分别用0,1,2表示.</p>
+</li>
+<li><p>从sklearn包datasets读入数据集</p>
+</li>
+<li><p>数据读入及查看</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#鸢尾花数据集读入</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">x_data = datasets.load_iris().data <span class="comment">#.data 返回iris数据集所有输入特征</span></span><br><span class="line">y_data = datasets.load_iris().target <span class="comment"># .target 返回iris数据集所有标签</span></span><br><span class="line">print(<span class="string">'x_data from datasets: \n'</span>, x_data)</span><br><span class="line">print(<span class="string">'y_data from datasets: \n'</span>, y_data)</span><br><span class="line"></span><br><span class="line">x_data = DataFrame(x_data, columns=[<span class="string">'花萼长度'</span>, <span class="string">'花萼宽度'</span>, <span class="string">'花瓣长度'</span>, <span class="string">'花瓣宽度'</span>])</span><br><span class="line">pd.set_option(<span class="string">'display.unicode.east_asian_width'</span>, <span class="literal">True</span>) <span class="comment"># 设置列名对齐</span></span><br><span class="line">print(<span class="string">'x_data add index: \n'</span>, x_data)</span><br><span class="line"></span><br><span class="line">x_data[<span class="string">'类别'</span>] = y_data  <span class="comment">#新加一列，列标签为’类别‘，数据为y_data</span></span><br><span class="line">print(<span class="string">'x_data add a column: \n'</span>, x_data)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Tensorflow学习笔记</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>Tensorflow</tag>
+        <tag>人工智能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python机器学习之鸢尾花分类问题</title>
+    <url>/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p><font size="4" face="楷体"><strong>已知：</strong>鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm.</font></p>
+<p><font size="4" face="楷体"><strong>目标：</strong>构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.</font></p>
+<a id="more"></a>
+
+<p><font size="4" face="楷体"><strong>分析：</strong>有已知品种的测量数据，这是一个监督学习问题，数据集中每朵花分属于三个类别，这是三分类问题.</font></p>
+<p><font size="4" face="楷体">以下代码均在 <strong>Jupyter Notebook</strong>  中编写及运行.</font></p>
+<p><font size="5" face="楷体"> 必要的库调用</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> mglearn</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">mglearn库可在Jupyter Notebook 代码块中直接运行以下命令行下载，其它的库下载方式同理，下载成功后即可调用.</font></p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> mglearn</span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">数据准备</font></p>
+<p><font size="4" face="楷体">数据集包含在scikit-learn的datasets模块中，可调用load_iris函数加载数据.<br>    </font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line">iris_dataset=load_iris()</span><br><span class="line"><span class="comment">#这里返回的是Bunch对象，与字典类似，包含键和值.</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">利用print和.format方法可以查看数据集的相关信息.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Keys of iris_dataset:\n&#123;&#125;'</span>.format(iris_dataset.keys()))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">Keys of iris_dataset:</span><br><span class="line"><span class="function"><span class="title">dict_keys</span><span class="params">([<span class="string">'data'</span>, <span class="string">'target'</span>, <span class="string">'frame'</span>, <span class="string">'target_names'</span>, <span class="string">'DESCR'</span>, <span class="string">'feature_names'</span>, <span class="string">'filename'</span>])</span></span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">DESCR键对应的值是数据集的简要说明.</font></p>
+<p><font size="4" face="楷体">targets_names键对应的值是字符串数组，包含预测花的品种:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Target names:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>]))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Target</span> <span class="selector-tag">names</span>: <span class="selector-attr">[<span class="string">'setosa'</span> <span class="string">'versicolor'</span> <span class="string">'virginica'</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">feature_names键对应值是字符串列表，对每个特征进行说明:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'feature_names'</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">[<span class="symbol">'sepal</span> length (<span class="name">cm</span>)', <span class="symbol">'sepal</span> width (<span class="name">cm</span>)', <span class="symbol">'petal</span> length (<span class="name">cm</span>)', <span class="symbol">'petal</span> width (<span class="name">cm</span>)']</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">数据包含在target和data字段中，data是测量数据，格式为Numpy数组:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(type(iris_dataset[<span class="string">'data'</span>]))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'numpy.ndarray'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">data数组每行对应一朵花，列代表每朵花四个测量数据:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">iris_dataset[<span class="string">'data'</span>].shape</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">150</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">数组中共包含150朵不同的花测量数据.</font></p>
+<p><font size="4" face="楷体">查看前5朵花数据：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'data'</span>][:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[[<span class="number">5.1</span> <span class="number">3.5</span> <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.9</span> <span class="number">3.</span>  <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.7</span> <span class="number">3.2</span> <span class="number">1.3</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.6</span> <span class="number">3.1</span> <span class="number">1.5</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">5.</span>  <span class="number">3.6</span> <span class="number">1.4</span> <span class="number">0.2</span>]]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">target数组包含每朵花测量的品种，是一维Numpy数组,每朵花对应其中一个数据：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>].shape)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">150</span>,)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">品种已转换成0~2整数.</font></p>
+<p><font size="5" face="楷体">训练数据与测试数据</font></p>
+<p><font size="4" face="楷体">将收集好的带标签数据按比例分成两部分:<strong>训练数据</strong>（构建机器学习模型）、<strong>测试数据</strong>（评估模型性能）</font></p>
+<p><font size="4" face="楷体">由于原始数据点是按标签排序的，如果只取数据后一部分数据作测试，无法评估模型好坏，因此要将数据打乱，确保测试数据包含所有类别的数据.</font></p>
+<p><font size="4" face="楷体">这里用到了scikit-learn库中的train_test_split函数，将数据集打乱拆分，将75%数据作为训练集，其余25%数据为测试集.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">这里利用random_state参数指定随机数升成器种子，确保每次运行函数输出固定不变.</font></p>
+<p><font size="4" face="楷体">查看输出数据的形状</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'X_train shape:&#123;&#125;'</span>.format(X_train.shape))</span><br><span class="line">print(<span class="string">'y_train shape:&#123;&#125;'</span>.format(y_train.shape))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">X_train shape:(<span class="number">112</span>, <span class="number">4</span>)</span><br><span class="line">y_train shape:(<span class="number">112</span>,)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(X_test.shape)</span><br><span class="line">print(y_test.shape)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">38</span>, <span class="number">4</span>)</span><br><span class="line">(<span class="name">38</span>,)</span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">构建模型:k近邻算法</font></p>
+<p><font size="4" face="楷体">含义：考虑训练集中与新数据最近的任意k个邻居，而不是只考虑最近的一个.用这些邻居中数量最多的类别作出预测.<br></font></p>
+<p><font size="4" face="楷体">现在只考虑1个邻居的情况.</font></p>
+<p><font size="4" face="楷体">scikit-learn中所有机器学习模型都是在各自类中实现的，k近邻算法在neighbors模块的KNeighborsClassifiter类中实现.<br>    将类实化为对象需要设置模型参数.<br></font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(n_neighbors=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">knn对象对算法进行了封装，既包括用训练数据构建模型的算法，也包括对新数据点进行预测的算法，还包括算法从训练数据提取的信息.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#基于训练集构建模型，需要调用knn对象的fit方法</span></span><br><span class="line">knn.fit(X_train,y_train)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果：</font></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">KNeighborsClassifier</span><span class="params">(n_neighbors=<span class="number">1</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">作出预测</font></p>
+<p><font size="4" face="楷体">对一朵新的已知测量数据的鸢尾花进行预测:</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">x_new=np.<span class="built_in">array</span>([[<span class="number">5</span>,<span class="number">2.9</span>,<span class="number">1</span>,<span class="number">0.2</span>]])</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">调用knn对象predict方法进行预测：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">prediction=knn.predict(x_new)</span><br><span class="line">print(<span class="string">'Prediction:&#123;&#125;'</span>.format(prediction))</span><br><span class="line">print(<span class="string">'Predicted target name:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>][prediction]))</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">预测结果：</font></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Prediction</span>:<span class="selector-attr">[0]</span></span><br><span class="line"><span class="selector-tag">Predicted</span> <span class="selector-tag">target</span> <span class="selector-tag">name</span>:<span class="selector-attr">[<span class="string">'setosa'</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">评估模型</font></p>
+<p><font size="4" face="楷体">对测试数据进行预测并与实际标签对比.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_pred=knn.predict(X_test)</span><br><span class="line">print(y_pred)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果:</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">使用knn对象的score对象计算测试集精度：</font></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(score)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">0.9736842105263158</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">这个模型测试集的精度约为0.97，就是说对于测试集中鸢尾花的预测有97%是正确的.高精度意味着模型可信.</font></p>
+<p><font size="5" face="楷体">汇总</font></p>
+<p><font size="4" face="楷体">整个训练和评估过程所必需的代码：</font></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets import load_iris</span><br><span class="line"><span class="attribute">iris_dataset</span>=load_iris()</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection import train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],<span class="attribute">random_state</span>=0)</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors import KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(<span class="attribute">n_neighbors</span>=1)</span><br><span class="line">knn.fit(X_train,y_train)</span><br><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">"Test set score:&#123;&#125;"</span>.format(score))</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -378,132 +815,6 @@
         <tag>Matlab</tag>
         <tag>机器学习</tag>
         <tag>自编码器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python机器学习之鸢尾花分类问题</title>
-    <url>/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p><font size="4" face="楷体"><strong>已知：</strong>鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm.</font></p>
-<p><font size="4" face="楷体"><strong>目标：</strong>构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.</font></p>
-<a id="more"></a>
-
-<p><font size="4" face="楷体"><strong>分析：</strong>有已知品种的测量数据，这是一个监督学习问题，数据集中每朵花分属于三个类别，这是三分类问题.</font></p>
-<p><font size="4" face="楷体">以下代码均在 <strong>Jupyter Notebook</strong>  中编写及运行.</font></p>
-<p><font size="5" face="楷体"> 必要的库调用</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> mglearn</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">mglearn库可在Jupyter Notebook 代码块中直接运行以下命令行下载，其它的库下载方式同理，下载成功后即可调用.</font></p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> mglearn</span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">数据准备</font></p>
-<p><font size="4" face="楷体">数据集包含在scikit-learn的datasets模块中，可调用load_iris函数加载数据.<br>    </font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line">iris_dataset=load_iris()</span><br><span class="line"><span class="comment">#这里返回的是Bunch对象，与字典类似，包含键和值.</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">利用print和.format方法可以查看数据集的相关信息.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Keys of iris_dataset:\n&#123;&#125;'</span>.format(iris_dataset.keys()))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">Keys of iris_dataset:</span><br><span class="line"><span class="function"><span class="title">dict_keys</span><span class="params">([<span class="string">'data'</span>, <span class="string">'target'</span>, <span class="string">'frame'</span>, <span class="string">'target_names'</span>, <span class="string">'DESCR'</span>, <span class="string">'feature_names'</span>, <span class="string">'filename'</span>])</span></span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">DESCR键对应的值是数据集的简要说明.</font></p>
-<p><font size="4" face="楷体">targets_names键对应的值是字符串数组，包含预测花的品种:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Target names:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>]))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Target</span> <span class="selector-tag">names</span>: <span class="selector-attr">[<span class="string">'setosa'</span> <span class="string">'versicolor'</span> <span class="string">'virginica'</span>]</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">feature_names键对应值是字符串列表，对每个特征进行说明:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'feature_names'</span>])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">[<span class="symbol">'sepal</span> length (<span class="name">cm</span>)', <span class="symbol">'sepal</span> width (<span class="name">cm</span>)', <span class="symbol">'petal</span> length (<span class="name">cm</span>)', <span class="symbol">'petal</span> width (<span class="name">cm</span>)']</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">数据包含在target和data字段中，data是测量数据，格式为Numpy数组:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(type(iris_dataset[<span class="string">'data'</span>]))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'numpy.ndarray'</span>&gt;</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">data数组每行对应一朵花，列代表每朵花四个测量数据:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">iris_dataset[<span class="string">'data'</span>].shape</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">150</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">数组中共包含150朵不同的花测量数据.</font></p>
-<p><font size="4" face="楷体">查看前5朵花数据：</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'data'</span>][:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[[<span class="number">5.1</span> <span class="number">3.5</span> <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.9</span> <span class="number">3.</span>  <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.7</span> <span class="number">3.2</span> <span class="number">1.3</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.6</span> <span class="number">3.1</span> <span class="number">1.5</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">5.</span>  <span class="number">3.6</span> <span class="number">1.4</span> <span class="number">0.2</span>]]</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">target数组包含每朵花测量的品种，是一维Numpy数组,每朵花对应其中一个数据：</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>].shape)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">150</span>,)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">品种已转换成0~2整数.</font></p>
-<p><font size="5" face="楷体">训练数据与测试数据</font></p>
-<p><font size="4" face="楷体">将收集好的带标签数据按比例分成两部分:<strong>训练数据</strong>（构建机器学习模型）、<strong>测试数据</strong>（评估模型性能）</font></p>
-<p><font size="4" face="楷体">由于原始数据点是按标签排序的，如果只取数据后一部分数据作测试，无法评估模型好坏，因此要将数据打乱，确保测试数据包含所有类别的数据.</font></p>
-<p><font size="4" face="楷体">这里用到了scikit-learn库中的train_test_split函数，将数据集打乱拆分，将75%数据作为训练集，其余25%数据为测试集.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">这里利用random_state参数指定随机数升成器种子，确保每次运行函数输出固定不变.</font></p>
-<p><font size="4" face="楷体">查看输出数据的形状</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'X_train shape:&#123;&#125;'</span>.format(X_train.shape))</span><br><span class="line">print(<span class="string">'y_train shape:&#123;&#125;'</span>.format(y_train.shape))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">X_train shape:(<span class="number">112</span>, <span class="number">4</span>)</span><br><span class="line">y_train shape:(<span class="number">112</span>,)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(X_test.shape)</span><br><span class="line">print(y_test.shape)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">38</span>, <span class="number">4</span>)</span><br><span class="line">(<span class="name">38</span>,)</span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">构建模型:k近邻算法</font></p>
-<p><font size="4" face="楷体">含义：考虑训练集中与新数据最近的任意k个邻居，而不是只考虑最近的一个.用这些邻居中数量最多的类别作出预测.<br></font></p>
-<p><font size="4" face="楷体">现在只考虑1个邻居的情况.</font></p>
-<p><font size="4" face="楷体">scikit-learn中所有机器学习模型都是在各自类中实现的，k近邻算法在neighbors模块的KNeighborsClassifiter类中实现.<br>    将类实化为对象需要设置模型参数.<br></font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(n_neighbors=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">knn对象对算法进行了封装，既包括用训练数据构建模型的算法，也包括对新数据点进行预测的算法，还包括算法从训练数据提取的信息.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#基于训练集构建模型，需要调用knn对象的fit方法</span></span><br><span class="line">knn.fit(X_train,y_train)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">运行结果：</font></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">KNeighborsClassifier</span><span class="params">(n_neighbors=<span class="number">1</span>)</span></span></span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">作出预测</font></p>
-<p><font size="4" face="楷体">对一朵新的已知测量数据的鸢尾花进行预测:</font></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">x_new=np.<span class="built_in">array</span>([[<span class="number">5</span>,<span class="number">2.9</span>,<span class="number">1</span>,<span class="number">0.2</span>]])</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">调用knn对象predict方法进行预测：</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">prediction=knn.predict(x_new)</span><br><span class="line">print(<span class="string">'Prediction:&#123;&#125;'</span>.format(prediction))</span><br><span class="line">print(<span class="string">'Predicted target name:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>][prediction]))</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">预测结果：</font></p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Prediction</span>:<span class="selector-attr">[0]</span></span><br><span class="line"><span class="selector-tag">Predicted</span> <span class="selector-tag">target</span> <span class="selector-tag">name</span>:<span class="selector-attr">[<span class="string">'setosa'</span>]</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">评估模型</font></p>
-<p><font size="4" face="楷体">对测试数据进行预测并与实际标签对比.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_pred=knn.predict(X_test)</span><br><span class="line">print(y_pred)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">运行结果:</font></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">使用knn对象的score对象计算测试集精度：</font></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(score)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">运行结果</font></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">0.9736842105263158</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">这个模型测试集的精度约为0.97，就是说对于测试集中鸢尾花的预测有97%是正确的.高精度意味着模型可信.</font></p>
-<p><font size="5" face="楷体">汇总</font></p>
-<p><font size="4" face="楷体">整个训练和评估过程所必需的代码：</font></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets import load_iris</span><br><span class="line"><span class="attribute">iris_dataset</span>=load_iris()</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection import train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],<span class="attribute">random_state</span>=0)</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors import KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(<span class="attribute">n_neighbors</span>=1)</span><br><span class="line">knn.fit(X_train,y_train)</span><br><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">"Test set score:&#123;&#125;"</span>.format(score))</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>python学习笔记</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>机器学习</tag>
       </tags>
   </entry>
 </search>

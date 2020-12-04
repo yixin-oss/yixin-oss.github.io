@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/daytoy/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/daytoy/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/daytoy/images/heart.jpg">
+  <link rel="mask-icon" href="/daytoy/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/daytoy/css/main.css">
+
+
+<link rel="stylesheet" href="/daytoy/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/daytoy/lib/pace/pace-theme-minimal.min.css">
+  <script src="/daytoy/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/daytoy/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="人工智能让机器具备人的思维和意识. 人工智能三学派： 行为主义：基于控制论，构建感知-动作控制系统.（控制论，如平衡、行走、避障等自适应控制系统，实例：让机器人抬起一只脚，如何控制整体平衡）  符号主义：基于算数逻辑表达式，求解问题先把问题描述为表达式，再求表达式.(公式描述、实现理性思维，如专家系统)  连接主义：仿生学，模仿神经元连接关系.(仿脑神经元连接，实现感性思维，如神经网络)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工智能：Tensorflow2笔记(一)">
+<meta property="og:url" content="http://yixin-oss.gitee.io/daytoy/2020/12/04/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%EF%BC%9ATensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="Daytoy">
+<meta property="og:description" content="人工智能让机器具备人的思维和意识. 人工智能三学派： 行为主义：基于控制论，构建感知-动作控制系统.（控制论，如平衡、行走、避障等自适应控制系统，实例：让机器人抬起一只脚，如何控制整体平衡）  符号主义：基于算数逻辑表达式，求解问题先把问题描述为表达式，再求表达式.(公式描述、实现理性思维，如专家系统)  连接主义：仿生学，模仿神经元连接关系.(仿脑神经元连接，实现感性思维，如神经网络)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607053527(1).jpg">
+<meta property="article:published_time" content="2020-12-04T06:56:29.600Z">
+<meta property="article:modified_time" content="2020-12-04T08:55:43.805Z">
+<meta property="article:author" content="亦新">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="Tensorflow">
+<meta property="article:tag" content="人工智能">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607053527(1).jpg">
+
+<link rel="canonical" href="http://yixin-oss.gitee.io/daytoy/2020/12/04/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%EF%BC%9ATensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%80)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>人工智能：Tensorflow2笔记(一) | Daytoy</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/daytoy/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Daytoy</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Always be happy</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/daytoy/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/daytoy/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/daytoy/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/daytoy/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2020/12/04/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%EF%BC%9ATensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%80)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
+      <meta itemprop="name" content="亦新">
+      <meta itemprop="description" content="热爱可抵岁月漫长">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daytoy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          人工智能：Tensorflow2笔记(一)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/daytoy/categories/Tensorflow%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">Tensorflow学习笔记</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.9k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="人工智能"><a href="#人工智能" class="headerlink" title="人工智能"></a>人工智能</h2><p>让机器具备人的思维和意识.</p>
+<h3 id="人工智能三学派："><a href="#人工智能三学派：" class="headerlink" title="人工智能三学派："></a>人工智能三学派：</h3><ul>
+<li><p>行为主义：基于控制论，构建感知-动作控制系统.（控制论，如平衡、行走、避障等自适应控制系统，实例：让机器人抬起一只脚，如何控制整体平衡）</p>
+</li>
+<li><p>符号主义：基于算数逻辑表达式，求解问题先把问题描述为表达式，再求表达式.(公式描述、实现理性思维，如专家系统)</p>
+</li>
+<li><p>连接主义：仿生学，模仿神经元连接关系.(仿脑神经元连接，实现感性思维，如神经网络)</p>
+<a id="more"></a>
+
+</li>
+</ul>
+<h2 id="神经网络设计过程"><a href="#神经网络设计过程" class="headerlink" title="神经网络设计过程"></a>神经网络设计过程</h2><p>√ 准备数据：采集大量“特征、标签”数据，数据量越大越好</p>
+<p>√ 搭建网络：搭建神经网络结构</p>
+<p>√优化参数： 训练网络获取最佳参数（反向传播过程）</p>
+<p>√ 应用网络： 将网络保存为模型，输入新数据，输出分类或预测结果（前向传播过程）</p>
+<p>简单来说，神经网络的设计过程就是给出模型参数随机初始值，将收集特征数据作为输入层利用模型求预测标签结果，与正确结果作比较计算偏差（损失函数），此时的偏差（损失函数）为模型中参数的函数，可以利用优化方法中的<strong>梯度下降法</strong>求出使偏差最小的模型参数返回给网络模型，再次利用数据重复这个过程，这样就实现了模型中的参数动态更新.(神经网络的训练实质就是利用数据不断更新模型的参数.)</p>
+<ul>
+<li><p>损失函数：预测值与标准结果的差距.</p>
+<p>损失函数可以定量判断模型参数的优劣，当损失函数输出最小时，参数出现最优值.(求解函数最小值实质就是一个优化问题，用到所提到的<strong>梯度下降法</strong>.)</p>
+<p>常用的损失函数：均方误差<br>$$<br>MSE(y,y_{correct})=\frac{\sum_{k=0}^{n}(y-y_{correct})^2}{n}<br>$$</p>
+</li>
+<li><p>梯度下降</p>
+<p>沿损失函数梯度下降的方向，寻找损失函数最小值，得到最佳参数的迭代方法.</p>
+<p>梯度下降法的关键是设置<strong>步长</strong> 和<strong>参数</strong>.</p>
+<p><strong>梯度：</strong>函数对各参数求偏导后的向量.函数梯度下降的方向是函数减小的方向.</p>
+<p>参数迭代公式：<br>$$<br>w_{t+1}=w_{t}-lr*\frac{\partial loss}{\partial w_t}<br>$$</p>
+</li>
+</ul>
+<p>  <strong>学习率lr：</strong>实质是梯度下降方向的步长，设置过小，梯度下降收敛缓慢；过大，在最小值附近震荡，甚至不收敛.</p>
+<ul>
+<li><p>反向传播：实质就是参数更新</p>
+<p>逐层求损失函数对每层神经元参数的偏导，迭代更新所有参数.</p>
+<p>e.g. 损失函数<br>$$<br>loss=(w+1)^2\<br>\frac{\partial loss}{\partial w}=2w+2<br>$$<br>参数初始化为5，学习率0.2，则</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607053527(1).jpg" alt></p>
+</li>
+</ul>
+<p>这里0开始是第一次迭代寻找参数最优值，经过几次迭代，损失函数最小值为0，参数w最优值为-1.</p>
+<p>TensorFlow实现上述过程：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">w = tf.<span class="constructor">Variable(<span class="params">tf</span>.<span class="params">constant</span>(5, <span class="params">dtype</span>=<span class="params">tf</span>.<span class="params">float32</span>)</span>)</span><br><span class="line">lr = <span class="number">0.2</span></span><br><span class="line">epoch = <span class="number">40</span></span><br><span class="line"></span><br><span class="line">for epoch <span class="keyword">in</span> range(epoch):</span><br><span class="line">    <span class="keyword">with</span> tf.<span class="constructor">GradientTape()</span> <span class="keyword">as</span> tape:</span><br><span class="line">        loss = tf.square(w+<span class="number">1</span>)</span><br><span class="line">    grads = tape.gradient(loss, w)</span><br><span class="line"></span><br><span class="line">    w.assign<span class="constructor">_sub(<span class="params">lr</span> <span class="operator">*</span> <span class="params">grads</span>)</span></span><br><span class="line">print('After %s epoch,w is %f,loss is %f'% (epoch, w.numpy<span class="literal">()</span>, loss))</span><br></pre></td></tr></table></figure>
+
+<h2 id="张量（Tensor）"><a href="#张量（Tensor）" class="headerlink" title="张量（Tensor）"></a>张量（Tensor）</h2><p>多维数组（列表）</p>
+<p>阶：张量的维数</p>
+<table>
+<thead>
+<tr>
+<th align="center">维数</th>
+<th align="center">阶</th>
+<th align="center">名字</th>
+<th align="center">例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0-D</td>
+<td align="center">0</td>
+<td align="center">标量 scalar</td>
+<td align="center">s=123,数123</td>
+</tr>
+<tr>
+<td align="center">1-D</td>
+<td align="center">1</td>
+<td align="center">向量 vector</td>
+<td align="center">v=[1,2,3],向量（1,2,3）</td>
+</tr>
+<tr>
+<td align="center">2-D</td>
+<td align="center">2</td>
+<td align="center">矩阵 matrix</td>
+<td align="center">m=[[1,2,3],[4,5,6],[7,8,9]],3行3列矩阵</td>
+</tr>
+<tr>
+<td align="center">2-D</td>
+<td align="center">n</td>
+<td align="center">张量 tensor</td>
+<td align="center">t=[[[…n个</td>
+</tr>
+</tbody></table>
+<p>故张量为维数可以通过数单边括号个数得到，张量可以表示0阶~n阶数组</p>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><ul>
+<li><p>tf.int, tf.float…整数浮点数类型 </p>
+<p>tf.int32, tf.float32, tf.float64</p>
+</li>
+<li><p>tf.bool布尔数类型</p>
+<p>tf.constant([True,False])</p>
+</li>
+<li><p>tf.string 字符串类型</p>
+<p>tf.constant(‘’Hello World!”)</p>
+</li>
+</ul>
+<h3 id="创建张量"><a href="#创建张量" class="headerlink" title="创建张量"></a>创建张量</h3><ul>
+<li>创建一个张量</li>
+</ul>
+<p><strong>tf.constant(内容， dtype=数据类型（可选）)</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">x1 = tf.constant([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], dtype=tf.float64)</span><br><span class="line">print(x1)</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">tf.Tensor([<span class="number">1.</span> <span class="number">2.</span> <span class="number">3.</span>], shape=(<span class="number">3</span>,), dtype=<span class="built_in">float</span>64)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>将numpy数据类型转换为Tensor数据类型</p>
+<p><strong>tf.convert_to_tensor(数据名， dtype=数据类型)</strong></p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a = np.arange(<span class="number">0</span>, <span class="number">5</span>)</span><br><span class="line">b = tf.convert_to_tensor(a, dtype=tf.int64)</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">[<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span><br><span class="line">tf.Tensor([<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">int</span>64)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>创建全为0的张量</p>
+<p><strong>tf.zeros(维度)</strong></p>
+</li>
+<li><p>创建全为1的张量</p>
+<p><strong>tf.ones(维度)</strong></p>
+</li>
+<li><p>创建全为指定值的张量</p>
+<p><strong>tf.fill(维度，指定值)</strong></p>
+</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">a</span> = tf.zeros([<span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="selector-tag">b</span> = tf.ones(<span class="number">4</span>)</span><br><span class="line">c = tf.fill([<span class="number">2</span>, <span class="number">2</span>], <span class="number">9</span>)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(a)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(b)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(c)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]], shape=(<span class="number">2</span>, <span class="number">3</span>), dtype=<span class="built_in">float</span>32)</span><br><span class="line">tf.Tensor([<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>], shape=(<span class="number">4</span>,), dtype=<span class="built_in">float</span>32)</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">9</span> <span class="number">9</span>]</span><br><span class="line"> [<span class="number">9</span> <span class="number">9</span>]], shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=<span class="built_in">int</span>32)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>生成正态分布随机数，默认均值0，标准差1</p>
+<p><strong>tf.random.normal(维度， mean=均值， stddev=标准差)</strong></p>
+</li>
+<li><p>生成截断式正态分布随机数：保证生成值在均值附近</p>
+<p><strong>tf.random.truncated_normal(维度， mean=均值， stddev=标准差)</strong></p>
+</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line"></span><br><span class="line">p = tf.random.normal([2, 2], <span class="attribute">mean</span>=0, <span class="attribute">stddev</span>=1)</span><br><span class="line"><span class="builtin-name">print</span>(p)</span><br><span class="line"></span><br><span class="line">p1 = tf.random.truncated_normal([2, 2], <span class="attribute">mean</span>=0, <span class="attribute">stddev</span>=1)</span><br><span class="line"><span class="builtin-name">print</span>(p1)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[ <span class="number">8.3016290e-04</span> <span class="number">-1.2167720e+00</span>]</span><br><span class="line"> [ <span class="number">2.1969645e-01</span> <span class="number">-3.4597743e-01</span>]], shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=<span class="built_in">float</span>32)</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[ <span class="number">1.7608268</span> <span class="number">-1.3735857</span>]</span><br><span class="line"> [<span class="number">-0.7695601</span>  <span class="number">0.6406028</span>]], shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>生成均匀分布随机数</p>
+<p><strong>tf.random.uniform(维度，minval=最小值， maxval=最大值)</strong></p>
+</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f = tf.random.uniform([2, 2], <span class="attribute">minval</span>=0, <span class="attribute">maxval</span>=1)</span><br><span class="line"><span class="builtin-name">print</span>(f)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">0.36967945</span> <span class="number">0.7651223</span> ]</span><br><span class="line"> [<span class="number">0.53542113</span> <span class="number">0.6690651</span> ]], shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用函数I"><a href="#常用函数I" class="headerlink" title="常用函数I"></a>常用函数I</h3><ul>
+<li><p>强制tensor转换为该数据类型</p>
+<p><strong>tf.cast(张量名， dtype=数据类型)</strong></p>
+</li>
+<li><p>计算张量维度上元素最小值</p>
+<p><strong>tf.reduce_min()</strong></p>
+</li>
+<li><p>计算张量维度上元素最大值</p>
+<p><strong>tf.reduce_max()</strong></p>
+</li>
+<li><p>理解axis</p>
+<p>调整axis等于0或1控制执行维度.</p>
+<p>axis=0代表跨行（经度）（竖排）；axis=1代表跨列（纬度）（横排）；不指定则所有元素参与计算.</p>
+</li>
+<li><p>计算指定维度平均值</p>
+<p><strong>tf.reduce_mean(张量名， axis=操作轴)</strong></p>
+</li>
+<li><p>指定维度和</p>
+<p><strong>tf.reduce_sum(张量名， axis=操作轴)</strong></p>
+<figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow <span class="meta">as</span> tf</span><br><span class="line">import numpy <span class="meta">as</span> np</span><br><span class="line"><span class="meta">x</span> = tf.constant([[1, 2, 3],</span><br><span class="line">                [2, 2, 3]])</span><br><span class="line">p<span class="meta">rint(</span><span class="meta">x</span>)</span><br><span class="line"></span><br><span class="line">p<span class="meta">rint(</span>tf.reduce<span class="meta">_mean(</span><span class="meta">x</span>))</span><br><span class="line"></span><br><span class="line">p<span class="meta">rint(</span>tf.reduce<span class="meta">_sum(</span><span class="meta">x</span>, axis=1))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">2</span> <span class="number">2</span> <span class="number">3</span>]], shape=(<span class="number">2</span>, <span class="number">3</span>), dtype=<span class="built_in">int</span>32)</span><br><span class="line">tf.Tensor(<span class="number">2</span>, shape=(), dtype=<span class="built_in">int</span>32)</span><br><span class="line">tf.Tensor([<span class="number">6</span> <span class="number">7</span>], shape=(<span class="number">2</span>,), dtype=<span class="built_in">int</span>32)</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p><strong>tf.Variable</strong></p>
+<p><strong>tf.Variable(初始值)</strong>将变量<strong>标记为“可训练”</strong>，被标记的变量会在反向传播中记录梯度信息.神经网络训练中，常用该函数标记待训练参数.</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line"><span class="attribute">w</span>=tf.Variable(tf.random.normal([2, 2], <span class="attribute">mean</span>=0, <span class="attribute">stddev</span>=1))</span><br><span class="line"><span class="builtin-name">print</span>(w)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;tf.Variable <span class="string">'Variable:0'</span> shape=(<span class="number">2</span>, <span class="number">2</span>) dtype=<span class="built_in">float</span>32, numpy=</span><br><span class="line"><span class="built_in">array</span>([[ <span class="number">1.8879577</span> ,  <span class="number">0.790655</span>  ],</span><br><span class="line">       [<span class="number">-3.0929613</span> ,  <span class="number">0.50161296</span>]], dtype=<span class="built_in">float</span>32)&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TensorFlow中的数学运算"><a href="#TensorFlow中的数学运算" class="headerlink" title="TensorFlow中的数学运算"></a>TensorFlow中的数学运算</h3><table>
+<thead>
+<tr>
+<th align="center">tf.</th>
+<th align="center">对应元素</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">add</td>
+<td align="center">+</td>
+</tr>
+<tr>
+<td align="center">subtract</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">multiply</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="center">divide</td>
+<td align="center">/</td>
+</tr>
+<tr>
+<td align="center">square</td>
+<td align="center">^2</td>
+</tr>
+<tr>
+<td align="center">pow</td>
+<td align="center">^n</td>
+</tr>
+<tr>
+<td align="center">sqrt</td>
+<td align="center">开方</td>
+</tr>
+<tr>
+<td align="center">matmul</td>
+<td align="center">矩阵乘法</td>
+</tr>
+</tbody></table>
+<h3 id="常用函数II"><a href="#常用函数II" class="headerlink" title="常用函数II"></a>常用函数II</h3><p><strong>tf.data.Dataset.from_tensor_slices</strong> 切分传入张量的第一维度，生成输入特征/标签对，构建数据集（Numpy和Tensor格式都可用该语句读入数据）</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line">#将特征与标签配对，并逐对打印输出</span><br><span class="line">features = tf.constant([[<span class="number">12</span>, <span class="number">23</span>, <span class="number">10</span>, <span class="number">17</span>], [<span class="number">10</span>, <span class="number">30</span>, <span class="number">21</span>, <span class="number">19</span>], [<span class="number">13</span>, <span class="number">10</span>, <span class="number">22</span>, <span class="number">17</span>], [<span class="number">29</span>, <span class="number">33</span>,<span class="number">39</span>,<span class="number">49</span>]])</span><br><span class="line">labels=tf.constant([<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>])</span><br><span class="line">dataset=tf.data.Dataset.from_tensor_slices((features, labels))</span><br><span class="line">print(dataset)</span><br><span class="line"><span class="keyword">for</span> element <span class="keyword">in</span> dataset :</span><br><span class="line">    print(element)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">每对中特征有四个数据：</span><br><span class="line">&lt;TensorSliceDataset shapes: ((<span class="number">4</span>,), ()), types: (tf.<span class="built_in">int</span>32, tf.<span class="built_in">int</span>32)&gt;</span><br><span class="line">(&lt;tf.Tensor: shape=(<span class="number">4</span>,), dtype=<span class="built_in">int</span>32, numpy=<span class="built_in">array</span>([<span class="number">12</span>, <span class="number">23</span>, <span class="number">10</span>, <span class="number">17</span>])&gt;, &lt;tf.Tensor: shape=(), dtype=<span class="built_in">int</span>32, numpy=<span class="number">0</span>&gt;)</span><br><span class="line">(&lt;tf.Tensor: shape=(<span class="number">4</span>,), dtype=<span class="built_in">int</span>32, numpy=<span class="built_in">array</span>([<span class="number">10</span>, <span class="number">30</span>, <span class="number">21</span>, <span class="number">19</span>])&gt;, &lt;tf.Tensor: shape=(), dtype=<span class="built_in">int</span>32, numpy=<span class="number">1</span>&gt;)</span><br><span class="line">(&lt;tf.Tensor: shape=(<span class="number">4</span>,), dtype=<span class="built_in">int</span>32, numpy=<span class="built_in">array</span>([<span class="number">13</span>, <span class="number">10</span>, <span class="number">22</span>, <span class="number">17</span>])&gt;, &lt;tf.Tensor: shape=(), dtype=<span class="built_in">int</span>32, numpy=<span class="number">1</span>&gt;)</span><br><span class="line">(&lt;tf.Tensor: shape=(<span class="number">4</span>,), dtype=<span class="built_in">int</span>32, numpy=<span class="built_in">array</span>([<span class="number">29</span>, <span class="number">33</span>, <span class="number">39</span>, <span class="number">49</span>])&gt;, &lt;tf.Tensor: shape=(), dtype=<span class="built_in">int</span>32, numpy=<span class="number">3</span>&gt;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>tf.GradientTape</strong></p>
+<p>with结构记录计算过程，gradient求出张量梯度</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.<span class="constructor">GradientTape()</span> <span class="keyword">as</span> tape:</span><br><span class="line">    若干计算过程</span><br><span class="line">grad = tape.gradient(函数,对谁求导)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">    w=tf.Variable(tf.constant(<span class="number">3.0</span>))</span><br><span class="line">    loss = tf.pow(w, <span class="number">2</span>)</span><br><span class="line">grad = tape.gradient(loss, w)</span><br><span class="line">print(grad)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">tf.Tensor(<span class="number">6.0</span>, shape=(), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<p><strong>enumerate</strong></p>
+<p>python内建函数，遍历每个元素（列表、元组、字符串），组合为：<strong>索引 元素</strong>， 常在for循环使用.</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">seq=[<span class="string">'zero'</span>, <span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>]</span><br><span class="line"><span class="keyword">for</span> i, <span class="keyword">element</span> <span class="keyword">in</span> enumerate(seq):</span><br><span class="line">    print(i, <span class="keyword">element</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">运行结果：</span><br><span class="line"><span class="number">0</span> zero</span><br><span class="line"><span class="number">1</span> one</span><br><span class="line"><span class="number">2</span> two</span><br><span class="line"><span class="number">3</span> three</span><br></pre></td></tr></table></figure>
+
+<p><strong>tf.one_hot</strong></p>
+<p>独热编码：在分类问题中用于做标签，标记类别：1：是，0：非.</p>
+<p>e.g.</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">0狗尾鸢尾</th>
+<th align="center">1杂色鸢尾</th>
+<th align="center">2弗吉尼亚鸢尾</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">标签</td>
+<td align="center">1</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">独热编码</td>
+<td align="center">0.</td>
+<td align="center">1.</td>
+<td align="center">0.</td>
+</tr>
+</tbody></table>
+<p>tf.one_hot(数据， depth=几分类)函数将待转换数据转换为one-hot形式数据输出.</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">classes = <span class="number">3</span></span><br><span class="line">labels = tf.constant([<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>])#输入元素最小是<span class="number">0</span>，最大是<span class="number">2</span></span><br><span class="line">output = tf.one_hot(labels, depth=classes)</span><br><span class="line">print(output)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">0.</span> <span class="number">1.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">1.</span> <span class="number">0.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">0.</span> <span class="number">0.</span> <span class="number">1.</span>]], shape=(<span class="number">3</span>, <span class="number">3</span>), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<p><strong>tf.nn.softmax(x)</strong></p>
+<p>使输出符合概率分布<br>$$<br>Softmax(y_i)=\frac{e^{y_i}}{\sum_{j=0}^{n}e^{y_i}}<br>$$</p>
+</li>
+</ul>
+<p>  n分类的n个输出通过softmax()函数，符合概率分布<br>  $$<br>  \forall x \quad P(X=x)\in [0,1],\quad \sum_{x}P(X=x)=1<br>  $$<br>  也就是每个输出值变为0~1之间概率值，概率值和为1.</p>
+  <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow <span class="keyword">as</span> <span class="keyword">tf</span></span><br><span class="line"><span class="keyword">y</span> = <span class="keyword">tf</span>.constant([<span class="number">1.01</span>, <span class="number">2.01</span>, -<span class="number">0.66</span>])</span><br><span class="line">y_pro = <span class="keyword">tf</span>.<span class="keyword">nn</span>.softmax(<span class="keyword">y</span>)</span><br><span class="line"><span class="keyword">print</span>(<span class="string">"After softmax,y_pro is:"</span>, y_pro)</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出结果：</span><br><span class="line">After softmax,y_pro <span class="keyword">is</span>: tf.Tensor([<span class="number">0.25598174</span> <span class="number">0.69583046</span> <span class="number">0.0481878</span> ], shape=(<span class="number">3</span>,), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<p>  <strong>assign_sub</strong></p>
+<p>  用于参数自更新（自减）</p>
+<p>  调用assign_sub前，先用tf.Variable定义变量w为可训练（可自更新）.</p>
+<p>  w.assign_sub(w要自减的内容)</p>
+<p>  e.g.</p>
+<p>  w.assign_sub(1):  w-=1 i.e. w=w-1</p>
+<p>  <strong>tf.argmax(张量名，axis=操作轴)</strong></p>
+<p>  返回张量沿指定维度最大值的索引</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line"><span class="keyword">import</span> numpy as np</span><br><span class="line">test = np.<span class="built_in">array</span>([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>], [<span class="number">8</span>, <span class="number">7</span>, <span class="number">2</span>]])</span><br><span class="line">print(test)</span><br><span class="line">print(tf.argmax(test, axis=<span class="number">0</span>)) #返回每一列最大值索引</span><br><span class="line">print(tf.argmax(test, axis=<span class="number">1</span>)) #返回每一行最大值索引</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">运行结果：</span><br><span class="line">[[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span><br><span class="line"> [<span class="number">5</span> <span class="number">4</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">8</span> <span class="number">7</span> <span class="number">2</span>]]</span><br><span class="line"></span><br><span class="line">tf.Tensor([<span class="number">3</span> <span class="number">3</span> <span class="number">1</span>], shape=(<span class="number">3</span>,), dtype=<span class="built_in">int</span>64)</span><br><span class="line">tf.Tensor([<span class="number">2</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span>], shape=(<span class="number">4</span>,), dtype=<span class="built_in">int</span>64)</span><br></pre></td></tr></table></figure>
+
+<h3 id="鸢尾花数据集读入"><a href="#鸢尾花数据集读入" class="headerlink" title="鸢尾花数据集读入"></a>鸢尾花数据集读入</h3><ul>
+<li><p>数据集介绍</p>
+<p>共150组数据，每组4个输入特征：花萼长、花萼宽、花瓣长、花瓣宽，同时给出每组特征对应鸢尾花类别，分别用0,1,2表示.</p>
+</li>
+<li><p>从sklearn包datasets读入数据集</p>
+</li>
+<li><p>数据读入及查看</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#鸢尾花数据集读入</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">x_data = datasets.load_iris().data <span class="comment">#.data 返回iris数据集所有输入特征</span></span><br><span class="line">y_data = datasets.load_iris().target <span class="comment"># .target 返回iris数据集所有标签</span></span><br><span class="line">print(<span class="string">'x_data from datasets: \n'</span>, x_data)</span><br><span class="line">print(<span class="string">'y_data from datasets: \n'</span>, y_data)</span><br><span class="line"></span><br><span class="line">x_data = DataFrame(x_data, columns=[<span class="string">'花萼长度'</span>, <span class="string">'花萼宽度'</span>, <span class="string">'花瓣长度'</span>, <span class="string">'花瓣宽度'</span>])</span><br><span class="line">pd.set_option(<span class="string">'display.unicode.east_asian_width'</span>, <span class="literal">True</span>) <span class="comment"># 设置列名对齐</span></span><br><span class="line">print(<span class="string">'x_data add index: \n'</span>, x_data)</span><br><span class="line"></span><br><span class="line">x_data[<span class="string">'类别'</span>] = y_data  <span class="comment">#新加一列，列标签为’类别‘，数据为y_data</span></span><br><span class="line">print(<span class="string">'x_data add a column: \n'</span>, x_data)</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>Your support will encourage me to continue to write!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/wechatpay.jpg" alt="亦新 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/alipay.jpg" alt="亦新 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/daytoy/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 深度学习</a>
+              <a href="/daytoy/tags/Tensorflow/" rel="tag"><i class="fa fa-tag"></i> Tensorflow</a>
+              <a href="/daytoy/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag"><i class="fa fa-tag"></i> 人工智能</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/" rel="prev" title="python机器学习之鸢尾花分类问题">
+      <i class="fa fa-chevron-left"></i> python机器学习之鸢尾花分类问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/" rel="next" title="Windows10安装TensorFlow">
+      Windows10安装TensorFlow <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#人工智能"><span class="nav-number">1.</span> <span class="nav-text">人工智能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#人工智能三学派："><span class="nav-number">1.1.</span> <span class="nav-text">人工智能三学派：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#神经网络设计过程"><span class="nav-number">2.</span> <span class="nav-text">神经网络设计过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#张量（Tensor）"><span class="nav-number">3.</span> <span class="nav-text">张量（Tensor）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据类型"><span class="nav-number">3.1.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建张量"><span class="nav-number">3.2.</span> <span class="nav-text">创建张量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用函数I"><span class="nav-number">3.3.</span> <span class="nav-text">常用函数I</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorFlow中的数学运算"><span class="nav-number">3.4.</span> <span class="nav-text">TensorFlow中的数学运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用函数II"><span class="nav-number">3.5.</span> <span class="nav-text">常用函数II</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鸢尾花数据集读入"><span class="nav-number">3.6.</span> <span class="nav-text">鸢尾花数据集读入</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="亦新"
+      src="/daytoy/images/hexohead.gif">
+  <p class="site-author-name" itemprop="name">亦新</p>
+  <div class="site-description" itemprop="description">热爱可抵岁月漫长</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/daytoy/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/daytoy/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/daytoy/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      
+      <div id="music163player">
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=0&id=5353663714&auto=1&height=66"></iframe>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+    
+    
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+    
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦新</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">18k</span>
+</div>
+
+<!-- 网站运行时间的设置 -->
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+    <script>
+        var now = new Date();
+        function createtime() {
+            var grt= new Date("11/14/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+            now.setTime(now.getTime()+250);
+            days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+            hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+            if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+            mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+            seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+            snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+            document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+            document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/daytoy/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/daytoy/js/utils.js"></script>
+
+
+<script src="/daytoy/js/schemes/pisces.js"></script>
+
+
+<script src="/daytoy/js/next-boot.js"></script>
+
+<script src="/daytoy/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/daytoy/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/daytoy/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/daytoy/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
+
+
+  
+    <script src="/js/cursor/love.min.js"></script>
+  
+
