@@ -134,6 +134,100 @@
       </tags>
   </entry>
   <entry>
+    <title>Windows10安装TensorFlow</title>
+    <url>/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/</url>
+    <content><![CDATA[<h2 id="1-Anaconda下载及安装"><a href="#1-Anaconda下载及安装" class="headerlink" title="1. Anaconda下载及安装"></a>1. Anaconda下载及安装</h2><p><a href="https://www.anaconda.com/products/individual#macos" target="_blank" rel="noopener">Anaconda官网</a></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.png" alt></p>
+<p>下载Windows的相应版本</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052(1).jpg" alt></p>
+<p>下载安装包后双击按引导安装</p>
+<p>这里要<strong>勾选!</strong>将Anaconda加入环境变量.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.jpg" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066358(1).jpg" alt></p>
+<p>等待安装完成.</p>
+<h2 id="2-TensorFlow安装"><a href="#2-TensorFlow安装" class="headerlink" title="2. TensorFlow安装"></a>2. TensorFlow安装</h2><p>开始–&gt;Anaconda3(64-bit)–&gt;Anaconda Prompt(Anaconda3)</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066505(1).jpg" style="zoom: 67%;">
+
+<p>用*<em>conda create -n *</em>新建一个名为tensorflow的环境，用python3.6版本(3.7也可)</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda create -n tensorflow <span class="attribute">python</span>=3.6</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1.png" style="zoom:80%;">
+
+<p>这里选择y表示同意安装相关软件包</p>
+<p><strong>conda activate tensorflow</strong>进入tensorflow虚拟环境环境</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">conda <span class="built_in">activate</span> tensorflow</span><br></pre></td></tr></table></figure>
+
+
+
+<p>输入以下代码安装深度学习软件包</p>
+<p><strong>conda install cudatoolkit=10.1</strong></p>
+<p><strong>conda install cudnn=7.6</strong></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda install <span class="attribute">cudatoolkit</span>=10.1</span><br><span class="line"></span><br><span class="line">conda install <span class="attribute">cudnn</span>=7.6</span><br></pre></td></tr></table></figure>
+
+<p>如果两条安装语句报错，可能是电脑硬件不支持英伟达GPU，直接跳过这两步，安装tensorflow.</p>
+<p><strong>pip install tensflow==2.1</strong></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">pip install <span class="attribute">tensflow</span>==2.1</span><br></pre></td></tr></table></figure>
+
+<p>默认Google源，下载可能会很慢.</p>
+<p>这里注意要指定tensorflow为2.1版本，不然默认安装的是2.3版本，后续使用一些函数可能会报错，如tf.Variable(),如果已经安装了tensorflow2.3并且出现函数报错，可卸载重新安装2.1版本</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">pip</span> <span class="string">uninstall tensorflow</span></span><br><span class="line"><span class="attr">pip</span> <span class="string">install tensorflow==2.1</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，进入python验证是否成功</p>
+<p>依次输入</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">python</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight elm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tf</span><span class="selector-class">.__version__</span></span><br></pre></td></tr></table></figure>
+
+
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607067507(1).jpg" style="zoom:80%;">
+
+<p>如果显示2.1.0表示安装成功.</p>
+<h2 id="3-PyCharm集成开发环境"><a href="#3-PyCharm集成开发环境" class="headerlink" title="3. PyCharm集成开发环境"></a>3. PyCharm集成开发环境</h2><p><a href="https://www.jetbrains.com/" target="_blank" rel="noopener">PyCharm官网</a></p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212.jpg" style="zoom: 50%;">
+
+
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212(1).jpg" style="zoom: 50%;">
+
+<p>下载社区版PyCharm</p>
+<p>打开安装包进行安装</p>
+<p>这里右侧的添加环境变量要<strong>！勾选</strong>，左侧根据个人习惯(可以<strong>都选上！</strong>)</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068405(1).jpg" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068602(1).png" alt></p>
+<p>这里需要重启电脑</p>
+<p>重启后打开PYCharm，新建工程，可以使用默认路径，文件夹命名‘’AI‘’，设置环境变量</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069116(1).jpg" style="zoom:67%;">
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069143(1).jpg" style="zoom:67%;">
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069206(1).jpg" style="zoom:67%;">
+
+<p>新建文件</p>
+<p>右击文件夹AI–&gt;New–&gt;File</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069401.jpg" alt></p>
+<p>命名为test.py</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069432(1).jpg" alt></p>
+<p>输入测试代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">tensorflow_version=tf.__version__</span><br><span class="line">gpu_available = tf.test.is_gpu_available()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"tensorflow version:"</span>, tensorflow_version, <span class="string">"\tGPU available:"</span>, gpu_available)</span><br><span class="line"></span><br><span class="line">a = tf.constant([<span class="number">2.0</span>, <span class="number">2.0</span>], name=<span class="string">'a'</span>)</span><br><span class="line">b = tf.constant([<span class="number">4.0</span>, <span class="number">2.0</span>], name=<span class="string">'b'</span>)</span><br><span class="line">result = tf.add(a, b, name=<span class="string">'add'</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069567(1).jpg" style="zoom: 80%;">
+
+<p>点击<strong>Run ‘test’</strong>，或者<strong>Ctrl+Shift+F10</strong>运行代码</p>
+<p>如果出现<strong>tf.tensor</strong>,说明开发环境已安装成功.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069751(1).png" alt></p>
+]]></content>
+      <categories>
+        <category>Tensorflow学习笔记</category>
+      </categories>
+      <tags>
+        <tag>TensorFlow</tag>
+        <tag>软件安装</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python turtle库&quot;一箭穿心&quot;代码实现</title>
     <url>/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<p>利用python中的turtle库实现“一箭穿心”简单绘图</p>
