@@ -23,30 +23,39 @@
     var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/daytoy/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="热爱可抵岁月漫长">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Daytoy">
-<meta property="og:url" content="http://yixin-oss.gitee.io/daytoy/index.html">
+  <meta name="description" content="神经网络实现鸢尾花分类准备数据  数据集读入 数据集乱序 生成训练集和测试集,训练集，测试集不能有交集 配成（输入特征，标签）对，每次读入一部分(batch)  搭建网络  定义神经网络中所有可训练参数  参数优化  嵌套循环迭代，with结构更新参数，显示当前loss  测试效果  计算当前参数向后传播准确率，显示当前acc  准确率acc&#x2F;损失函数loss可视化   1234567891011">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工智能-Tensorflow2笔记(二)">
+<meta property="og:url" content="http://yixin-oss.gitee.io/daytoy/2020/12/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%BA%8C)/index.html">
 <meta property="og:site_name" content="Daytoy">
-<meta property="og:description" content="热爱可抵岁月漫长">
+<meta property="og:description" content="神经网络实现鸢尾花分类准备数据  数据集读入 数据集乱序 生成训练集和测试集,训练集，测试集不能有交集 配成（输入特征，标签）对，每次读入一部分(batch)  搭建网络  定义神经网络中所有可训练参数  参数优化  嵌套循环迭代，with结构更新参数，显示当前loss  测试效果  计算当前参数向后传播准确率，显示当前acc  准确率acc&#x2F;损失函数loss可视化   1234567891011">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/Epoch.jpg">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/Loss_Function_Curve.png">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/Acc_Curve.png">
+<meta property="article:published_time" content="2020-12-07T12:06:13.147Z">
+<meta property="article:modified_time" content="2020-12-07T12:06:38.919Z">
 <meta property="article:author" content="亦新">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="Tensorflow">
+<meta property="article:tag" content="人工智能">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/Epoch.jpg">
 
-<link rel="canonical" href="http://yixin-oss.gitee.io/daytoy/">
+<link rel="canonical" href="http://yixin-oss.gitee.io/daytoy/2020/12/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%BA%8C)/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Daytoy</title>
+  <title>人工智能-Tensorflow2笔记(二) | Daytoy</title>
   
 
 
@@ -184,9 +193,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -202,10 +212,9 @@
       <meta itemprop="name" content="Daytoy">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/daytoy/2020/12/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%BA%8C)/" class="post-title-link" itemprop="url">人工智能-Tensorflow2笔记(二)</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          人工智能-Tensorflow2笔记(二)
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -236,7 +245,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="神经网络实现鸢尾花分类"><a href="#神经网络实现鸢尾花分类" class="headerlink" title="神经网络实现鸢尾花分类"></a>神经网络实现鸢尾花分类</h2><p>准备数据</p>
+        <h2 id="神经网络实现鸢尾花分类"><a href="#神经网络实现鸢尾花分类" class="headerlink" title="神经网络实现鸢尾花分类"></a>神经网络实现鸢尾花分类</h2><p>准备数据</p>
 <ul>
 <li>数据集读入</li>
 <li>数据集乱序</li>
@@ -266,7 +275,6 @@
 <p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Loss_Function_Curve.png" alt></p>
 <p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Acc_Curve.png" alt></p>
 
-      
     </div>
 
     
@@ -274,557 +282,58 @@
     
     <div>
       
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
       
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/">
+    </div>
+        <div class="reward-container">
+  <div>Your support will encourage me to continue to write!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/wechatpay.jpg" alt="亦新 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/alipay.jpg" alt="亦新 支付宝">
+        <p>支付宝</p>
+      </div>
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
-      <meta itemprop="name" content="亦新">
-      <meta itemprop="description" content="热爱可抵岁月漫长">
-    </span>
+  </div>
+</div>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daytoy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
+
+      <footer class="post-footer">
           
-            <a href="/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/" class="post-title-link" itemprop="url">Windows10安装TensorFlow</a>
-        </h2>
+          <div class="post-tags">
+              <a href="/daytoy/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 深度学习</a>
+              <a href="/daytoy/tags/Tensorflow/" rel="tag"><i class="fa fa-tag"></i> Tensorflow</a>
+              <a href="/daytoy/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag"><i class="fa fa-tag"></i> 人工智能</a>
+          </div>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/daytoy/categories/Tensorflow%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">Tensorflow学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.4k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-Anaconda下载及安装"><a href="#1-Anaconda下载及安装" class="headerlink" title="1. Anaconda下载及安装"></a>1. Anaconda下载及安装</h2><p><a href="https://www.anaconda.com/products/individual#macos" target="_blank" rel="noopener">Anaconda官网</a></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.png" alt></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-    <div>
-      
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/" rel="prev" title="Windows10安装TensorFlow">
+      <i class="fa fa-chevron-left"></i> Windows10安装TensorFlow
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2020/12/04/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%EF%BC%9ATensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%80)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
-      <meta itemprop="name" content="亦新">
-      <meta itemprop="description" content="热爱可抵岁月漫长">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daytoy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/daytoy/2020/12/04/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%EF%BC%9ATensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%80)/" class="post-title-link" itemprop="url">人工智能：Tensorflow2笔记(一)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/daytoy/categories/Tensorflow%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">Tensorflow学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>6.9k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="人工智能"><a href="#人工智能" class="headerlink" title="人工智能"></a>人工智能</h2><p>让机器具备人的思维和意识.</p>
-<h3 id="人工智能三学派："><a href="#人工智能三学派：" class="headerlink" title="人工智能三学派："></a>人工智能三学派：</h3><ul>
-<li><p>行为主义：基于控制论，构建感知-动作控制系统.（控制论，如平衡、行走、避障等自适应控制系统，实例：让机器人抬起一只脚，如何控制整体平衡）</p>
-</li>
-<li><p>符号主义：基于算数逻辑表达式，求解问题先把问题描述为表达式，再求表达式.(公式描述、实现理性思维，如专家系统)</p>
-</li>
-<li><p>连接主义：仿生学，模仿神经元连接关系.(仿脑神经元连接，实现感性思维，如神经网络)</p></li></ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/daytoy/2020/12/04/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%EF%BC%9ATensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%80)/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
-      <meta itemprop="name" content="亦新">
-      <meta itemprop="description" content="热爱可抵岁月漫长">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daytoy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">python机器学习之鸢尾花分类问题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/daytoy/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">python学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><font size="4" face="楷体"><strong>已知：</strong>鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm.</font></p>
-<p><font size="4" face="楷体"><strong>目标：</strong>构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.</font></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
-      <meta itemprop="name" content="亦新">
-      <meta itemprop="description" content="热爱可抵岁月漫长">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daytoy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/daytoy/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">稀疏自编码器重构数据点的Matlab实现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/daytoy/categories/%E6%99%BA%E8%83%BD%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">智能计算</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>以下代码源自MathWorks官方文档<a href="https://www.mathworks.com/help/deeplearning/ref/trainautoencoder.html?s_tid=gn_loc_drop" target="_blank" rel="noopener">trainAutoencoder</a>的Examples.目标是实现1000个数据点的重构,并给出重构与原数据对比图.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/daytoy/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
-      <meta itemprop="name" content="亦新">
-      <meta itemprop="description" content="热爱可抵岁月漫长">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daytoy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/" class="post-title-link" itemprop="url">Matlab数据处理--数据降维</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/daytoy/categories/Matlab%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">Matlab与数据分析</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
-<p>目前，常用的降维技术有两种，主成分分析、因子分析.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
-      <meta itemprop="name" content="亦新">
-      <meta itemprop="description" content="热爱可抵岁月漫长">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daytoy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/daytoy/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Python函数及变量的定义和使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/daytoy/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">python学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/daytoy/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
-      <meta itemprop="name" content="亦新">
-      <meta itemprop="description" content="热爱可抵岁月漫长">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Daytoy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">python turtle库"一箭穿心"代码实现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/daytoy/categories/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">python学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>利用python中的turtle库实现“一箭穿心”简单绘图</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -877,6 +386,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#神经网络实现鸢尾花分类"><span class="nav-number">1.</span> <span class="nav-text">神经网络实现鸢尾花分类</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
