@@ -62,133 +62,6 @@
       </tags>
   </entry>
   <entry>
-    <title>python turtle库&quot;一箭穿心&quot;代码实现</title>
-    <url>/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p>利用python中的turtle库实现“一箭穿心”简单绘图</p>
-<a id="more"></a>
-
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>源代码如下：</p>
-<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">turtle</span> <span class="selector-tag">as</span> <span class="selector-tag">t</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.color</span>(<span class="string">'red'</span>,<span class="string">'pink'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.hideturtle</span>()#隐藏画笔形状</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.speed</span>(<span class="string">'fast'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.begin_fill</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.width</span>(<span class="number">4</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.goto</span>(<span class="number">50</span>,-<span class="number">30</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">270</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.end_fill</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.color</span>(<span class="string">'black'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.goto</span>(<span class="number">230</span>,-<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line">#尾<span class="selector-tag">1</span><span class="selector-class">.1</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">1</span><span class="selector-class">.2</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">80</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾间</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">2</span><span class="selector-class">.1</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">2</span><span class="selector-class">.2</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#箭身</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">145</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line">#箭矢</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">30</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">60</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">120</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">60</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.done</span>()</span><br></pre></td></tr></table></figure>
-
-<p>整体的思路就是运用了turtle库中的各种指令，下面附注一些对turtle库的几处简要说明，代码比较容易，可以尝试编写哦.</p>
-<h3 id="指令说明"><a href="#指令说明" class="headerlink" title="指令说明"></a>指令说明</h3><table>
-<thead>
-<tr>
-<th align="center">指令</th>
-<th align="center">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">turtle.color(’color1‘,‘color2’)</td>
-<td align="center">color1画笔颜色,color2填充颜色,若无填充可省略’color2’</td>
-</tr>
-<tr>
-<td align="center">turtle.width(size)</td>
-<td align="center">画笔宽度，参数size</td>
-</tr>
-<tr>
-<td align="center">turtle.hideturtle()</td>
-<td align="center">hide，即隐藏画笔形状</td>
-</tr>
-<tr>
-<td align="center">turtle.pu()</td>
-<td align="center">put up，抬起画笔，之后画笔行进轨迹将不再显示</td>
-</tr>
-<tr>
-<td align="center">turtle.pd()</td>
-<td align="center">put down，放下画笔，画笔轨迹继续显示</td>
-</tr>
-<tr>
-<td align="center">turtle.fd(d)</td>
-<td align="center">forward，向正前方前进距离d</td>
-</tr>
-<tr>
-<td align="center">turtle.bd(d)</td>
-<td align="center">backward，向正后方移动距离d</td>
-</tr>
-<tr>
-<td align="center">turtle.left(angle)</td>
-<td align="center">画笔前进方向逆时针转动角度angle</td>
-</tr>
-<tr>
-<td align="center">turtle.right(angle)</td>
-<td align="center">画笔前进方向顺时针转动角度angle</td>
-</tr>
-<tr>
-<td align="center">turtle.goto(x,y)</td>
-<td align="center">画笔移动到坐标位置(x,y)，注意移动轨迹也会显示</td>
-</tr>
-<tr>
-<td align="center">turtle.circle(r,angle)</td>
-<td align="center">以当前画笔方向左侧某处为圆心进行曲线运行，r为曲线半径，angle是曲线圆心角度数（注意运行后画笔方向随之改变）</td>
-</tr>
-<tr>
-<td align="center">turtle.begin_fill()</td>
-<td align="center">开始填充</td>
-</tr>
-<tr>
-<td align="center">turtle.end_fill()</td>
-<td align="center">结束填充</td>
-</tr>
-<tr>
-<td align="center">turtle.speed(’speed‘)</td>
-<td align="center">画笔速度，’speed’可选择’fast’,’fastest’,’slow’等</td>
-</tr>
-</tbody></table>
-<h3 id="坐标体系"><a href="#坐标体系" class="headerlink" title="坐标体系"></a>坐标体系</h3><h4 id="1-绝对坐标"><a href="#1-绝对坐标" class="headerlink" title="1.绝对坐标"></a>1.绝对坐标</h4><img src="https://raw.githubusercontent.com/yixin-oss/Image/master/imgxy.png">
-
-<p>绝对坐标其实就是指平面直角坐标系，利用坐标表示平面中点的位置，与指令turtle.goto(x,y)对应，可以控制画笔移动到某一坐标位置，由于移动轨迹会显示，故可搭配turtle.pu()，turtle.pd()一起使用.</p>
-<h4 id="2-海龟坐标"><a href="#2-海龟坐标" class="headerlink" title="2.海龟坐标"></a>2.海龟坐标</h4><img src="https://raw.githubusercontent.com/yixin-oss/Image/master/imgturtle%E5%9D%90%E6%A0%87.png">
-
-<p>海龟坐标就是站在海龟的角度考虑方向问题，海龟可不认识坐标点哦，只需要考虑前进(forward)还是后退(backward)，向左(left)还是向右(right)，注意水平向右是海龟的默认初始方向，left和right指以当前海龟的方向向左转或者向右转，如果海龟方向比较奇怪的时候可能分不清左右(我个人如此)，故建议用顺(right)逆(left)时针来记(可看表的指针).</p>
-<h3 id="RGB色彩体系"><a href="#RGB色彩体系" class="headerlink" title="RGB色彩体系"></a>RGB色彩体系</h3><p>提到色彩最重要的当然就是画笔颜色和填充颜色，白+彩虹七色就不用多说了，下面介绍几种特殊颜色</p>
-<table>
-<thead>
-<tr>
-<th align="center">词汇</th>
-<th align="center">颜色</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">pink</td>
-<td align="center">粉色</td>
-</tr>
-<tr>
-<td align="center">magenta</td>
-<td align="center">洋红</td>
-</tr>
-<tr>
-<td align="center">cyan</td>
-<td align="center">青色</td>
-</tr>
-<tr>
-<td align="center">seashell</td>
-<td align="center">海贝色(很浅)</td>
-</tr>
-<tr>
-<td align="center">gold</td>
-<td align="center">金色</td>
-</tr>
-<tr>
-<td align="center">brown</td>
-<td align="center">棕色</td>
-</tr>
-<tr>
-<td align="center">tomato</td>
-<td align="center">番茄色</td>
-</tr>
-</tbody></table>
-<p>当然还可以根据红蓝绿三个通道颜色组合设计自己想要的颜色，每种颜色的取值默认为小数值，举例用法：turtle.pencolor((0.63,0.12,0.94)) (紫色).</p>
-<h3 id="赞助"><a href="#赞助" class="headerlink" title="赞助"></a>赞助</h3><p>如果对本文有好感，可以点击下方打赏赞助我买包辣条嘛，一两块钱就可以哦，咦嘻嘻~</p>
-]]></content>
-      <categories>
-        <category>python学习笔记</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python函数及变量的定义和使用</title>
     <url>/daytoy/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
@@ -361,147 +234,127 @@
       </tags>
   </entry>
   <entry>
-    <title>wordcloud库</title>
-    <url>/daytoy/2021/04/12/wordcloud%E5%BA%93/</url>
-    <content><![CDATA[<h2 id="一、wordcloud库基本介绍"><a href="#一、wordcloud库基本介绍" class="headerlink" title="一、wordcloud库基本介绍"></a>一、wordcloud库基本介绍</h2><p>优秀的词云展示第三方库.</p>
-<p>词云以词语为单位，更直观和艺术的展示文字.</p>
-<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> wordcloud</span><br></pre></td></tr></table></figure>
-
+    <title>python turtle库&quot;一箭穿心&quot;代码实现</title>
+    <url>/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>利用python中的turtle库实现“一箭穿心”简单绘图</p>
 <a id="more"></a>
 
-<h3 id="2-wordcloud库常规方法"><a href="#2-wordcloud库常规方法" class="headerlink" title="2.wordcloud库常规方法"></a>2.wordcloud库常规方法</h3><p><strong>w=wordcloud.WordCloud()</strong>生成一个词云对象.</p>
-<ul>
-<li>wordcloud库把词云当作一个WordCloud对象.</li>
-<li>wordcloud.WordCloud()代表一个文本对应词云.</li>
-<li>可以根据文本中词云出现的频率等参数绘制词云.</li>
-<li>绘制词云的形状、尺寸和颜色都可以设定.</li>
-</ul>
-<table>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>源代码如下：</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">turtle</span> <span class="selector-tag">as</span> <span class="selector-tag">t</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.color</span>(<span class="string">'red'</span>,<span class="string">'pink'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.hideturtle</span>()#隐藏画笔形状</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.speed</span>(<span class="string">'fast'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.begin_fill</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.width</span>(<span class="number">4</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.goto</span>(<span class="number">50</span>,-<span class="number">30</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">270</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.end_fill</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.color</span>(<span class="string">'black'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.goto</span>(<span class="number">230</span>,-<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line">#尾<span class="selector-tag">1</span><span class="selector-class">.1</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">1</span><span class="selector-class">.2</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">80</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾间</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">2</span><span class="selector-class">.1</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">2</span><span class="selector-class">.2</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#箭身</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">145</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line">#箭矢</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">30</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">60</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">120</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">60</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.done</span>()</span><br></pre></td></tr></table></figure>
+
+<p>整体的思路就是运用了turtle库中的各种指令，下面附注一些对turtle库的几处简要说明，代码比较容易，可以尝试编写哦.</p>
+<h3 id="指令说明"><a href="#指令说明" class="headerlink" title="指令说明"></a>指令说明</h3><table>
 <thead>
 <tr>
-<th align="center">方法</th>
-<th align="center">描述</th>
+<th align="center">指令</th>
+<th align="center">说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">w.generate(txt)</td>
-<td align="center">向WordCloud对象w中加载文本txt</td>
+<td align="center">turtle.color(’color1‘,‘color2’)</td>
+<td align="center">color1画笔颜色,color2填充颜色,若无填充可省略’color2’</td>
 </tr>
 <tr>
-<td align="center">w.to_file(filename)</td>
-<td align="center">将词云输出为图像文件，.png or .jpg格式</td>
+<td align="center">turtle.width(size)</td>
+<td align="center">画笔宽度，参数size</td>
+</tr>
+<tr>
+<td align="center">turtle.hideturtle()</td>
+<td align="center">hide，即隐藏画笔形状</td>
+</tr>
+<tr>
+<td align="center">turtle.pu()</td>
+<td align="center">put up，抬起画笔，之后画笔行进轨迹将不再显示</td>
+</tr>
+<tr>
+<td align="center">turtle.pd()</td>
+<td align="center">put down，放下画笔，画笔轨迹继续显示</td>
+</tr>
+<tr>
+<td align="center">turtle.fd(d)</td>
+<td align="center">forward，向正前方前进距离d</td>
+</tr>
+<tr>
+<td align="center">turtle.bd(d)</td>
+<td align="center">backward，向正后方移动距离d</td>
+</tr>
+<tr>
+<td align="center">turtle.left(angle)</td>
+<td align="center">画笔前进方向逆时针转动角度angle</td>
+</tr>
+<tr>
+<td align="center">turtle.right(angle)</td>
+<td align="center">画笔前进方向顺时针转动角度angle</td>
+</tr>
+<tr>
+<td align="center">turtle.goto(x,y)</td>
+<td align="center">画笔移动到坐标位置(x,y)，注意移动轨迹也会显示</td>
+</tr>
+<tr>
+<td align="center">turtle.circle(r,angle)</td>
+<td align="center">以当前画笔方向左侧某处为圆心进行曲线运行，r为曲线半径，angle是曲线圆心角度数（注意运行后画笔方向随之改变）</td>
+</tr>
+<tr>
+<td align="center">turtle.begin_fill()</td>
+<td align="center">开始填充</td>
+</tr>
+<tr>
+<td align="center">turtle.end_fill()</td>
+<td align="center">结束填充</td>
+</tr>
+<tr>
+<td align="center">turtle.speed(’speed‘)</td>
+<td align="center">画笔速度，’speed’可选择’fast’,’fastest’,’slow’等</td>
 </tr>
 </tbody></table>
-<h3 id="3-基本步骤"><a href="#3-基本步骤" class="headerlink" title="3.基本步骤"></a>3.基本步骤</h3><ol>
-<li>配置对象参数</li>
-<li>加载词云文本</li>
-<li>输出词云文件</li>
-</ol>
-<p><strong>示例</strong></p>
-<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">import wordcloud</span><br><span class="line">c = wordcloud.<span class="constructor">WordCloud()</span></span><br><span class="line">c.generate('wordcloud by Python')</span><br><span class="line">c.<span class="keyword">to</span><span class="constructor">_file('<span class="params">pywordcloud</span>.<span class="params">png</span>')</span></span><br></pre></td></tr></table></figure>
+<h3 id="坐标体系"><a href="#坐标体系" class="headerlink" title="坐标体系"></a>坐标体系</h3><h4 id="1-绝对坐标"><a href="#1-绝对坐标" class="headerlink" title="1.绝对坐标"></a>1.绝对坐标</h4><img src="https://raw.githubusercontent.com/yixin-oss/Image/master/imgxy.png">
 
-<p><strong>四步：</strong></p>
-<ol>
-<li>以空格为分隔符号，将文本分隔成单词.</li>
-<li>统计单词出现次数并过滤短单词.</li>
-<li>根据统计配置字号.</li>
-<li>布局：颜色环境尺寸.</li>
-</ol>
-<p><strong>配置对象参数</strong></p>
-<p><strong>w = wordcloud.WoedCloud(&lt;参数&gt;)</strong></p>
+<p>绝对坐标其实就是指平面直角坐标系，利用坐标表示平面中点的位置，与指令turtle.goto(x,y)对应，可以控制画笔移动到某一坐标位置，由于移动轨迹会显示，故可搭配turtle.pu()，turtle.pd()一起使用.</p>
+<h4 id="2-海龟坐标"><a href="#2-海龟坐标" class="headerlink" title="2.海龟坐标"></a>2.海龟坐标</h4><img src="https://raw.githubusercontent.com/yixin-oss/Image/master/imgturtle%E5%9D%90%E6%A0%87.png">
+
+<p>海龟坐标就是站在海龟的角度考虑方向问题，海龟可不认识坐标点哦，只需要考虑前进(forward)还是后退(backward)，向左(left)还是向右(right)，注意水平向右是海龟的默认初始方向，left和right指以当前海龟的方向向左转或者向右转，如果海龟方向比较奇怪的时候可能分不清左右(我个人如此)，故建议用顺(right)逆(left)时针来记(可看表的指针).</p>
+<h3 id="RGB色彩体系"><a href="#RGB色彩体系" class="headerlink" title="RGB色彩体系"></a>RGB色彩体系</h3><p>提到色彩最重要的当然就是画笔颜色和填充颜色，白+彩虹七色就不用多说了，下面介绍几种特殊颜色</p>
 <table>
 <thead>
 <tr>
-<th align="center">参数</th>
-<th align="center">描述</th>
+<th align="center">词汇</th>
+<th align="center">颜色</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">width</td>
-<td align="center">指定词云对象生成图片的宽度，默认400像素</td>
+<td align="center">pink</td>
+<td align="center">粉色</td>
 </tr>
 <tr>
-<td align="center">height</td>
-<td align="center">指定词云对象生成图片的高度，默认200像素</td>
+<td align="center">magenta</td>
+<td align="center">洋红</td>
 </tr>
 <tr>
-<td align="center">min_font_size</td>
-<td align="center">指定词云中字体的最小字号，默认4号</td>
+<td align="center">cyan</td>
+<td align="center">青色</td>
 </tr>
 <tr>
-<td align="center">max_font_size</td>
-<td align="center">指定词云中字体的最大字号，根据高度自动调节</td>
+<td align="center">seashell</td>
+<td align="center">海贝色(很浅)</td>
 </tr>
 <tr>
-<td align="center">font_step</td>
-<td align="center">指定词云中字体字号的步进间隔，默认1</td>
+<td align="center">gold</td>
+<td align="center">金色</td>
 </tr>
 <tr>
-<td align="center">font_path</td>
-<td align="center">指定字体文件的路径，默认None   e.g.”msyh.ttc”微软雅黑</td>
+<td align="center">brown</td>
+<td align="center">棕色</td>
 </tr>
 <tr>
-<td align="center">max_words</td>
-<td align="center">指定词云显示的最大单词数量，默认200</td>
-</tr>
-<tr>
-<td align="center">stop_words</td>
-<td align="center">指定词云排除词列表   e.g. stop_words={‘Python’}</td>
-</tr>
-<tr>
-<td align="center">mask</td>
-<td align="center">指定词云形状，默认为长方形，需要引用imread()函数</td>
-</tr>
-<tr>
-<td align="center">backgroud_color</td>
-<td align="center">指定词云图片背景颜色，默认黑色 e.g.backgroud_color=’white’</td>
+<td align="center">tomato</td>
+<td align="center">番茄色</td>
 </tr>
 </tbody></table>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.misc <span class="keyword">import</span> imread</span><br><span class="line">mk = imread(<span class="string">'pic.png'</span>)</span><br><span class="line">w = wordcloud.WordCloud(mask=mk)</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-应用实例"><a href="#4-应用实例" class="headerlink" title="4.应用实例"></a>4.应用实例</h3><p><strong>英文</strong></p>
-<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">'life is short, you need python'</span></span><br><span class="line">w = wordcloud.WordCloud( <span class="string">\</span></span><br><span class="line">        backgroud_color = <span class="string">'white'</span>)<span class="comment">#生成一个词云对象，背景设为白色</span></span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"pywordcloud.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>中文</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#需要对中文先进行分词，引入jieba库</span></span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">"程序设计语言是计算机能够理解和\</span></span><br><span class="line"><span class="string">识别用户操作意图的一种交互体系，它按照\</span></span><br><span class="line"><span class="string">特定规则组织计算机指令，使计算机能够自\</span></span><br><span class="line"><span class="string">动进行各种运算处理。"</span></span><br><span class="line">w = wordcloud.WordCloud( width=<span class="number">1000</span>,\</span><br><span class="line">    font_path=<span class="string">"msyh.ttc"</span>,height=<span class="number">700</span>)</span><br><span class="line">w.genrtate(<span class="string">''</span>.join(jieba.lcut(txt)))</span><br><span class="line">w.to_file(<span class="string">"pythoncloud.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>Remark.</strong> 中文需要先分词并组成空格分隔字符串.</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/pythoncloud.png" style="zoom: 50%;">
-
-<h2 id="二、实例：政府工作报告词云"><a href="#二、实例：政府工作报告词云" class="headerlink" title="二、实例：政府工作报告词云"></a>二、实例：政府工作报告词云</h2><h3 id="1-问题分析"><a href="#1-问题分析" class="headerlink" title="1.问题分析"></a>1.问题分析</h3><ul>
-<li>需求：对于政府工作报告等政策文件，如何直观理解？</li>
-<li>体会直观价值：生成词云&amp;优化词云</li>
-<li>两份重要文件<ul>
-<li><a href="https://python123.io/resources/pye/新时代中国特色社会主义.txt" target="_blank" rel="noopener">习总书记在中国共产党第十九次全国代表大会上的报告</a></li>
-<li><a href="https://python123.io/resources/pye/关于实施乡村振兴战略的意见.txt" target="_blank" rel="noopener">中共中央 国务院关于实施乡村振兴战略的意见</a></li>
-</ul>
-</li>
-</ul>
-<p><strong>政府报告等文件—&gt;&gt;有效展示的词云</strong></p>
-<h3 id="2-基本思路"><a href="#2-基本思路" class="headerlink" title="2.基本思路"></a>2.基本思路</h3><ul>
-<li>读取文件、分词整理</li>
-<li>设置并输入词云</li>
-<li>观察结果，优化迭代</li>
-</ul>
-<h3 id="3-代码展示"><a href="#3-代码展示" class="headerlink" title="3.代码展示"></a>3.代码展示</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"新时代中国特色社会主义.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>: <span class="comment">#移除单字</span></span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"新时代中国特色社会主义.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/新时代中国特色社会主义.png" style="zoom: 50%;">
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"乡村振兴战略意见.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>:</span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"乡村振兴战略意见.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见.png" style="zoom:50%;">
-
-<h3 id="4-优化"><a href="#4-优化" class="headerlink" title="4.优化"></a>4.优化</h3><h4 id="（1）减少词云数目"><a href="#（1）减少词云数目" class="headerlink" title="（1）减少词云数目"></a>（1）减少词云数目</h4><figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">w = wordcloud.<span class="constructor">WordCloud(<span class="params">font_path</span>=<span class="string">"msyh.ttc"</span>,<span class="params">width</span>=1000, <span class="params">height</span>=700, <span class="params">background_color</span>=<span class="string">"white"</span>,<span class="params">max_words</span>=15)</span></span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见15词.png" style="zoom:50%;">
-
-<h4 id="（2）改变词云背景"><a href="#（2）改变词云背景" class="headerlink" title="（2）改变词云背景"></a>（2）改变词云背景</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment">#金色背景</span></span><br><span class="line">w = wordcloud.WordCloud(<span class="attribute">font_path</span>=<span class="string">"msyh.ttc"</span>,width=1000, <span class="attribute">height</span>=700, <span class="attribute">background_color</span>=<span class="string">"gold"</span>,max_words=15)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见gold背景.png" style="zoom:50%;">
-
+<p>当然还可以根据红蓝绿三个通道颜色组合设计自己想要的颜色，每种颜色的取值默认为小数值，举例用法：turtle.pencolor((0.63,0.12,0.94)) (紫色).</p>
+<h3 id="赞助"><a href="#赞助" class="headerlink" title="赞助"></a>赞助</h3><p>如果对本文有好感，可以点击下方打赏赞助我买包辣条嘛，一两块钱就可以哦，咦嘻嘻~</p>
 ]]></content>
       <categories>
-        <category>python学习</category>
+        <category>python学习笔记</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -631,162 +484,6 @@
       <tags>
         <tag>python</tag>
         <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>人工智能-Tensorflow2笔记(三)</title>
-    <url>/daytoy/2020/12/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%89)/</url>
-    <content><![CDATA[<h1 id="神经网络优化"><a href="#神经网络优化" class="headerlink" title="神经网络优化"></a>神经网络优化</h1><h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p><strong>tf.where()</strong></p>
-<p>条件语句，真返回A，假返回B</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">import</span> <span class="string">tensorflow</span> <span class="string">as</span> <span class="string">tf</span></span><br><span class="line"><span class="string">a</span> <span class="string">=</span> <span class="string">tf.constant([1,</span> <span class="number">2</span><span class="string">,</span> <span class="number">3</span><span class="string">,</span> <span class="number">1</span><span class="string">,</span> <span class="number">1</span><span class="string">])</span></span><br><span class="line"><span class="string">b</span> <span class="string">=</span> <span class="string">tf.constant([0,</span> <span class="number">1</span><span class="string">,</span> <span class="number">3</span><span class="string">,</span> <span class="number">4</span><span class="string">,</span> <span class="number">5</span><span class="string">])</span></span><br><span class="line"><span class="string">c</span> <span class="string">=</span> <span class="string">tf.where(tf.greater(a,</span> <span class="string">b),</span> <span class="string">a,</span> <span class="string">b)</span> <span class="comment">#若a&gt;b,返回a对应位置元素</span></span><br><span class="line"><span class="comment">#否则返回b对应位置元素</span></span><br><span class="line"><span class="string">print('c:',</span> <span class="string">c)</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">c: tf.Tensor([<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">int</span>32)</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<p><strong>np.random.RandomState.rand(维度)</strong></p>
-<p>返回一个[0,1)之间的随机数，维度为空，则返回标量</p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">rdm = np<span class="selector-class">.random</span>.RandomState(seed=<span class="number">1</span>) #随机数种子seed=常数，每次生成随机数相同</span><br><span class="line"><span class="selector-tag">a</span> = rdm.rand() #返回一个随机标量</span><br><span class="line"><span class="selector-tag">b</span> = rdm.rand(<span class="number">2</span>, <span class="number">3</span>) #返回维度<span class="number">2</span>行<span class="number">3</span>列随机数矩阵</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'a:'</span>, a)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'b:'</span>, b)</span></span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">result:</span></span><br><span class="line"><span class="attr">a:</span> <span class="number">0.417022004702574</span></span><br><span class="line"><span class="attr">b:</span> <span class="string">[[7.20324493e-01</span> <span class="number">1.14374817e-04</span> <span class="number">3.02332573e-01</span><span class="string">]</span></span><br><span class="line"> <span class="string">[1.46755891e-01</span> <span class="number">9.23385948e-02</span> <span class="number">1.86260211e-01</span><span class="string">]]</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>np.vstack(数组1，数组2)</strong></p>
-<p>两个数组按垂直方向叠加</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">a1 = np.<span class="built_in">array</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">a2 = np.<span class="built_in">array</span>([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line">c1 = np.vstack((a1, a2))</span><br><span class="line">print(<span class="string">'c1:\n'</span>, c1)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">c1:</span><br><span class="line"> [[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]</span><br></pre></td></tr></table></figure>
-
-<p><strong>np.mgrid(起始值：结束值：步长，起始值：结束值：步长，…)</strong></p>
-<p>[起始值 结束值)</p>
-<p>返回若干组维度相同的等差数组</p>
-<p><strong>x.reval()</strong></p>
-<p>将x变成一维数组，即把x拉直</p>
-<p><strong>np.c_[数组1，数组2]</strong></p>
-<p>返回的间隔数值点配对</p>
-<p><strong>以上3个函数经常一起使用，可以生成网格坐标点</strong></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">x, y = np<span class="selector-class">.mgrid</span>[<span class="number">1</span>:<span class="number">3</span>:<span class="number">1</span>, <span class="number">2</span>:<span class="number">4</span>:<span class="number">0.5</span>]</span><br><span class="line">grid = np<span class="selector-class">.c_</span>[x.ravel(), y.ravel()]</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'x:'</span>, x)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'y:'</span>, y)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'grid:\n'</span>, grid)</span></span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">x: [[<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>]</span><br><span class="line"> [<span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span>]]</span><br><span class="line">y: [[<span class="number">2.</span>  <span class="number">2.5</span> <span class="number">3.</span>  <span class="number">3.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.5</span> <span class="number">3.</span>  <span class="number">3.5</span>]]</span><br><span class="line"> grid:</span><br><span class="line"> [[<span class="number">1.</span>  <span class="number">2.</span> ]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">2.5</span>]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">3.</span> ]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">3.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.</span> ]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">3.</span> ]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">3.5</span>]]</span><br><span class="line"># 构成了网格坐标点</span><br></pre></td></tr></table></figure>
-
-<h2 id="神经网络-NN-复杂度"><a href="#神经网络-NN-复杂度" class="headerlink" title="神经网络(NN)复杂度"></a>神经网络(NN)复杂度</h2><p>NN复杂度：多用NN层数和NN参数个数表示</p>
-<ul>
-<li>空间复杂度</li>
-</ul>
-<p>层数 = 隐藏层层数 + 1个输出层</p>
-<p>总参数 = 总w + 总b</p>
-<ul>
-<li>时间复杂度</li>
-</ul>
-<p>乘加运算次数</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607497708(1).jpg">
-
-<p>图为2层NN.</p>
-<p>第一层参数w是3行4列的，加4个偏置项b，第二层参数是4行2列的，两个偏置项，共26个参数.</p>
-<p>每条权重线代表1次乘加运算，第1层12，第2层8次，共20次乘加运算.</p>
-<h2 id="指数衰减学习率"><a href="#指数衰减学习率" class="headerlink" title="指数衰减学习率"></a>指数衰减学习率</h2><p>先用较大学习率，快速得到较优解，逐步减小学习率，得到最优解</p>
-<p>指数衰减学习率 = 初始学习率*学习率衰减率^(当前轮数/多少轮衰减一次)</p>
-<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">import tensorflow <span class="keyword">as</span> <span class="keyword">tf</span></span><br><span class="line">epoch = <span class="number">40</span></span><br><span class="line"><span class="keyword">w</span> = <span class="keyword">tf</span>.Variable(<span class="keyword">tf</span>.constant(<span class="number">5</span>, dtype=<span class="keyword">tf</span>.float32))</span><br><span class="line">lr_base = <span class="number">0.2</span></span><br><span class="line">lr_decay = <span class="number">0.99</span></span><br><span class="line">lr_step = <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> epoch in <span class="built_in">range</span>(epoch):</span><br><span class="line">    <span class="keyword">lr</span> = lr_base * lr_decay ** (epoch / lr_step)</span><br><span class="line">    with <span class="keyword">tf</span>.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        loss = <span class="keyword">tf</span>.square(<span class="keyword">w</span>+<span class="number">1</span>)</span><br><span class="line">    grads = tape.gradient(loss, <span class="keyword">w</span>)</span><br><span class="line">    <span class="keyword">w</span>.assign_sub(<span class="keyword">lr</span> * grads)</span><br><span class="line">    <span class="keyword">print</span>(<span class="string">'After %s epoch, w is %f, loss is %f, lr is %f'</span> % (epoch, <span class="keyword">w</span>.numpy(), loss, <span class="keyword">lr</span>))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">After <span class="number">0</span> epoch, w <span class="keyword">is</span> <span class="number">2.600000</span>, loss <span class="keyword">is</span> <span class="number">36.000000</span>, lr <span class="keyword">is</span> <span class="number">0.200000</span></span><br><span class="line">After <span class="number">1</span> epoch, w <span class="keyword">is</span> <span class="number">1.174400</span>, loss <span class="keyword">is</span> <span class="number">12.959999</span>, lr <span class="keyword">is</span> <span class="number">0.198000</span></span><br><span class="line">After <span class="number">2</span> epoch, w <span class="keyword">is</span> <span class="number">0.321948</span>, loss <span class="keyword">is</span> <span class="number">4.728015</span>, lr <span class="keyword">is</span> <span class="number">0.196020</span></span><br><span class="line">After <span class="number">3</span> epoch, w <span class="keyword">is</span> <span class="number">-0.191126</span>, loss <span class="keyword">is</span> <span class="number">1.747547</span>, lr <span class="keyword">is</span> <span class="number">0.194060</span></span><br><span class="line">After <span class="number">4</span> epoch, w <span class="keyword">is</span> <span class="number">-0.501926</span>, loss <span class="keyword">is</span> <span class="number">0.654277</span>, lr <span class="keyword">is</span> <span class="number">0.192119</span></span><br><span class="line">After <span class="number">5</span> epoch, w <span class="keyword">is</span> <span class="number">-0.691392</span>, loss <span class="keyword">is</span> <span class="number">0.248077</span>, lr <span class="keyword">is</span> <span class="number">0.190198</span></span><br><span class="line">After <span class="number">6</span> epoch, w <span class="keyword">is</span> <span class="number">-0.807611</span>, loss <span class="keyword">is</span> <span class="number">0.095239</span>, lr <span class="keyword">is</span> <span class="number">0.188296</span></span><br><span class="line">After <span class="number">7</span> epoch, w <span class="keyword">is</span> <span class="number">-0.879339</span>, loss <span class="keyword">is</span> <span class="number">0.037014</span>, lr <span class="keyword">is</span> <span class="number">0.186413</span></span><br><span class="line">After <span class="number">8</span> epoch, w <span class="keyword">is</span> <span class="number">-0.923874</span>, loss <span class="keyword">is</span> <span class="number">0.014559</span>, lr <span class="keyword">is</span> <span class="number">0.184549</span></span><br><span class="line">After <span class="number">9</span> epoch, w <span class="keyword">is</span> <span class="number">-0.951691</span>, loss <span class="keyword">is</span> <span class="number">0.005795</span>, lr <span class="keyword">is</span> <span class="number">0.182703</span></span><br><span class="line">After <span class="number">10</span> epoch, w <span class="keyword">is</span> <span class="number">-0.969167</span>, loss <span class="keyword">is</span> <span class="number">0.002334</span>, lr <span class="keyword">is</span> <span class="number">0.180876</span></span><br><span class="line">... ...</span><br></pre></td></tr></table></figure>
-
-<p>可以看出，随着迭代轮数的增加，学习率在指数衰减.</p>
-<h2 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607499785(1).jpg" alt></p>
-<p>激活函数大大提升了模型表达能力</p>
-<ul>
-<li><p>优秀的激活函数</p>
-<ul>
-<li>非线性：不会被单层网络替代，多层网络可逼近所有函数</li>
-<li>可微性：优化器大多用梯度下降更新参数</li>
-<li>单调性：保证单层网络损失函数是凸函数</li>
-<li>近似恒等性：f(x)≈x，网络更稳定</li>
-</ul>
-</li>
-<li><p>激活函数输出值范围：</p>
-<ul>
-<li>激活函数输出有限值，基于梯度的优化方法更稳定;</li>
-<li>无限值时，参数初始值对模型影响大，要使用更小的学习率.</li>
-</ul>
-</li>
-</ul>
-<p>$$<br>Sigmoid:f(x)=\frac{1}{1+e^{-x}}<br>$$</p>
-<p>特点：易造成梯度消失；输出非0均值，收敛慢；幂运算复杂，训练时间长.<br>$$<br>Tanh:f(x)=\frac{1-e^{-2x}}{1+e^{-2x}}<br>$$<br>特点：输出是0均值；易造成梯度消失；幂运算复杂，训练时间长.<br>$$<br>Relu:f(x)=max(x,0)={_{x,x&gt;=0}^{0,x&lt;0}<br>$$<br>优点：在正区间内解决了梯度消失问题；只需判断输入是否大于0，计算速度快；收敛速度快于sigmoid和tanh</p>
-<p>缺点：输出非0均值，收敛慢；Dead ReIU问题：输入特征是负数时，激活函数输出是0，反向传播梯度是0，参数无法更新，导致神经元死亡.<br>$$<br>Leaky Relu:f(x)=max(\alpha x,x)<br>$$<br>实际操作中，选择relu做激活函数的网络会更多.</p>
-<p>对于使用激活函数的建议：</p>
-<ul>
-<li>首选relu函数</li>
-<li>学习率设置较小值</li>
-<li>输入特征标准化，即满足以0为均值，1为标准差的正态分布</li>
-<li>初始参数中心化，即随机生成的参数满足0为均值，sqrt(2/当前层输入特征个数)为标准差的正态分布.</li>
-</ul>
-<h2 id="损失函数-loss"><a href="#损失函数-loss" class="headerlink" title="损失函数(loss)"></a>损失函数(loss)</h2><p>预测值与已知答案的差距</p>
-<p>主流的三种损失函数：均方误差、自定义、交叉熵</p>
-<p><strong>均方误差mse：</strong><br>$$<br>MSE(y_,y)=\frac{\sum_{i=1}^{n}(y-y_{-})^{2}}{n}<br>$$<br><strong>loss_mse = tf.reduce_mean(tf.square(y_-y))</strong></p>
-<p>构建例子来理解：预测日销量.</p>
-<p>x1, x2是影响日销量的因素，预先采集每日x1, x2, y_(已知答案)</p>
-<p>构造数据集X，Y_=x1+x2  噪声：-0.05~0.05 拟合可以预测销量的函数</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line"><span class="keyword">import</span> numpy as np</span><br><span class="line">SEED = <span class="number">23455</span> #随机数种子，保证生成的随机数是一样的</span><br><span class="line"></span><br><span class="line">rdm = np.random.RandomState(seed=SEED)</span><br><span class="line">x = rdm.rand(<span class="number">32</span>, <span class="number">2</span>)</span><br><span class="line">y_ = [[x1 + x2 + (rdm.rand() / <span class="number">10.0</span> - <span class="number">0.05</span>)] <span class="keyword">for</span> (x1, x2) <span class="keyword">in</span> x] #制造的数据集</span><br><span class="line"># rdm.rand()生成<span class="number">0</span>~<span class="number">1</span>随机数 /<span class="number">10</span> 变成<span class="number">0</span>~<span class="number">0.1</span> <span class="number">-0.05</span> 变成<span class="number">-0.05</span>~<span class="number">0.05</span></span><br><span class="line">x = tf.<span class="keyword">cast</span>(x, dtype=tf.<span class="built_in">float</span>32)</span><br><span class="line"></span><br><span class="line">w1 = tf.Variable(tf.random.normal([<span class="number">2</span>, <span class="number">1</span>], stddev=<span class="number">1</span>, seed=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">epoch = <span class="number">15000</span></span><br><span class="line">lr = <span class="number">0.02</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(epoch):</span><br><span class="line">    with tf.GradientTape() as tape:</span><br><span class="line">        y = tf.matmul(x, w1)</span><br><span class="line">        loss_mse = tf.reduce_mean(tf.square(y_-y))</span><br><span class="line">    grads = tape.gradient(loss_mse, w1)</span><br><span class="line">    w1.assign_sub(lr * grads)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> epoch % <span class="number">500</span> == <span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'After %d training steps,w1 is '</span> %(epoch) )</span><br><span class="line">        print(w1.numpy(), <span class="string">'\n'</span>)</span><br><span class="line">print(<span class="string">'Final w1 is :'</span>, w1.numpy())</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">Final w1 is : <span class="string">[[1.004296  ]</span></span><br><span class="line"><span class="string"> [0.99483895]]</span></span><br></pre></td></tr></table></figure>
-
-<p>输出参数值接近1，最后得到答案y=1.004296x1+0.99483895x2，而标准答案是y=x1+x2，拟合正确.</p>
-<p><strong>交叉熵</strong></p>
-<p>表示两个概率分布之间的距离.交叉熵越大，概率分布越远；交叉熵越小，概率分布越近.</p>
-<p>交叉熵损失函数CE(Cross Entropy)<br>$$<br>H(y_,y)=-\sum y_{-}*lny<br>$$<br>e.g 二分类</p>
-<p>已知答案y_=(1,0)，表示第一个事件发生概率为1，第二个事件发生概率为0，神经网络预测了两个结果 y1=(0.6,0.4),y2=(0.8,0.2),哪个更接近标准答案？<br>$$<br>H_{1}((1,0),(0.6,0.4))=-(1<em>ln0.6+0</em>ln0.4)=-(-0.511+0)=0.511\<br>H_{2}((1,0),(0.8,0.2))=-(1<em>ln0.8+0</em>ln0.2)=-(-0.223+0)=0.2223\<br>H_{1}&gt;H_{2}<br>$$<br>y2预测更准确.</p>
-<p>交叉熵计算公式<strong>tf.losses.categorical_crossentropy(y_,y)</strong></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">loss_ce1 = tf<span class="selector-class">.losses</span>.categorical_crossentropy([<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0.6</span>, <span class="number">0.4</span>])</span><br><span class="line">loss_ce2 = tf<span class="selector-class">.losses</span>.categorical_crossentropy([<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0.8</span>, <span class="number">0.2</span>])</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'loss_ce1:'</span>, loss_ce1)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'loss_ce2:'</span>, loss_ce2)</span></span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">loss_ce1: tf.Tensor(<span class="number">0.5108256</span>, shape=(), dtype=<span class="built_in">float</span>32)</span><br><span class="line">loss_ce2: tf.Tensor(<span class="number">0.22314353</span>, shape=(), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
-
-<p><strong>softmax与交叉熵结合</strong></p>
-<p>输出先经过softmax符合概率分布，再计算y与y_的交叉熵损失函数，将两者结合的函数：</p>
-<p><strong>tf.nn.softmax_cross_entropy_with_logits(y_,y)</strong></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line"><span class="keyword">import</span> numpy as np</span><br><span class="line">y_ = np.<span class="built_in">array</span>([[<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">y = np.<span class="built_in">array</span>([[<span class="number">12</span>, <span class="number">3</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">10</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">4</span>, <span class="number">6.5</span>, <span class="number">1.2</span>], [<span class="number">3</span>, <span class="number">6</span>, <span class="number">1</span>]])</span><br><span class="line">y_pro = tf.nn.softmax(y)</span><br><span class="line">loss_ce1 = tf.losses.categorical_crossentropy(y_, y_pro)</span><br><span class="line">loss_ce2 = tf.nn.softmax_cross_entropy_with_logits(y_, y)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'分步计算结果：\n'</span>, loss_ce1)</span><br><span class="line">print(<span class="string">'结合计算结果：\n'</span>, loss_ce2)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">分步计算结果：</span><br><span class="line"> tf.Tensor(</span><br><span class="line">[<span class="number">1.68795487e-04</span> <span class="number">1.03475622e-03</span> <span class="number">6.58839038e-02</span> <span class="number">2.58349207e+00</span></span><br><span class="line"> <span class="number">5.49852354e-02</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">float</span>64)</span><br><span class="line">结合计算结果：</span><br><span class="line"> tf.Tensor(</span><br><span class="line">[<span class="number">1.68795487e-04</span> <span class="number">1.03475622e-03</span> <span class="number">6.58839038e-02</span> <span class="number">2.58349207e+00</span></span><br><span class="line"> <span class="number">5.49852354e-02</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">float</span>64)</span><br></pre></td></tr></table></figure>
-
-<h2 id="欠拟合与过拟合"><a href="#欠拟合与过拟合" class="headerlink" title="欠拟合与过拟合"></a>欠拟合与过拟合</h2><p><strong>欠拟合</strong></p>
-<p>模型不能有效拟合数据集,是对现有数据集学习不彻底.</p>
-<p><strong>过拟合</strong></p>
-<p>模型对当前数据拟合得太好了，但对新数据难以判断，泛化能力差.</p>
-<p><strong>欠拟合的解决</strong></p>
-<ul>
-<li>增加输入特征项，给网络更多维度的输入特征</li>
-<li>增加网络参数</li>
-<li>减少正则化参数</li>
-</ul>
-<p><strong>过拟合的解决</strong></p>
-<ul>
-<li>数据清洗，减少噪声，使数据集更纯净.</li>
-<li>增大训练集</li>
-<li>采用正则化</li>
-<li>增大正则化参数</li>
-</ul>
-<p><strong>正则化缓解过拟合</strong></p>
-<p>即在损失函数中引入模型复杂度指标，利用给W加权值，弱化训练数据的噪声(一般不正则化b)</p>
-<p>损失函数变成两部分的和：</p>
-<p>loss = loss(y与y_)+REGULARIZER * loss(w)</p>
-<p>第一部分是模型中所有参数的损失函数，描述了预测结果与正确结果间的差距，如交叉熵、均方误差.</p>
-<p>第二部分是参数的权重，用超参数REGULARIZER给出参数w在总loss中比重 .</p>
-<p>loss(w)计算有两种方法</p>
-<ul>
-<li>L1正则化</li>
-</ul>
-<p>$$<br>loss_{L1}(w)=\sum_{i} |w_{i}|<br>$$</p>
-<p>大概率使很多参数变为0，该方法通过稀疏参数，即减少参数的数量，降低复杂度.</p>
-<ul>
-<li>L2正则化</li>
-</ul>
-<p>$$<br>loss_{L2}(w)=\sum_{i}|w_{i}^{2}|<br>$$</p>
-<p>使参数接近0但不为0，即通过减小参数值大小降低复杂度.</p>
-]]></content>
-      <categories>
-        <category>Tensorflow学习笔记</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>Tensorflow</tag>
-        <tag>人工智能</tag>
       </tags>
   </entry>
   <entry>
@@ -1132,6 +829,162 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#鸢尾花数据集读入</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">x_data = datasets.load_iris().data <span class="comment">#.data 返回iris数据集所有输入特征</span></span><br><span class="line">y_data = datasets.load_iris().target <span class="comment"># .target 返回iris数据集所有标签</span></span><br><span class="line">print(<span class="string">'x_data from datasets: \n'</span>, x_data)</span><br><span class="line">print(<span class="string">'y_data from datasets: \n'</span>, y_data)</span><br><span class="line"></span><br><span class="line">x_data = DataFrame(x_data, columns=[<span class="string">'花萼长度'</span>, <span class="string">'花萼宽度'</span>, <span class="string">'花瓣长度'</span>, <span class="string">'花瓣宽度'</span>])</span><br><span class="line">pd.set_option(<span class="string">'display.unicode.east_asian_width'</span>, <span class="literal">True</span>) <span class="comment"># 设置列名对齐</span></span><br><span class="line">print(<span class="string">'x_data add index: \n'</span>, x_data)</span><br><span class="line"></span><br><span class="line">x_data[<span class="string">'类别'</span>] = y_data  <span class="comment">#新加一列，列标签为’类别‘，数据为y_data</span></span><br><span class="line">print(<span class="string">'x_data add a column: \n'</span>, x_data)</span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <categories>
+        <category>Tensorflow学习笔记</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>Tensorflow</tag>
+        <tag>人工智能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人工智能-Tensorflow2笔记(三)</title>
+    <url>/daytoy/2020/12/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%89)/</url>
+    <content><![CDATA[<h1 id="神经网络优化"><a href="#神经网络优化" class="headerlink" title="神经网络优化"></a>神经网络优化</h1><h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p><strong>tf.where()</strong></p>
+<p>条件语句，真返回A，假返回B</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">import</span> <span class="string">tensorflow</span> <span class="string">as</span> <span class="string">tf</span></span><br><span class="line"><span class="string">a</span> <span class="string">=</span> <span class="string">tf.constant([1,</span> <span class="number">2</span><span class="string">,</span> <span class="number">3</span><span class="string">,</span> <span class="number">1</span><span class="string">,</span> <span class="number">1</span><span class="string">])</span></span><br><span class="line"><span class="string">b</span> <span class="string">=</span> <span class="string">tf.constant([0,</span> <span class="number">1</span><span class="string">,</span> <span class="number">3</span><span class="string">,</span> <span class="number">4</span><span class="string">,</span> <span class="number">5</span><span class="string">])</span></span><br><span class="line"><span class="string">c</span> <span class="string">=</span> <span class="string">tf.where(tf.greater(a,</span> <span class="string">b),</span> <span class="string">a,</span> <span class="string">b)</span> <span class="comment">#若a&gt;b,返回a对应位置元素</span></span><br><span class="line"><span class="comment">#否则返回b对应位置元素</span></span><br><span class="line"><span class="string">print('c:',</span> <span class="string">c)</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">c: tf.Tensor([<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">int</span>32)</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p><strong>np.random.RandomState.rand(维度)</strong></p>
+<p>返回一个[0,1)之间的随机数，维度为空，则返回标量</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">rdm = np<span class="selector-class">.random</span>.RandomState(seed=<span class="number">1</span>) #随机数种子seed=常数，每次生成随机数相同</span><br><span class="line"><span class="selector-tag">a</span> = rdm.rand() #返回一个随机标量</span><br><span class="line"><span class="selector-tag">b</span> = rdm.rand(<span class="number">2</span>, <span class="number">3</span>) #返回维度<span class="number">2</span>行<span class="number">3</span>列随机数矩阵</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'a:'</span>, a)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'b:'</span>, b)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">result:</span></span><br><span class="line"><span class="attr">a:</span> <span class="number">0.417022004702574</span></span><br><span class="line"><span class="attr">b:</span> <span class="string">[[7.20324493e-01</span> <span class="number">1.14374817e-04</span> <span class="number">3.02332573e-01</span><span class="string">]</span></span><br><span class="line"> <span class="string">[1.46755891e-01</span> <span class="number">9.23385948e-02</span> <span class="number">1.86260211e-01</span><span class="string">]]</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>np.vstack(数组1，数组2)</strong></p>
+<p>两个数组按垂直方向叠加</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">a1 = np.<span class="built_in">array</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">a2 = np.<span class="built_in">array</span>([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line">c1 = np.vstack((a1, a2))</span><br><span class="line">print(<span class="string">'c1:\n'</span>, c1)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">c1:</span><br><span class="line"> [[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]</span><br></pre></td></tr></table></figure>
+
+<p><strong>np.mgrid(起始值：结束值：步长，起始值：结束值：步长，…)</strong></p>
+<p>[起始值 结束值)</p>
+<p>返回若干组维度相同的等差数组</p>
+<p><strong>x.reval()</strong></p>
+<p>将x变成一维数组，即把x拉直</p>
+<p><strong>np.c_[数组1，数组2]</strong></p>
+<p>返回的间隔数值点配对</p>
+<p><strong>以上3个函数经常一起使用，可以生成网格坐标点</strong></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">x, y = np<span class="selector-class">.mgrid</span>[<span class="number">1</span>:<span class="number">3</span>:<span class="number">1</span>, <span class="number">2</span>:<span class="number">4</span>:<span class="number">0.5</span>]</span><br><span class="line">grid = np<span class="selector-class">.c_</span>[x.ravel(), y.ravel()]</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'x:'</span>, x)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'y:'</span>, y)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'grid:\n'</span>, grid)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">x: [[<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>]</span><br><span class="line"> [<span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span>]]</span><br><span class="line">y: [[<span class="number">2.</span>  <span class="number">2.5</span> <span class="number">3.</span>  <span class="number">3.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.5</span> <span class="number">3.</span>  <span class="number">3.5</span>]]</span><br><span class="line"> grid:</span><br><span class="line"> [[<span class="number">1.</span>  <span class="number">2.</span> ]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">2.5</span>]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">3.</span> ]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">3.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.</span> ]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">3.</span> ]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">3.5</span>]]</span><br><span class="line"># 构成了网格坐标点</span><br></pre></td></tr></table></figure>
+
+<h2 id="神经网络-NN-复杂度"><a href="#神经网络-NN-复杂度" class="headerlink" title="神经网络(NN)复杂度"></a>神经网络(NN)复杂度</h2><p>NN复杂度：多用NN层数和NN参数个数表示</p>
+<ul>
+<li>空间复杂度</li>
+</ul>
+<p>层数 = 隐藏层层数 + 1个输出层</p>
+<p>总参数 = 总w + 总b</p>
+<ul>
+<li>时间复杂度</li>
+</ul>
+<p>乘加运算次数</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607497708(1).jpg">
+
+<p>图为2层NN.</p>
+<p>第一层参数w是3行4列的，加4个偏置项b，第二层参数是4行2列的，两个偏置项，共26个参数.</p>
+<p>每条权重线代表1次乘加运算，第1层12，第2层8次，共20次乘加运算.</p>
+<h2 id="指数衰减学习率"><a href="#指数衰减学习率" class="headerlink" title="指数衰减学习率"></a>指数衰减学习率</h2><p>先用较大学习率，快速得到较优解，逐步减小学习率，得到最优解</p>
+<p>指数衰减学习率 = 初始学习率*学习率衰减率^(当前轮数/多少轮衰减一次)</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">import tensorflow <span class="keyword">as</span> <span class="keyword">tf</span></span><br><span class="line">epoch = <span class="number">40</span></span><br><span class="line"><span class="keyword">w</span> = <span class="keyword">tf</span>.Variable(<span class="keyword">tf</span>.constant(<span class="number">5</span>, dtype=<span class="keyword">tf</span>.float32))</span><br><span class="line">lr_base = <span class="number">0.2</span></span><br><span class="line">lr_decay = <span class="number">0.99</span></span><br><span class="line">lr_step = <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> epoch in <span class="built_in">range</span>(epoch):</span><br><span class="line">    <span class="keyword">lr</span> = lr_base * lr_decay ** (epoch / lr_step)</span><br><span class="line">    with <span class="keyword">tf</span>.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        loss = <span class="keyword">tf</span>.square(<span class="keyword">w</span>+<span class="number">1</span>)</span><br><span class="line">    grads = tape.gradient(loss, <span class="keyword">w</span>)</span><br><span class="line">    <span class="keyword">w</span>.assign_sub(<span class="keyword">lr</span> * grads)</span><br><span class="line">    <span class="keyword">print</span>(<span class="string">'After %s epoch, w is %f, loss is %f, lr is %f'</span> % (epoch, <span class="keyword">w</span>.numpy(), loss, <span class="keyword">lr</span>))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">After <span class="number">0</span> epoch, w <span class="keyword">is</span> <span class="number">2.600000</span>, loss <span class="keyword">is</span> <span class="number">36.000000</span>, lr <span class="keyword">is</span> <span class="number">0.200000</span></span><br><span class="line">After <span class="number">1</span> epoch, w <span class="keyword">is</span> <span class="number">1.174400</span>, loss <span class="keyword">is</span> <span class="number">12.959999</span>, lr <span class="keyword">is</span> <span class="number">0.198000</span></span><br><span class="line">After <span class="number">2</span> epoch, w <span class="keyword">is</span> <span class="number">0.321948</span>, loss <span class="keyword">is</span> <span class="number">4.728015</span>, lr <span class="keyword">is</span> <span class="number">0.196020</span></span><br><span class="line">After <span class="number">3</span> epoch, w <span class="keyword">is</span> <span class="number">-0.191126</span>, loss <span class="keyword">is</span> <span class="number">1.747547</span>, lr <span class="keyword">is</span> <span class="number">0.194060</span></span><br><span class="line">After <span class="number">4</span> epoch, w <span class="keyword">is</span> <span class="number">-0.501926</span>, loss <span class="keyword">is</span> <span class="number">0.654277</span>, lr <span class="keyword">is</span> <span class="number">0.192119</span></span><br><span class="line">After <span class="number">5</span> epoch, w <span class="keyword">is</span> <span class="number">-0.691392</span>, loss <span class="keyword">is</span> <span class="number">0.248077</span>, lr <span class="keyword">is</span> <span class="number">0.190198</span></span><br><span class="line">After <span class="number">6</span> epoch, w <span class="keyword">is</span> <span class="number">-0.807611</span>, loss <span class="keyword">is</span> <span class="number">0.095239</span>, lr <span class="keyword">is</span> <span class="number">0.188296</span></span><br><span class="line">After <span class="number">7</span> epoch, w <span class="keyword">is</span> <span class="number">-0.879339</span>, loss <span class="keyword">is</span> <span class="number">0.037014</span>, lr <span class="keyword">is</span> <span class="number">0.186413</span></span><br><span class="line">After <span class="number">8</span> epoch, w <span class="keyword">is</span> <span class="number">-0.923874</span>, loss <span class="keyword">is</span> <span class="number">0.014559</span>, lr <span class="keyword">is</span> <span class="number">0.184549</span></span><br><span class="line">After <span class="number">9</span> epoch, w <span class="keyword">is</span> <span class="number">-0.951691</span>, loss <span class="keyword">is</span> <span class="number">0.005795</span>, lr <span class="keyword">is</span> <span class="number">0.182703</span></span><br><span class="line">After <span class="number">10</span> epoch, w <span class="keyword">is</span> <span class="number">-0.969167</span>, loss <span class="keyword">is</span> <span class="number">0.002334</span>, lr <span class="keyword">is</span> <span class="number">0.180876</span></span><br><span class="line">... ...</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，随着迭代轮数的增加，学习率在指数衰减.</p>
+<h2 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607499785(1).jpg" alt></p>
+<p>激活函数大大提升了模型表达能力</p>
+<ul>
+<li><p>优秀的激活函数</p>
+<ul>
+<li>非线性：不会被单层网络替代，多层网络可逼近所有函数</li>
+<li>可微性：优化器大多用梯度下降更新参数</li>
+<li>单调性：保证单层网络损失函数是凸函数</li>
+<li>近似恒等性：f(x)≈x，网络更稳定</li>
+</ul>
+</li>
+<li><p>激活函数输出值范围：</p>
+<ul>
+<li>激活函数输出有限值，基于梯度的优化方法更稳定;</li>
+<li>无限值时，参数初始值对模型影响大，要使用更小的学习率.</li>
+</ul>
+</li>
+</ul>
+<p>$$<br>Sigmoid:f(x)=\frac{1}{1+e^{-x}}<br>$$</p>
+<p>特点：易造成梯度消失；输出非0均值，收敛慢；幂运算复杂，训练时间长.<br>$$<br>Tanh:f(x)=\frac{1-e^{-2x}}{1+e^{-2x}}<br>$$<br>特点：输出是0均值；易造成梯度消失；幂运算复杂，训练时间长.<br>$$<br>Relu:f(x)=max(x,0)={_{x,x&gt;=0}^{0,x&lt;0}<br>$$<br>优点：在正区间内解决了梯度消失问题；只需判断输入是否大于0，计算速度快；收敛速度快于sigmoid和tanh</p>
+<p>缺点：输出非0均值，收敛慢；Dead ReIU问题：输入特征是负数时，激活函数输出是0，反向传播梯度是0，参数无法更新，导致神经元死亡.<br>$$<br>Leaky Relu:f(x)=max(\alpha x,x)<br>$$<br>实际操作中，选择relu做激活函数的网络会更多.</p>
+<p>对于使用激活函数的建议：</p>
+<ul>
+<li>首选relu函数</li>
+<li>学习率设置较小值</li>
+<li>输入特征标准化，即满足以0为均值，1为标准差的正态分布</li>
+<li>初始参数中心化，即随机生成的参数满足0为均值，sqrt(2/当前层输入特征个数)为标准差的正态分布.</li>
+</ul>
+<h2 id="损失函数-loss"><a href="#损失函数-loss" class="headerlink" title="损失函数(loss)"></a>损失函数(loss)</h2><p>预测值与已知答案的差距</p>
+<p>主流的三种损失函数：均方误差、自定义、交叉熵</p>
+<p><strong>均方误差mse：</strong><br>$$<br>MSE(y_,y)=\frac{\sum_{i=1}^{n}(y-y_{-})^{2}}{n}<br>$$<br><strong>loss_mse = tf.reduce_mean(tf.square(y_-y))</strong></p>
+<p>构建例子来理解：预测日销量.</p>
+<p>x1, x2是影响日销量的因素，预先采集每日x1, x2, y_(已知答案)</p>
+<p>构造数据集X，Y_=x1+x2  噪声：-0.05~0.05 拟合可以预测销量的函数</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line"><span class="keyword">import</span> numpy as np</span><br><span class="line">SEED = <span class="number">23455</span> #随机数种子，保证生成的随机数是一样的</span><br><span class="line"></span><br><span class="line">rdm = np.random.RandomState(seed=SEED)</span><br><span class="line">x = rdm.rand(<span class="number">32</span>, <span class="number">2</span>)</span><br><span class="line">y_ = [[x1 + x2 + (rdm.rand() / <span class="number">10.0</span> - <span class="number">0.05</span>)] <span class="keyword">for</span> (x1, x2) <span class="keyword">in</span> x] #制造的数据集</span><br><span class="line"># rdm.rand()生成<span class="number">0</span>~<span class="number">1</span>随机数 /<span class="number">10</span> 变成<span class="number">0</span>~<span class="number">0.1</span> <span class="number">-0.05</span> 变成<span class="number">-0.05</span>~<span class="number">0.05</span></span><br><span class="line">x = tf.<span class="keyword">cast</span>(x, dtype=tf.<span class="built_in">float</span>32)</span><br><span class="line"></span><br><span class="line">w1 = tf.Variable(tf.random.normal([<span class="number">2</span>, <span class="number">1</span>], stddev=<span class="number">1</span>, seed=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">epoch = <span class="number">15000</span></span><br><span class="line">lr = <span class="number">0.02</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(epoch):</span><br><span class="line">    with tf.GradientTape() as tape:</span><br><span class="line">        y = tf.matmul(x, w1)</span><br><span class="line">        loss_mse = tf.reduce_mean(tf.square(y_-y))</span><br><span class="line">    grads = tape.gradient(loss_mse, w1)</span><br><span class="line">    w1.assign_sub(lr * grads)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> epoch % <span class="number">500</span> == <span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'After %d training steps,w1 is '</span> %(epoch) )</span><br><span class="line">        print(w1.numpy(), <span class="string">'\n'</span>)</span><br><span class="line">print(<span class="string">'Final w1 is :'</span>, w1.numpy())</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">Final w1 is : <span class="string">[[1.004296  ]</span></span><br><span class="line"><span class="string"> [0.99483895]]</span></span><br></pre></td></tr></table></figure>
+
+<p>输出参数值接近1，最后得到答案y=1.004296x1+0.99483895x2，而标准答案是y=x1+x2，拟合正确.</p>
+<p><strong>交叉熵</strong></p>
+<p>表示两个概率分布之间的距离.交叉熵越大，概率分布越远；交叉熵越小，概率分布越近.</p>
+<p>交叉熵损失函数CE(Cross Entropy)<br>$$<br>H(y_,y)=-\sum y_{-}*lny<br>$$<br>e.g 二分类</p>
+<p>已知答案y_=(1,0)，表示第一个事件发生概率为1，第二个事件发生概率为0，神经网络预测了两个结果 y1=(0.6,0.4),y2=(0.8,0.2),哪个更接近标准答案？<br>$$<br>H_{1}((1,0),(0.6,0.4))=-(1<em>ln0.6+0</em>ln0.4)=-(-0.511+0)=0.511\<br>H_{2}((1,0),(0.8,0.2))=-(1<em>ln0.8+0</em>ln0.2)=-(-0.223+0)=0.2223\<br>H_{1}&gt;H_{2}<br>$$<br>y2预测更准确.</p>
+<p>交叉熵计算公式<strong>tf.losses.categorical_crossentropy(y_,y)</strong></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">loss_ce1 = tf<span class="selector-class">.losses</span>.categorical_crossentropy([<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0.6</span>, <span class="number">0.4</span>])</span><br><span class="line">loss_ce2 = tf<span class="selector-class">.losses</span>.categorical_crossentropy([<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0.8</span>, <span class="number">0.2</span>])</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'loss_ce1:'</span>, loss_ce1)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'loss_ce2:'</span>, loss_ce2)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">loss_ce1: tf.Tensor(<span class="number">0.5108256</span>, shape=(), dtype=<span class="built_in">float</span>32)</span><br><span class="line">loss_ce2: tf.Tensor(<span class="number">0.22314353</span>, shape=(), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<p><strong>softmax与交叉熵结合</strong></p>
+<p>输出先经过softmax符合概率分布，再计算y与y_的交叉熵损失函数，将两者结合的函数：</p>
+<p><strong>tf.nn.softmax_cross_entropy_with_logits(y_,y)</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line"><span class="keyword">import</span> numpy as np</span><br><span class="line">y_ = np.<span class="built_in">array</span>([[<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">y = np.<span class="built_in">array</span>([[<span class="number">12</span>, <span class="number">3</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">10</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">4</span>, <span class="number">6.5</span>, <span class="number">1.2</span>], [<span class="number">3</span>, <span class="number">6</span>, <span class="number">1</span>]])</span><br><span class="line">y_pro = tf.nn.softmax(y)</span><br><span class="line">loss_ce1 = tf.losses.categorical_crossentropy(y_, y_pro)</span><br><span class="line">loss_ce2 = tf.nn.softmax_cross_entropy_with_logits(y_, y)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'分步计算结果：\n'</span>, loss_ce1)</span><br><span class="line">print(<span class="string">'结合计算结果：\n'</span>, loss_ce2)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">分步计算结果：</span><br><span class="line"> tf.Tensor(</span><br><span class="line">[<span class="number">1.68795487e-04</span> <span class="number">1.03475622e-03</span> <span class="number">6.58839038e-02</span> <span class="number">2.58349207e+00</span></span><br><span class="line"> <span class="number">5.49852354e-02</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">float</span>64)</span><br><span class="line">结合计算结果：</span><br><span class="line"> tf.Tensor(</span><br><span class="line">[<span class="number">1.68795487e-04</span> <span class="number">1.03475622e-03</span> <span class="number">6.58839038e-02</span> <span class="number">2.58349207e+00</span></span><br><span class="line"> <span class="number">5.49852354e-02</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">float</span>64)</span><br></pre></td></tr></table></figure>
+
+<h2 id="欠拟合与过拟合"><a href="#欠拟合与过拟合" class="headerlink" title="欠拟合与过拟合"></a>欠拟合与过拟合</h2><p><strong>欠拟合</strong></p>
+<p>模型不能有效拟合数据集,是对现有数据集学习不彻底.</p>
+<p><strong>过拟合</strong></p>
+<p>模型对当前数据拟合得太好了，但对新数据难以判断，泛化能力差.</p>
+<p><strong>欠拟合的解决</strong></p>
+<ul>
+<li>增加输入特征项，给网络更多维度的输入特征</li>
+<li>增加网络参数</li>
+<li>减少正则化参数</li>
+</ul>
+<p><strong>过拟合的解决</strong></p>
+<ul>
+<li>数据清洗，减少噪声，使数据集更纯净.</li>
+<li>增大训练集</li>
+<li>采用正则化</li>
+<li>增大正则化参数</li>
+</ul>
+<p><strong>正则化缓解过拟合</strong></p>
+<p>即在损失函数中引入模型复杂度指标，利用给W加权值，弱化训练数据的噪声(一般不正则化b)</p>
+<p>损失函数变成两部分的和：</p>
+<p>loss = loss(y与y_)+REGULARIZER * loss(w)</p>
+<p>第一部分是模型中所有参数的损失函数，描述了预测结果与正确结果间的差距，如交叉熵、均方误差.</p>
+<p>第二部分是参数的权重，用超参数REGULARIZER给出参数w在总loss中比重 .</p>
+<p>loss(w)计算有两种方法</p>
+<ul>
+<li>L1正则化</li>
+</ul>
+<p>$$<br>loss_{L1}(w)=\sum_{i} |w_{i}|<br>$$</p>
+<p>大概率使很多参数变为0，该方法通过稀疏参数，即减少参数的数量，降低复杂度.</p>
+<ul>
+<li>L2正则化</li>
+</ul>
+<p>$$<br>loss_{L2}(w)=\sum_{i}|w_{i}^{2}|<br>$$</p>
+<p>使参数接近0但不为0，即通过减小参数值大小降低复杂度.</p>
 ]]></content>
       <categories>
         <category>Tensorflow学习笔记</category>
