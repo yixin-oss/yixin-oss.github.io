@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/daytoy/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/daytoy/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/daytoy/images/heart.jpg">
+  <link rel="mask-icon" href="/daytoy/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/daytoy/css/main.css">
+
+
+<link rel="stylesheet" href="/daytoy/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/daytoy/lib/pace/pace-theme-minimal.min.css">
+  <script src="/daytoy/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/daytoy/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、wordcloud库基本介绍优秀的词云展示第三方库. 词云以词语为单位，更直观和艺术的展示文字. 1.安装1pip install wordcloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wordcloud库">
+<meta property="og:url" content="http://yixin-oss.gitee.io/daytoy/2021/04/12/wordcloud%E5%BA%93/index.html">
+<meta property="og:site_name" content="Daytoy">
+<meta property="og:description" content="一、wordcloud库基本介绍优秀的词云展示第三方库. 词云以词语为单位，更直观和艺术的展示文字. 1.安装1pip install wordcloud">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/pythoncloud.png">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E6%96%B0%E6%97%B6%E4%BB%A3%E4%B8%AD%E5%9B%BD%E7%89%B9%E8%89%B2%E7%A4%BE%E4%BC%9A%E4%B8%BB%E4%B9%89.png">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E4%B9%A1%E6%9D%91%E6%8C%AF%E5%85%B4%E6%88%98%E7%95%A5%E6%84%8F%E8%A7%81.png">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E4%B9%A1%E6%9D%91%E6%8C%AF%E5%85%B4%E6%88%98%E7%95%A5%E6%84%8F%E8%A7%8115%E8%AF%8D.png">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E4%B9%A1%E6%9D%91%E6%8C%AF%E5%85%B4%E6%88%98%E7%95%A5%E6%84%8F%E8%A7%81gold%E8%83%8C%E6%99%AF.png">
+<meta property="article:published_time" content="2021-04-12T06:38:28.045Z">
+<meta property="article:modified_time" content="2021-01-14T08:02:32.366Z">
+<meta property="article:author" content="亦新">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/pythoncloud.png">
+
+<link rel="canonical" href="http://yixin-oss.gitee.io/daytoy/2021/04/12/wordcloud%E5%BA%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>wordcloud库 | Daytoy</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/daytoy/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Daytoy</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Always be happy</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/daytoy/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/daytoy/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/daytoy/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/daytoy/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2021/04/12/wordcloud%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
+      <meta itemprop="name" content="亦新">
+      <meta itemprop="description" content="热爱可抵岁月漫长">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daytoy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          wordcloud库
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/daytoy/categories/python%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">python学习</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.5k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、wordcloud库基本介绍"><a href="#一、wordcloud库基本介绍" class="headerlink" title="一、wordcloud库基本介绍"></a>一、wordcloud库基本介绍</h2><p>优秀的词云展示第三方库.</p>
+<p>词云以词语为单位，更直观和艺术的展示文字.</p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> wordcloud</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="2-wordcloud库常规方法"><a href="#2-wordcloud库常规方法" class="headerlink" title="2.wordcloud库常规方法"></a>2.wordcloud库常规方法</h3><p><strong>w=wordcloud.WordCloud()</strong>生成一个词云对象.</p>
+<ul>
+<li>wordcloud库把词云当作一个WordCloud对象.</li>
+<li>wordcloud.WordCloud()代表一个文本对应词云.</li>
+<li>可以根据文本中词云出现的频率等参数绘制词云.</li>
+<li>绘制词云的形状、尺寸和颜色都可以设定.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">w.generate(txt)</td>
+<td align="center">向WordCloud对象w中加载文本txt</td>
+</tr>
+<tr>
+<td align="center">w.to_file(filename)</td>
+<td align="center">将词云输出为图像文件，.png or .jpg格式</td>
+</tr>
+</tbody></table>
+<h3 id="3-基本步骤"><a href="#3-基本步骤" class="headerlink" title="3.基本步骤"></a>3.基本步骤</h3><ol>
+<li>配置对象参数</li>
+<li>加载词云文本</li>
+<li>输出词云文件</li>
+</ol>
+<p><strong>示例</strong></p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import wordcloud</span><br><span class="line">c = wordcloud.<span class="constructor">WordCloud()</span></span><br><span class="line">c.generate('wordcloud by Python')</span><br><span class="line">c.<span class="keyword">to</span><span class="constructor">_file('<span class="params">pywordcloud</span>.<span class="params">png</span>')</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>四步：</strong></p>
+<ol>
+<li>以空格为分隔符号，将文本分隔成单词.</li>
+<li>统计单词出现次数并过滤短单词.</li>
+<li>根据统计配置字号.</li>
+<li>布局：颜色环境尺寸.</li>
+</ol>
+<p><strong>配置对象参数</strong></p>
+<p><strong>w = wordcloud.WoedCloud(&lt;参数&gt;)</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">width</td>
+<td align="center">指定词云对象生成图片的宽度，默认400像素</td>
+</tr>
+<tr>
+<td align="center">height</td>
+<td align="center">指定词云对象生成图片的高度，默认200像素</td>
+</tr>
+<tr>
+<td align="center">min_font_size</td>
+<td align="center">指定词云中字体的最小字号，默认4号</td>
+</tr>
+<tr>
+<td align="center">max_font_size</td>
+<td align="center">指定词云中字体的最大字号，根据高度自动调节</td>
+</tr>
+<tr>
+<td align="center">font_step</td>
+<td align="center">指定词云中字体字号的步进间隔，默认1</td>
+</tr>
+<tr>
+<td align="center">font_path</td>
+<td align="center">指定字体文件的路径，默认None   e.g.”msyh.ttc”微软雅黑</td>
+</tr>
+<tr>
+<td align="center">max_words</td>
+<td align="center">指定词云显示的最大单词数量，默认200</td>
+</tr>
+<tr>
+<td align="center">stop_words</td>
+<td align="center">指定词云排除词列表   e.g. stop_words={‘Python’}</td>
+</tr>
+<tr>
+<td align="center">mask</td>
+<td align="center">指定词云形状，默认为长方形，需要引用imread()函数</td>
+</tr>
+<tr>
+<td align="center">backgroud_color</td>
+<td align="center">指定词云图片背景颜色，默认黑色 e.g.backgroud_color=’white’</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.misc <span class="keyword">import</span> imread</span><br><span class="line">mk = imread(<span class="string">'pic.png'</span>)</span><br><span class="line">w = wordcloud.WordCloud(mask=mk)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-应用实例"><a href="#4-应用实例" class="headerlink" title="4.应用实例"></a>4.应用实例</h3><p><strong>英文</strong></p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">'life is short, you need python'</span></span><br><span class="line">w = wordcloud.WordCloud( <span class="string">\</span></span><br><span class="line">        backgroud_color = <span class="string">'white'</span>)<span class="comment">#生成一个词云对象，背景设为白色</span></span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"pywordcloud.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>中文</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#需要对中文先进行分词，引入jieba库</span></span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">"程序设计语言是计算机能够理解和\</span></span><br><span class="line"><span class="string">识别用户操作意图的一种交互体系，它按照\</span></span><br><span class="line"><span class="string">特定规则组织计算机指令，使计算机能够自\</span></span><br><span class="line"><span class="string">动进行各种运算处理。"</span></span><br><span class="line">w = wordcloud.WordCloud( width=<span class="number">1000</span>,\</span><br><span class="line">    font_path=<span class="string">"msyh.ttc"</span>,height=<span class="number">700</span>)</span><br><span class="line">w.genrtate(<span class="string">''</span>.join(jieba.lcut(txt)))</span><br><span class="line">w.to_file(<span class="string">"pythoncloud.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Remark.</strong> 中文需要先分词并组成空格分隔字符串.</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/pythoncloud.png" style="zoom: 50%;">
+
+<h2 id="二、实例：政府工作报告词云"><a href="#二、实例：政府工作报告词云" class="headerlink" title="二、实例：政府工作报告词云"></a>二、实例：政府工作报告词云</h2><h3 id="1-问题分析"><a href="#1-问题分析" class="headerlink" title="1.问题分析"></a>1.问题分析</h3><ul>
+<li>需求：对于政府工作报告等政策文件，如何直观理解？</li>
+<li>体会直观价值：生成词云&amp;优化词云</li>
+<li>两份重要文件<ul>
+<li><a href="https://python123.io/resources/pye/新时代中国特色社会主义.txt" target="_blank" rel="noopener">习总书记在中国共产党第十九次全国代表大会上的报告</a></li>
+<li><a href="https://python123.io/resources/pye/关于实施乡村振兴战略的意见.txt" target="_blank" rel="noopener">中共中央 国务院关于实施乡村振兴战略的意见</a></li>
+</ul>
+</li>
+</ul>
+<p><strong>政府报告等文件—&gt;&gt;有效展示的词云</strong></p>
+<h3 id="2-基本思路"><a href="#2-基本思路" class="headerlink" title="2.基本思路"></a>2.基本思路</h3><ul>
+<li>读取文件、分词整理</li>
+<li>设置并输入词云</li>
+<li>观察结果，优化迭代</li>
+</ul>
+<h3 id="3-代码展示"><a href="#3-代码展示" class="headerlink" title="3.代码展示"></a>3.代码展示</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"新时代中国特色社会主义.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>: <span class="comment">#移除单字</span></span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"新时代中国特色社会主义.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/新时代中国特色社会主义.png" style="zoom: 50%;">
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"乡村振兴战略意见.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>:</span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"乡村振兴战略意见.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见.png" style="zoom:50%;">
+
+<h3 id="4-优化"><a href="#4-优化" class="headerlink" title="4.优化"></a>4.优化</h3><h4 id="（1）减少词云数目"><a href="#（1）减少词云数目" class="headerlink" title="（1）减少词云数目"></a>（1）减少词云数目</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w = wordcloud.<span class="constructor">WordCloud(<span class="params">font_path</span>=<span class="string">"msyh.ttc"</span>,<span class="params">width</span>=1000, <span class="params">height</span>=700, <span class="params">background_color</span>=<span class="string">"white"</span>,<span class="params">max_words</span>=15)</span></span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见15词.png" style="zoom:50%;">
+
+<h4 id="（2）改变词云背景"><a href="#（2）改变词云背景" class="headerlink" title="（2）改变词云背景"></a>（2）改变词云背景</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#金色背景</span></span><br><span class="line">w = wordcloud.WordCloud(<span class="attribute">font_path</span>=<span class="string">"msyh.ttc"</span>,width=1000, <span class="attribute">height</span>=700, <span class="attribute">background_color</span>=<span class="string">"gold"</span>,max_words=15)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见gold背景.png" style="zoom:50%;">
+
+
+    </div>
+
+    
+    
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>Your support will encourage me to continue to write!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/wechatpay.jpg" alt="亦新 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/alipay.jpg" alt="亦新 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/daytoy/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/daytoy/2020/12/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%89)/" rel="prev" title="人工智能-Tensorflow2笔记(三)">
+      <i class="fa fa-chevron-left"></i> 人工智能-Tensorflow2笔记(三)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、wordcloud库基本介绍"><span class="nav-number">1.</span> <span class="nav-text">一、wordcloud库基本介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装"><span class="nav-number">1.1.</span> <span class="nav-text">1.安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-wordcloud库常规方法"><span class="nav-number">1.2.</span> <span class="nav-text">2.wordcloud库常规方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-基本步骤"><span class="nav-number">1.3.</span> <span class="nav-text">3.基本步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-应用实例"><span class="nav-number">1.4.</span> <span class="nav-text">4.应用实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、实例：政府工作报告词云"><span class="nav-number">2.</span> <span class="nav-text">二、实例：政府工作报告词云</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-问题分析"><span class="nav-number">2.1.</span> <span class="nav-text">1.问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-基本思路"><span class="nav-number">2.2.</span> <span class="nav-text">2.基本思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-代码展示"><span class="nav-number">2.3.</span> <span class="nav-text">3.代码展示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-优化"><span class="nav-number">2.4.</span> <span class="nav-text">4.优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）减少词云数目"><span class="nav-number">2.4.1.</span> <span class="nav-text">（1）减少词云数目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）改变词云背景"><span class="nav-number">2.4.2.</span> <span class="nav-text">（2）改变词云背景</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="亦新"
+      src="/daytoy/images/hexohead.gif">
+  <p class="site-author-name" itemprop="name">亦新</p>
+  <div class="site-description" itemprop="description">热爱可抵岁月漫长</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/daytoy/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/daytoy/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/daytoy/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      
+      <div id="music163player">
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=0&id=5353663714&auto=1&height=66"></iframe>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+    
+    
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+    
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦新</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">30k</span>
+</div>
+
+<!-- 网站运行时间的设置 -->
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+    <script>
+        var now = new Date();
+        function createtime() {
+            var grt= new Date("11/14/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+            now.setTime(now.getTime()+250);
+            days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+            hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+            if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+            mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+            seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+            snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+            document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+            document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/daytoy/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/daytoy/js/utils.js"></script>
+
+
+<script src="/daytoy/js/schemes/pisces.js"></script>
+
+
+<script src="/daytoy/js/next-boot.js"></script>
+
+<script src="/daytoy/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/daytoy/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/daytoy/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/daytoy/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
+
+
+  
+    <script src="/js/cursor/love.min.js"></script>
+  
+

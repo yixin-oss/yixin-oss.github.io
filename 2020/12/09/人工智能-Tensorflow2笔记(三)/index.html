@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/daytoy/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/daytoy/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/daytoy/images/heart.jpg">
+  <link rel="mask-icon" href="/daytoy/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/daytoy/css/main.css">
+
+
+<link rel="stylesheet" href="/daytoy/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/daytoy/lib/pace/pace-theme-minimal.min.css">
+  <script src="/daytoy/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/daytoy/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="神经网络优化预备知识tf.where() 条件语句，真返回A，假返回B 123456import tensorflow as tfa &#x3D; tf.constant([1, 2, 3, 1, 1])b &#x3D; tf.constant([0, 1, 3, 4, 5])c &#x3D; tf.where(tf.greater(a, b), a, b) #若a&gt;b,返回a对应位置元素#否则返回b对应位置元素prin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工智能-Tensorflow2笔记(三)">
+<meta property="og:url" content="http://yixin-oss.gitee.io/daytoy/2020/12/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%89)/index.html">
+<meta property="og:site_name" content="Daytoy">
+<meta property="og:description" content="神经网络优化预备知识tf.where() 条件语句，真返回A，假返回B 123456import tensorflow as tfa &#x3D; tf.constant([1, 2, 3, 1, 1])b &#x3D; tf.constant([0, 1, 3, 4, 5])c &#x3D; tf.where(tf.greater(a, b), a, b) #若a&gt;b,返回a对应位置元素#否则返回b对应位置元素prin">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607497708(1).jpg">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607499785(1).jpg">
+<meta property="article:published_time" content="2020-12-09T09:05:42.522Z">
+<meta property="article:modified_time" content="2020-12-09T15:41:59.148Z">
+<meta property="article:author" content="亦新">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="Tensorflow">
+<meta property="article:tag" content="人工智能">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607497708(1).jpg">
+
+<link rel="canonical" href="http://yixin-oss.gitee.io/daytoy/2020/12/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%89)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>人工智能-Tensorflow2笔记(三) | Daytoy</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/daytoy/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Daytoy</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Always be happy</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/daytoy/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/daytoy/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/daytoy/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/daytoy/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2020/12/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%89)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
+      <meta itemprop="name" content="亦新">
+      <meta itemprop="description" content="热爱可抵岁月漫长">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daytoy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          人工智能-Tensorflow2笔记(三)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/daytoy/categories/Tensorflow%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">Tensorflow学习笔记</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="神经网络优化"><a href="#神经网络优化" class="headerlink" title="神经网络优化"></a>神经网络优化</h1><h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p><strong>tf.where()</strong></p>
+<p>条件语句，真返回A，假返回B</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">import</span> <span class="string">tensorflow</span> <span class="string">as</span> <span class="string">tf</span></span><br><span class="line"><span class="string">a</span> <span class="string">=</span> <span class="string">tf.constant([1,</span> <span class="number">2</span><span class="string">,</span> <span class="number">3</span><span class="string">,</span> <span class="number">1</span><span class="string">,</span> <span class="number">1</span><span class="string">])</span></span><br><span class="line"><span class="string">b</span> <span class="string">=</span> <span class="string">tf.constant([0,</span> <span class="number">1</span><span class="string">,</span> <span class="number">3</span><span class="string">,</span> <span class="number">4</span><span class="string">,</span> <span class="number">5</span><span class="string">])</span></span><br><span class="line"><span class="string">c</span> <span class="string">=</span> <span class="string">tf.where(tf.greater(a,</span> <span class="string">b),</span> <span class="string">a,</span> <span class="string">b)</span> <span class="comment">#若a&gt;b,返回a对应位置元素</span></span><br><span class="line"><span class="comment">#否则返回b对应位置元素</span></span><br><span class="line"><span class="string">print('c:',</span> <span class="string">c)</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result:</span><br><span class="line">c: tf.Tensor([<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">int</span>32)</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p><strong>np.random.RandomState.rand(维度)</strong></p>
+<p>返回一个[0,1)之间的随机数，维度为空，则返回标量</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">rdm = np<span class="selector-class">.random</span>.RandomState(seed=<span class="number">1</span>) #随机数种子seed=常数，每次生成随机数相同</span><br><span class="line"><span class="selector-tag">a</span> = rdm.rand() #返回一个随机标量</span><br><span class="line"><span class="selector-tag">b</span> = rdm.rand(<span class="number">2</span>, <span class="number">3</span>) #返回维度<span class="number">2</span>行<span class="number">3</span>列随机数矩阵</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'a:'</span>, a)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'b:'</span>, b)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">result:</span></span><br><span class="line"><span class="attr">a:</span> <span class="number">0.417022004702574</span></span><br><span class="line"><span class="attr">b:</span> <span class="string">[[7.20324493e-01</span> <span class="number">1.14374817e-04</span> <span class="number">3.02332573e-01</span><span class="string">]</span></span><br><span class="line"> <span class="string">[1.46755891e-01</span> <span class="number">9.23385948e-02</span> <span class="number">1.86260211e-01</span><span class="string">]]</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>np.vstack(数组1，数组2)</strong></p>
+<p>两个数组按垂直方向叠加</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a1 = np.<span class="built_in">array</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">a2 = np.<span class="built_in">array</span>([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line">c1 = np.vstack((a1, a2))</span><br><span class="line">print(<span class="string">'c1:\n'</span>, c1)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">result:</span><br><span class="line">c1:</span><br><span class="line"> [[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]</span><br></pre></td></tr></table></figure>
+
+<p><strong>np.mgrid(起始值：结束值：步长，起始值：结束值：步长，…)</strong></p>
+<p>[起始值 结束值)</p>
+<p>返回若干组维度相同的等差数组</p>
+<p><strong>x.reval()</strong></p>
+<p>将x变成一维数组，即把x拉直</p>
+<p><strong>np.c_[数组1，数组2]</strong></p>
+<p>返回的间隔数值点配对</p>
+<p><strong>以上3个函数经常一起使用，可以生成网格坐标点</strong></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">x, y = np<span class="selector-class">.mgrid</span>[<span class="number">1</span>:<span class="number">3</span>:<span class="number">1</span>, <span class="number">2</span>:<span class="number">4</span>:<span class="number">0.5</span>]</span><br><span class="line">grid = np<span class="selector-class">.c_</span>[x.ravel(), y.ravel()]</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'x:'</span>, x)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'y:'</span>, y)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'grid:\n'</span>, grid)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">result:</span><br><span class="line">x: [[<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>]</span><br><span class="line"> [<span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span>]]</span><br><span class="line">y: [[<span class="number">2.</span>  <span class="number">2.5</span> <span class="number">3.</span>  <span class="number">3.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.5</span> <span class="number">3.</span>  <span class="number">3.5</span>]]</span><br><span class="line"> grid:</span><br><span class="line"> [[<span class="number">1.</span>  <span class="number">2.</span> ]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">2.5</span>]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">3.</span> ]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">3.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.</span> ]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">3.</span> ]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">3.5</span>]]</span><br><span class="line"># 构成了网格坐标点</span><br></pre></td></tr></table></figure>
+
+<h2 id="神经网络-NN-复杂度"><a href="#神经网络-NN-复杂度" class="headerlink" title="神经网络(NN)复杂度"></a>神经网络(NN)复杂度</h2><p>NN复杂度：多用NN层数和NN参数个数表示</p>
+<ul>
+<li>空间复杂度</li>
+</ul>
+<p>层数 = 隐藏层层数 + 1个输出层</p>
+<p>总参数 = 总w + 总b</p>
+<ul>
+<li>时间复杂度</li>
+</ul>
+<p>乘加运算次数</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607497708(1).jpg">
+
+<p>图为2层NN.</p>
+<p>第一层参数w是3行4列的，加4个偏置项b，第二层参数是4行2列的，两个偏置项，共26个参数.</p>
+<p>每条权重线代表1次乘加运算，第1层12，第2层8次，共20次乘加运算.</p>
+<h2 id="指数衰减学习率"><a href="#指数衰减学习率" class="headerlink" title="指数衰减学习率"></a>指数衰减学习率</h2><p>先用较大学习率，快速得到较优解，逐步减小学习率，得到最优解</p>
+<p>指数衰减学习率 = 初始学习率*学习率衰减率^(当前轮数/多少轮衰减一次)</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow <span class="keyword">as</span> <span class="keyword">tf</span></span><br><span class="line">epoch = <span class="number">40</span></span><br><span class="line"><span class="keyword">w</span> = <span class="keyword">tf</span>.Variable(<span class="keyword">tf</span>.constant(<span class="number">5</span>, dtype=<span class="keyword">tf</span>.float32))</span><br><span class="line">lr_base = <span class="number">0.2</span></span><br><span class="line">lr_decay = <span class="number">0.99</span></span><br><span class="line">lr_step = <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> epoch in <span class="built_in">range</span>(epoch):</span><br><span class="line">    <span class="keyword">lr</span> = lr_base * lr_decay ** (epoch / lr_step)</span><br><span class="line">    with <span class="keyword">tf</span>.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        loss = <span class="keyword">tf</span>.square(<span class="keyword">w</span>+<span class="number">1</span>)</span><br><span class="line">    grads = tape.gradient(loss, <span class="keyword">w</span>)</span><br><span class="line">    <span class="keyword">w</span>.assign_sub(<span class="keyword">lr</span> * grads)</span><br><span class="line">    <span class="keyword">print</span>(<span class="string">'After %s epoch, w is %f, loss is %f, lr is %f'</span> % (epoch, <span class="keyword">w</span>.numpy(), loss, <span class="keyword">lr</span>))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">result:</span><br><span class="line">After <span class="number">0</span> epoch, w <span class="keyword">is</span> <span class="number">2.600000</span>, loss <span class="keyword">is</span> <span class="number">36.000000</span>, lr <span class="keyword">is</span> <span class="number">0.200000</span></span><br><span class="line">After <span class="number">1</span> epoch, w <span class="keyword">is</span> <span class="number">1.174400</span>, loss <span class="keyword">is</span> <span class="number">12.959999</span>, lr <span class="keyword">is</span> <span class="number">0.198000</span></span><br><span class="line">After <span class="number">2</span> epoch, w <span class="keyword">is</span> <span class="number">0.321948</span>, loss <span class="keyword">is</span> <span class="number">4.728015</span>, lr <span class="keyword">is</span> <span class="number">0.196020</span></span><br><span class="line">After <span class="number">3</span> epoch, w <span class="keyword">is</span> <span class="number">-0.191126</span>, loss <span class="keyword">is</span> <span class="number">1.747547</span>, lr <span class="keyword">is</span> <span class="number">0.194060</span></span><br><span class="line">After <span class="number">4</span> epoch, w <span class="keyword">is</span> <span class="number">-0.501926</span>, loss <span class="keyword">is</span> <span class="number">0.654277</span>, lr <span class="keyword">is</span> <span class="number">0.192119</span></span><br><span class="line">After <span class="number">5</span> epoch, w <span class="keyword">is</span> <span class="number">-0.691392</span>, loss <span class="keyword">is</span> <span class="number">0.248077</span>, lr <span class="keyword">is</span> <span class="number">0.190198</span></span><br><span class="line">After <span class="number">6</span> epoch, w <span class="keyword">is</span> <span class="number">-0.807611</span>, loss <span class="keyword">is</span> <span class="number">0.095239</span>, lr <span class="keyword">is</span> <span class="number">0.188296</span></span><br><span class="line">After <span class="number">7</span> epoch, w <span class="keyword">is</span> <span class="number">-0.879339</span>, loss <span class="keyword">is</span> <span class="number">0.037014</span>, lr <span class="keyword">is</span> <span class="number">0.186413</span></span><br><span class="line">After <span class="number">8</span> epoch, w <span class="keyword">is</span> <span class="number">-0.923874</span>, loss <span class="keyword">is</span> <span class="number">0.014559</span>, lr <span class="keyword">is</span> <span class="number">0.184549</span></span><br><span class="line">After <span class="number">9</span> epoch, w <span class="keyword">is</span> <span class="number">-0.951691</span>, loss <span class="keyword">is</span> <span class="number">0.005795</span>, lr <span class="keyword">is</span> <span class="number">0.182703</span></span><br><span class="line">After <span class="number">10</span> epoch, w <span class="keyword">is</span> <span class="number">-0.969167</span>, loss <span class="keyword">is</span> <span class="number">0.002334</span>, lr <span class="keyword">is</span> <span class="number">0.180876</span></span><br><span class="line">... ...</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，随着迭代轮数的增加，学习率在指数衰减.</p>
+<h2 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607499785(1).jpg" alt></p>
+<p>激活函数大大提升了模型表达能力</p>
+<ul>
+<li><p>优秀的激活函数</p>
+<ul>
+<li>非线性：不会被单层网络替代，多层网络可逼近所有函数</li>
+<li>可微性：优化器大多用梯度下降更新参数</li>
+<li>单调性：保证单层网络损失函数是凸函数</li>
+<li>近似恒等性：f(x)≈x，网络更稳定</li>
+</ul>
+</li>
+<li><p>激活函数输出值范围：</p>
+<ul>
+<li>激活函数输出有限值，基于梯度的优化方法更稳定;</li>
+<li>无限值时，参数初始值对模型影响大，要使用更小的学习率.</li>
+</ul>
+</li>
+</ul>
+<p>$$<br>Sigmoid:f(x)=\frac{1}{1+e^{-x}}<br>$$</p>
+<p>特点：易造成梯度消失；输出非0均值，收敛慢；幂运算复杂，训练时间长.<br>$$<br>Tanh:f(x)=\frac{1-e^{-2x}}{1+e^{-2x}}<br>$$<br>特点：输出是0均值；易造成梯度消失；幂运算复杂，训练时间长.<br>$$<br>Relu:f(x)=max(x,0)={_{x,x&gt;=0}^{0,x&lt;0}<br>$$<br>优点：在正区间内解决了梯度消失问题；只需判断输入是否大于0，计算速度快；收敛速度快于sigmoid和tanh</p>
+<p>缺点：输出非0均值，收敛慢；Dead ReIU问题：输入特征是负数时，激活函数输出是0，反向传播梯度是0，参数无法更新，导致神经元死亡.<br>$$<br>Leaky Relu:f(x)=max(\alpha x,x)<br>$$<br>实际操作中，选择relu做激活函数的网络会更多.</p>
+<p>对于使用激活函数的建议：</p>
+<ul>
+<li>首选relu函数</li>
+<li>学习率设置较小值</li>
+<li>输入特征标准化，即满足以0为均值，1为标准差的正态分布</li>
+<li>初始参数中心化，即随机生成的参数满足0为均值，sqrt(2/当前层输入特征个数)为标准差的正态分布.</li>
+</ul>
+<h2 id="损失函数-loss"><a href="#损失函数-loss" class="headerlink" title="损失函数(loss)"></a>损失函数(loss)</h2><p>预测值与已知答案的差距</p>
+<p>主流的三种损失函数：均方误差、自定义、交叉熵</p>
+<p><strong>均方误差mse：</strong><br>$$<br>MSE(y_,y)=\frac{\sum_{i=1}^{n}(y-y_{-})^{2}}{n}<br>$$<br><strong>loss_mse = tf.reduce_mean(tf.square(y_-y))</strong></p>
+<p>构建例子来理解：预测日销量.</p>
+<p>x1, x2是影响日销量的因素，预先采集每日x1, x2, y_(已知答案)</p>
+<p>构造数据集X，Y_=x1+x2  噪声：-0.05~0.05 拟合可以预测销量的函数</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line"><span class="keyword">import</span> numpy as np</span><br><span class="line">SEED = <span class="number">23455</span> #随机数种子，保证生成的随机数是一样的</span><br><span class="line"></span><br><span class="line">rdm = np.random.RandomState(seed=SEED)</span><br><span class="line">x = rdm.rand(<span class="number">32</span>, <span class="number">2</span>)</span><br><span class="line">y_ = [[x1 + x2 + (rdm.rand() / <span class="number">10.0</span> - <span class="number">0.05</span>)] <span class="keyword">for</span> (x1, x2) <span class="keyword">in</span> x] #制造的数据集</span><br><span class="line"># rdm.rand()生成<span class="number">0</span>~<span class="number">1</span>随机数 /<span class="number">10</span> 变成<span class="number">0</span>~<span class="number">0.1</span> <span class="number">-0.05</span> 变成<span class="number">-0.05</span>~<span class="number">0.05</span></span><br><span class="line">x = tf.<span class="keyword">cast</span>(x, dtype=tf.<span class="built_in">float</span>32)</span><br><span class="line"></span><br><span class="line">w1 = tf.Variable(tf.random.normal([<span class="number">2</span>, <span class="number">1</span>], stddev=<span class="number">1</span>, seed=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">epoch = <span class="number">15000</span></span><br><span class="line">lr = <span class="number">0.02</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(epoch):</span><br><span class="line">    with tf.GradientTape() as tape:</span><br><span class="line">        y = tf.matmul(x, w1)</span><br><span class="line">        loss_mse = tf.reduce_mean(tf.square(y_-y))</span><br><span class="line">    grads = tape.gradient(loss_mse, w1)</span><br><span class="line">    w1.assign_sub(lr * grads)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> epoch % <span class="number">500</span> == <span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'After %d training steps,w1 is '</span> %(epoch) )</span><br><span class="line">        print(w1.numpy(), <span class="string">'\n'</span>)</span><br><span class="line">print(<span class="string">'Final w1 is :'</span>, w1.numpy())</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result:</span><br><span class="line">Final w1 is : <span class="string">[[1.004296  ]</span></span><br><span class="line"><span class="string"> [0.99483895]]</span></span><br></pre></td></tr></table></figure>
+
+<p>输出参数值接近1，最后得到答案y=1.004296x1+0.99483895x2，而标准答案是y=x1+x2，拟合正确.</p>
+<p><strong>交叉熵</strong></p>
+<p>表示两个概率分布之间的距离.交叉熵越大，概率分布越远；交叉熵越小，概率分布越近.</p>
+<p>交叉熵损失函数CE(Cross Entropy)<br>$$<br>H(y_,y)=-\sum y_{-}*lny<br>$$<br>e.g 二分类</p>
+<p>已知答案y_=(1,0)，表示第一个事件发生概率为1，第二个事件发生概率为0，神经网络预测了两个结果 y1=(0.6,0.4),y2=(0.8,0.2),哪个更接近标准答案？<br>$$<br>H_{1}((1,0),(0.6,0.4))=-(1<em>ln0.6+0</em>ln0.4)=-(-0.511+0)=0.511\<br>H_{2}((1,0),(0.8,0.2))=-(1<em>ln0.8+0</em>ln0.2)=-(-0.223+0)=0.2223\<br>H_{1}&gt;H_{2}<br>$$<br>y2预测更准确.</p>
+<p>交叉熵计算公式<strong>tf.losses.categorical_crossentropy(y_,y)</strong></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">loss_ce1 = tf<span class="selector-class">.losses</span>.categorical_crossentropy([<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0.6</span>, <span class="number">0.4</span>])</span><br><span class="line">loss_ce2 = tf<span class="selector-class">.losses</span>.categorical_crossentropy([<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0.8</span>, <span class="number">0.2</span>])</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'loss_ce1:'</span>, loss_ce1)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'loss_ce2:'</span>, loss_ce2)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result:</span><br><span class="line">loss_ce1: tf.Tensor(<span class="number">0.5108256</span>, shape=(), dtype=<span class="built_in">float</span>32)</span><br><span class="line">loss_ce2: tf.Tensor(<span class="number">0.22314353</span>, shape=(), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<p><strong>softmax与交叉熵结合</strong></p>
+<p>输出先经过softmax符合概率分布，再计算y与y_的交叉熵损失函数，将两者结合的函数：</p>
+<p><strong>tf.nn.softmax_cross_entropy_with_logits(y_,y)</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line"><span class="keyword">import</span> numpy as np</span><br><span class="line">y_ = np.<span class="built_in">array</span>([[<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">y = np.<span class="built_in">array</span>([[<span class="number">12</span>, <span class="number">3</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">10</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">4</span>, <span class="number">6.5</span>, <span class="number">1.2</span>], [<span class="number">3</span>, <span class="number">6</span>, <span class="number">1</span>]])</span><br><span class="line">y_pro = tf.nn.softmax(y)</span><br><span class="line">loss_ce1 = tf.losses.categorical_crossentropy(y_, y_pro)</span><br><span class="line">loss_ce2 = tf.nn.softmax_cross_entropy_with_logits(y_, y)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'分步计算结果：\n'</span>, loss_ce1)</span><br><span class="line">print(<span class="string">'结合计算结果：\n'</span>, loss_ce2)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">result:</span><br><span class="line">分步计算结果：</span><br><span class="line"> tf.Tensor(</span><br><span class="line">[<span class="number">1.68795487e-04</span> <span class="number">1.03475622e-03</span> <span class="number">6.58839038e-02</span> <span class="number">2.58349207e+00</span></span><br><span class="line"> <span class="number">5.49852354e-02</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">float</span>64)</span><br><span class="line">结合计算结果：</span><br><span class="line"> tf.Tensor(</span><br><span class="line">[<span class="number">1.68795487e-04</span> <span class="number">1.03475622e-03</span> <span class="number">6.58839038e-02</span> <span class="number">2.58349207e+00</span></span><br><span class="line"> <span class="number">5.49852354e-02</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">float</span>64)</span><br></pre></td></tr></table></figure>
+
+<h2 id="欠拟合与过拟合"><a href="#欠拟合与过拟合" class="headerlink" title="欠拟合与过拟合"></a>欠拟合与过拟合</h2><p><strong>欠拟合</strong></p>
+<p>模型不能有效拟合数据集,是对现有数据集学习不彻底.</p>
+<p><strong>过拟合</strong></p>
+<p>模型对当前数据拟合得太好了，但对新数据难以判断，泛化能力差.</p>
+<p><strong>欠拟合的解决</strong></p>
+<ul>
+<li>增加输入特征项，给网络更多维度的输入特征</li>
+<li>增加网络参数</li>
+<li>减少正则化参数</li>
+</ul>
+<p><strong>过拟合的解决</strong></p>
+<ul>
+<li>数据清洗，减少噪声，使数据集更纯净.</li>
+<li>增大训练集</li>
+<li>采用正则化</li>
+<li>增大正则化参数</li>
+</ul>
+<p><strong>正则化缓解过拟合</strong></p>
+<p>即在损失函数中引入模型复杂度指标，利用给W加权值，弱化训练数据的噪声(一般不正则化b)</p>
+<p>损失函数变成两部分的和：</p>
+<p>loss = loss(y与y_)+REGULARIZER * loss(w)</p>
+<p>第一部分是模型中所有参数的损失函数，描述了预测结果与正确结果间的差距，如交叉熵、均方误差.</p>
+<p>第二部分是参数的权重，用超参数REGULARIZER给出参数w在总loss中比重 .</p>
+<p>loss(w)计算有两种方法</p>
+<ul>
+<li>L1正则化</li>
+</ul>
+<p>$$<br>loss_{L1}(w)=\sum_{i} |w_{i}|<br>$$</p>
+<p>大概率使很多参数变为0，该方法通过稀疏参数，即减少参数的数量，降低复杂度.</p>
+<ul>
+<li>L2正则化</li>
+</ul>
+<p>$$<br>loss_{L2}(w)=\sum_{i}|w_{i}^{2}|<br>$$</p>
+<p>使参数接近0但不为0，即通过减小参数值大小降低复杂度.</p>
+
+    </div>
+
+    
+    
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>Your support will encourage me to continue to write!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/wechatpay.jpg" alt="亦新 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/alipay.jpg" alt="亦新 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/daytoy/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 深度学习</a>
+              <a href="/daytoy/tags/Tensorflow/" rel="tag"><i class="fa fa-tag"></i> Tensorflow</a>
+              <a href="/daytoy/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag"><i class="fa fa-tag"></i> 人工智能</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/daytoy/2020/12/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%BA%8C)/" rel="prev" title="人工智能-Tensorflow2笔记(二)">
+      <i class="fa fa-chevron-left"></i> 人工智能-Tensorflow2笔记(二)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/daytoy/2021/04/12/wordcloud%E5%BA%93/" rel="next" title="wordcloud库">
+      wordcloud库 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#神经网络优化"><span class="nav-number">1.</span> <span class="nav-text">神经网络优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#预备知识"><span class="nav-number">1.1.</span> <span class="nav-text">预备知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#神经网络-NN-复杂度"><span class="nav-number">1.2.</span> <span class="nav-text">神经网络(NN)复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指数衰减学习率"><span class="nav-number">1.3.</span> <span class="nav-text">指数衰减学习率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#激活函数"><span class="nav-number">1.4.</span> <span class="nav-text">激活函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#损失函数-loss"><span class="nav-number">1.5.</span> <span class="nav-text">损失函数(loss)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#欠拟合与过拟合"><span class="nav-number">1.6.</span> <span class="nav-text">欠拟合与过拟合</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="亦新"
+      src="/daytoy/images/hexohead.gif">
+  <p class="site-author-name" itemprop="name">亦新</p>
+  <div class="site-description" itemprop="description">热爱可抵岁月漫长</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/daytoy/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/daytoy/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/daytoy/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      
+      <div id="music163player">
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=0&id=5353663714&auto=1&height=66"></iframe>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+    
+    
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+    
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦新</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">30k</span>
+</div>
+
+<!-- 网站运行时间的设置 -->
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+    <script>
+        var now = new Date();
+        function createtime() {
+            var grt= new Date("11/14/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+            now.setTime(now.getTime()+250);
+            days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+            hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+            if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+            mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+            seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+            snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+            document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+            document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/daytoy/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/daytoy/js/utils.js"></script>
+
+
+<script src="/daytoy/js/schemes/pisces.js"></script>
+
+
+<script src="/daytoy/js/next-boot.js"></script>
+
+<script src="/daytoy/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/daytoy/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/daytoy/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/daytoy/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
+
+
+  
+    <script src="/js/cursor/love.min.js"></script>
+  
+

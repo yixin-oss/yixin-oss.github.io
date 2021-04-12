@@ -62,78 +62,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python函数及变量的定义和使用</title>
-    <url>/daytoy/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
-<a id="more"></a>
-
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(非可选参数，可选参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">#e.g<span class="number">.1</span> 这里m是可选参数，默认设为<span class="number">1</span>，可以更改</span><br><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">362800</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">1209600</span></span><br></pre></td></tr></table></figure>
-
-<!--more-->
-
-<h2 id="2-可变参数传递"><a href="#2-可变参数传递" class="headerlink" title="2.可变参数传递"></a>2.可变参数传递</h2><p>不确定参数总数量</p>
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(参数，可变参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#e.g.2  *b代表可变参数，可以有多个值</span></span><br><span class="line"><span class="attr">def</span> <span class="string">fact(n,*b):</span></span><br><span class="line">    <span class="attr">s</span>=<span class="string">1</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">i in range(1,n+1):</span></span><br><span class="line">        <span class="meta">s*</span>=<span class="string">i</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">item in b:</span></span><br><span class="line">        <span class="attr">s</span>=<span class="string">s//item</span></span><br><span class="line">    <span class="attr">return</span> <span class="string">s</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">90720</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>,<span class="number">7</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">12960</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="3-参数传递两种方式：位置传递-amp-名称传递"><a href="#3-参数传递两种方式：位置传递-amp-名称传递" class="headerlink" title="3.参数传递两种方式：位置传递&amp;名称传递"></a>3.参数传递两种方式：位置传递&amp;名称传递</h2><figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)<span class="comment">#位置传递</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(m=<span class="number">5</span>,n=<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="4-函数返回值"><a href="#4-函数返回值" class="headerlink" title="4.函数返回值"></a>4.函数返回值</h2><p>函数可以返回0个或多个结果.</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m,n,m</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;(<span class="number">725760</span>, <span class="number">10</span>, <span class="number">5</span>) <span class="comment">#元组形式</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;a,b,c=fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;print(a,b,c)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span> <span class="number">10</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="5-全局变量和局部变量"><a href="#5-全局变量和局部变量" class="headerlink" title="5.全局变量和局部变量"></a>5.全局变量和局部变量</h2><ul>
-<li>局部变量是函数内部的占位符，可与全局变量重名，但不同</li>
-<li>函数运算结束后，局部变量被释放</li>
-<li>可以使用global关键字在函数内部使用全局变量</li>
-<li>局部变量为组合数据类型且在函数内为真实创建，等同于全局变量</li>
-</ul>
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span> <span class="comment">#s是全局变量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span></span>：</span><br><span class="line">    s=<span class="number">1</span>  <span class="comment">#s是局部变量，与全局变量s不同</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>)<span class="symbol">:</span></span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s <span class="comment">#s是局部变量</span></span><br><span class="line"><span class="comment">#函数运行结束后，局部变量会被释放</span></span><br><span class="line">print(fact(n),s) <span class="comment">#此处s是全局变量，s=100</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; <span class="number">3628800</span> <span class="number">100</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> s  <span class="comment">#使用global保留字声明s是全局变量s</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s  <span class="comment">#此处s指全局变量s</span></span><br><span class="line">print(fact(n),s)  <span class="comment">#此处全局变量s被函数修改</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="number">362880000</span> <span class="number">362880000</span></span><br></pre></td></tr></table></figure>
-
-<p>局部变量为组合数据类型且未创建，等同于全局变量</p>
-<figure class="highlight autoit"><table><tr><td class="code"><pre><span class="line">ls=[<span class="string">'F'</span>,<span class="string">'f'</span>] <span class="meta">#通过使用[]真实创建一个全局变量列表ls</span></span><br><span class="line">def <span class="function"><span class="keyword">func</span><span class="params">(a)</span>:</span></span><br><span class="line">    ls.append(a) <span class="meta">#此处ls是列表类型，未真实创建，则等同于全局变量</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(<span class="string">'C'</span>)</span>  #全局变量<span class="title">ls</span>被修改</span></span><br><span class="line">print(ls)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>, <span class="string">'C'</span>]</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ls</span>=[<span class="string">'F'</span>,<span class="string">'f'</span>]</span><br><span class="line">def func(<span class="keyword">a</span>):</span><br><span class="line">    <span class="keyword">ls</span>=[]  #此处<span class="keyword">ls</span>是列表类型，真实创建，<span class="keyword">ls</span>是局部变量</span><br><span class="line">    <span class="keyword">ls</span>.<span class="keyword">append</span>(<span class="keyword">a</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="keyword">print</span>(func(<span class="string">'C'</span>)) #修改了局部变量<span class="keyword">ls</span></span><br><span class="line"><span class="keyword">print</span>(<span class="keyword">ls</span>) #输出全局变量<span class="keyword">ls</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>]</span><br></pre></td></tr></table></figure>
-
-<h2 id="6-lambda函数"><a href="#6-lambda函数" class="headerlink" title="6. lambda函数"></a>6. lambda函数</h2><p>lambda函数是一种匿名函数，即没有名字的函数.使用lambda保留字定义，函数名是返回结果；lambda函数用于定义简单的，能够在一行内定义的函数；lambda函数主要用作一些特定函数或方法的参数.</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">函数名</span>&gt;</span> = lambda<span class="tag">&lt;<span class="name">参数</span>&gt;</span>:<span class="tag">&lt;<span class="name">表达式</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight gml"><table><tr><td class="code"><pre><span class="line">f=lambda <span class="symbol">x</span>,<span class="symbol">y</span> : <span class="symbol">x</span>+<span class="symbol">y</span></span><br><span class="line">f(<span class="number">6</span>,<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">14</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">f</span>=lambda : <span class="string">'没有参数的lambda函数！'</span></span><br><span class="line"><span class="builtin-name">print</span>(f())</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;没有参数的lambda函数！</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>python学习笔记</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>python turtle库&quot;一箭穿心&quot;代码实现</title>
     <url>/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<p>利用python中的turtle库实现“一箭穿心”简单绘图</p>
@@ -261,45 +189,322 @@
       </tags>
   </entry>
   <entry>
-    <title>人工智能-Tensorflow2笔记(二)</title>
-    <url>/daytoy/2020/12/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%BA%8C)/</url>
-    <content><![CDATA[<h2 id="神经网络实现鸢尾花分类"><a href="#神经网络实现鸢尾花分类" class="headerlink" title="神经网络实现鸢尾花分类"></a>神经网络实现鸢尾花分类</h2><p>准备数据</p>
-<ul>
-<li>数据集读入</li>
-<li>数据集乱序</li>
-<li>生成训练集和测试集,训练集，测试集不能有交集</li>
-<li>配成（输入特征，标签）对，每次读入一部分(batch)</li>
-</ul>
-<p>搭建网络</p>
-<ul>
-<li>定义神经网络中所有可训练参数</li>
-</ul>
-<p>参数优化</p>
-<ul>
-<li>嵌套循环迭代，with结构更新参数，显示当前loss</li>
-</ul>
-<p>测试效果</p>
-<ul>
-<li>计算当前参数向后传播准确率，显示当前acc</li>
-<li>准确率acc/损失函数loss可视化</li>
-</ul>
+    <title>Python函数及变量的定义和使用</title>
+    <url>/daytoy/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
 <a id="more"></a>
 
-<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="built_in">import</span> tensorflow as tf</span><br><span class="line"><span class="built_in">import</span> numpy as np</span><br><span class="line">from matplotlib <span class="built_in">import</span> pyplot as plt</span><br><span class="line"><span class="comment">#从sklearn包datasets读入数据集：</span></span><br><span class="line">from sklearn <span class="built_in">import</span> datasets</span><br><span class="line"><span class="attr">x_data</span> = datasets.load_iris().data  <span class="comment">#返回iris数据集所有输入特征</span></span><br><span class="line"><span class="attr">y_data</span> = datasets.load_iris().target <span class="comment">#返回iris数据集中所有标签</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集乱序</span></span><br><span class="line">np.random.seed(<span class="number">116</span>) <span class="comment">#使用相同的随机数种子，使输入特征/标签一一对应，即配对不会乱</span></span><br><span class="line">np.random.shuffle(x_data)</span><br><span class="line">np.random.seed(<span class="number">116</span>)</span><br><span class="line">np.random.shuffle(y_data)</span><br><span class="line">tf.random.set_seed(<span class="number">116</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集分出训练集，测试集,不能有交集</span></span><br><span class="line"><span class="comment">#打乱数据集中前120个作为训练集</span></span><br><span class="line"><span class="attr">x_train</span> = x_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">y_train</span> = y_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">x_test</span> = x_data[-<span class="number">30</span>:]</span><br><span class="line"><span class="attr">y_test</span> = y_data[-<span class="number">30</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换x数据类型</span></span><br><span class="line"><span class="attr">x_train</span> = tf.cast(x_train, tf.float32)</span><br><span class="line"><span class="attr">x_test</span> = tf.cast(x_test, tf.float32)</span><br><span class="line"></span><br><span class="line"><span class="comment">#from_tensor_slices配成【输入特征、标签】对，每次喂入神经网络一部分数据(batch)</span></span><br><span class="line"><span class="comment">#每32对打包为一个batch</span></span><br><span class="line"><span class="attr">train_db</span> = tf.data.Dataset.from_tensor_slices((x_train, y_train)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="attr">test_db</span> = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="comment">#定义神经网络所有可训练参数</span></span><br><span class="line"><span class="comment">#输入特征是4，输入层为4个输入节点，只有一层网络，输出节点数=分类数，3分类</span></span><br><span class="line"><span class="comment">#参数w1是4行3列张量</span></span><br><span class="line"><span class="attr">w1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">4</span>, <span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"><span class="attr">b1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"></span><br><span class="line"><span class="attr">lr</span> = <span class="number">0.1</span> <span class="comment">#学习率为0.1</span></span><br><span class="line"><span class="attr">train_loss_results</span> = []  <span class="comment">#将每轮loss记录下来，为后面画loss曲线提供数据</span></span><br><span class="line"><span class="attr">test_acc</span> = [] <span class="comment">#记录acc</span></span><br><span class="line"><span class="attr">Epoch</span> = <span class="number">500</span> <span class="comment">#循环500次</span></span><br><span class="line"><span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#每轮分4个step，loss_all记录四个step生成的4个loss的和</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#两层循环迭代更新参数</span></span><br><span class="line"><span class="comment">#第一层for循环是针对整个数据集循环，用epoch表示</span></span><br><span class="line"><span class="comment">#第二层for循环是针对batch的，用step表示</span></span><br><span class="line">for epoch <span class="keyword">in</span> range(Epoch):</span><br><span class="line">    for step, (x_train, y_train) <span class="keyword">in</span> enumerate(train_db):</span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape() as tape: <span class="comment">#with结构记录梯度信息</span></span><br><span class="line">            <span class="attr">y</span> = tf.matmul(x_train, w1) + b1 <span class="comment">#神经网络乘加运算</span></span><br><span class="line">            <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#使输出y符合概率分布</span></span><br><span class="line">            <span class="attr">y_</span> = tf.one_hot(y_train, <span class="attr">depth=3)</span> <span class="comment">#将标签转换为独热码格式，方便计算loss</span></span><br><span class="line">            <span class="attr">loss</span> = tf.reduce_mean(tf.square(y_ -y)) <span class="comment">#采用均方误差损失函数MSE</span></span><br><span class="line">            loss_all += loss.numpy() <span class="comment">#将每个step计算出的loss累加，为后续求loss平均值提供数据</span></span><br><span class="line">        <span class="attr">grads</span> = tape.gradient(loss, [w1, b1])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 实现梯度更新</span></span><br><span class="line">        w1.assign_sub(lr * grads[<span class="number">0</span>]) <span class="comment">#参数w1自更新</span></span><br><span class="line">        b1.assign_sub(lr * grads[<span class="number">1</span>]) <span class="comment">#参数b1自更新</span></span><br><span class="line">    <span class="comment">#每个epoch 打印loss信息</span></span><br><span class="line">    print('Epoch &#123;&#125;, loss: &#123;&#125;'.format(epoch, loss_all/<span class="number">4</span>)) <span class="comment">#120组数据，需要batch级别循环4次，除以4求得每次step迭代平均loss</span></span><br><span class="line">    train_loss_results.append(loss_all / <span class="number">4</span>) <span class="comment">#将4个step的loss求平均记录在此变量中</span></span><br><span class="line">    <span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#loss_all归零，为记录下一个epoch的loss做准备</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#测试部分</span></span><br><span class="line">    <span class="comment">#计算当前参数前向传播后准确率，显示当前acc</span></span><br><span class="line">    <span class="comment">#total_corrrect为预测对的样本个数， total_number为测试的总样本数，初始化为0</span></span><br><span class="line">    total_correct, <span class="attr">total_number</span> = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    for x_test, y_test <span class="keyword">in</span> test_db:</span><br><span class="line">        <span class="attr">y</span> = tf.matmul(x_test, w1) + b1 <span class="comment">#y为预测结果</span></span><br><span class="line">        <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#y符合概率分布</span></span><br><span class="line">        <span class="attr">pred</span> = tf.argmax(y, <span class="attr">axis=1)</span> <span class="comment">#返回y中最大值索引，即预测分类</span></span><br><span class="line">        <span class="comment">#将pred转换为y_test数据类型</span></span><br><span class="line">        <span class="attr">pred</span> = tf.cast(pred, <span class="attr">dtype=y_test.dtype)</span></span><br><span class="line">        <span class="comment"># 若分类正确，correct=1，否则为0，将bool型转换为int型</span></span><br><span class="line">        <span class="attr">correct</span> = tf.cast(tf.equal(pred, y_test), <span class="attr">dtype=tf.int32)</span></span><br><span class="line">        <span class="comment"># 将每个batch的correct数加起来</span></span><br><span class="line">        <span class="attr">correct</span> = tf.reduce_sum(correct)</span><br><span class="line">        total_correct += int(correct) <span class="comment">#将所有batch中correct数加起来</span></span><br><span class="line">        <span class="comment">#total_number为测试总样本数，即x_test行数，shape[0]</span></span><br><span class="line">        <span class="attr">total_number</span> = x_test.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment">#总准确率为 total_correct / total_number</span></span><br><span class="line">    <span class="attr">acc</span> = total_correct / total_number</span><br><span class="line">    test_acc.append(acc)</span><br><span class="line">    print(<span class="string">"test_acc:"</span>, acc)</span><br><span class="line">    print('----------------------')</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制loss曲线</span></span><br><span class="line">plt.title('Loss Function Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel(<span class="string">"Loss"</span>)</span><br><span class="line">plt.plot(train_loss_results, <span class="attr">label='$loss$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制Accuary曲线</span></span><br><span class="line">plt.title('Acc Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel('Acc')</span><br><span class="line">plt.plot(test_acc, <span class="attr">label='$Accuary$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(非可选参数，可选参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
 
-<p>程序在PyCharm中运行.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Epoch.jpg" alt></p>
-<p>从图中可见，随着迭代次数增加，损失函数值逐渐减小，对测试集的预测准确率逐渐增大直至达到100%正确.下面两张图给出了损失函数及预测准确率的变化图像.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Loss_Function_Curve.png" alt></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Acc_Curve.png" alt></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">#e.g<span class="number">.1</span> 这里m是可选参数，默认设为<span class="number">1</span>，可以更改</span><br><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">362800</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">1209600</span></span><br></pre></td></tr></table></figure>
+
+<!--more-->
+
+<h2 id="2-可变参数传递"><a href="#2-可变参数传递" class="headerlink" title="2.可变参数传递"></a>2.可变参数传递</h2><p>不确定参数总数量</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">&lt;</span>函数名<span class="title">&gt;</span><span class="params">(参数，可变参数)</span></span><span class="symbol">:</span></span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">    <span class="keyword">return</span> &lt;返回值&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#e.g.2  *b代表可变参数，可以有多个值</span></span><br><span class="line"><span class="attr">def</span> <span class="string">fact(n,*b):</span></span><br><span class="line">    <span class="attr">s</span>=<span class="string">1</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">i in range(1,n+1):</span></span><br><span class="line">        <span class="meta">s*</span>=<span class="string">i</span></span><br><span class="line">    <span class="attr">for</span> <span class="string">item in b:</span></span><br><span class="line">        <span class="attr">s</span>=<span class="string">s//item</span></span><br><span class="line">    <span class="attr">return</span> <span class="string">s</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">90720</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">9</span>,<span class="number">4</span>,<span class="number">7</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">12960</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-参数传递两种方式：位置传递-amp-名称传递"><a href="#3-参数传递两种方式：位置传递-amp-名称传递" class="headerlink" title="3.参数传递两种方式：位置传递&amp;名称传递"></a>3.参数传递两种方式：位置传递&amp;名称传递</h2><figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)<span class="comment">#位置传递</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(m=<span class="number">5</span>,n=<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-函数返回值"><a href="#4-函数返回值" class="headerlink" title="4.函数返回值"></a>4.函数返回值</h2><p>函数可以返回0个或多个结果.</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">def fact(n,m=<span class="number">1</span>):</span><br><span class="line">    s=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s<span class="comment">//m,n,m</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;(<span class="number">725760</span>, <span class="number">10</span>, <span class="number">5</span>) <span class="comment">#元组形式</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;a,b,c=fact(<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;print(a,b,c)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">725760</span> <span class="number">10</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-全局变量和局部变量"><a href="#5-全局变量和局部变量" class="headerlink" title="5.全局变量和局部变量"></a>5.全局变量和局部变量</h2><ul>
+<li>局部变量是函数内部的占位符，可与全局变量重名，但不同</li>
+<li>函数运算结束后，局部变量被释放</li>
+<li>可以使用global关键字在函数内部使用全局变量</li>
+<li>局部变量为组合数据类型且在函数内为真实创建，等同于全局变量</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span> <span class="comment">#s是全局变量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span></span>：</span><br><span class="line">    s=<span class="number">1</span>  <span class="comment">#s是局部变量，与全局变量s不同</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>)<span class="symbol">:</span></span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s <span class="comment">#s是局部变量</span></span><br><span class="line"><span class="comment">#函数运行结束后，局部变量会被释放</span></span><br><span class="line">print(fact(n),s) <span class="comment">#此处s是全局变量，s=100</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; <span class="number">3628800</span> <span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n,s=<span class="number">10</span>,<span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fact</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> s  <span class="comment">#使用global保留字声明s是全局变量s</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        s*=i</span><br><span class="line">    <span class="keyword">return</span> s  <span class="comment">#此处s指全局变量s</span></span><br><span class="line">print(fact(n),s)  <span class="comment">#此处全局变量s被函数修改</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="number">362880000</span> <span class="number">362880000</span></span><br></pre></td></tr></table></figure>
+
+<p>局部变量为组合数据类型且未创建，等同于全局变量</p>
+<figure class="highlight autoit"><table><tr><td class="code"><pre><span class="line">ls=[<span class="string">'F'</span>,<span class="string">'f'</span>] <span class="meta">#通过使用[]真实创建一个全局变量列表ls</span></span><br><span class="line">def <span class="function"><span class="keyword">func</span><span class="params">(a)</span>:</span></span><br><span class="line">    ls.append(a) <span class="meta">#此处ls是列表类型，未真实创建，则等同于全局变量</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(<span class="string">'C'</span>)</span>  #全局变量<span class="title">ls</span>被修改</span></span><br><span class="line">print(ls)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>, <span class="string">'C'</span>]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ls</span>=[<span class="string">'F'</span>,<span class="string">'f'</span>]</span><br><span class="line">def func(<span class="keyword">a</span>):</span><br><span class="line">    <span class="keyword">ls</span>=[]  #此处<span class="keyword">ls</span>是列表类型，真实创建，<span class="keyword">ls</span>是局部变量</span><br><span class="line">    <span class="keyword">ls</span>.<span class="keyword">append</span>(<span class="keyword">a</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"><span class="keyword">print</span>(func(<span class="string">'C'</span>)) #修改了局部变量<span class="keyword">ls</span></span><br><span class="line"><span class="keyword">print</span>(<span class="keyword">ls</span>) #输出全局变量<span class="keyword">ls</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;[<span class="string">'F'</span>, <span class="string">'f'</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-lambda函数"><a href="#6-lambda函数" class="headerlink" title="6. lambda函数"></a>6. lambda函数</h2><p>lambda函数是一种匿名函数，即没有名字的函数.使用lambda保留字定义，函数名是返回结果；lambda函数用于定义简单的，能够在一行内定义的函数；lambda函数主要用作一些特定函数或方法的参数.</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">函数名</span>&gt;</span> = lambda<span class="tag">&lt;<span class="name">参数</span>&gt;</span>:<span class="tag">&lt;<span class="name">表达式</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gml"><table><tr><td class="code"><pre><span class="line">f=lambda <span class="symbol">x</span>,<span class="symbol">y</span> : <span class="symbol">x</span>+<span class="symbol">y</span></span><br><span class="line">f(<span class="number">6</span>,<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;<span class="number">14</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">f</span>=lambda : <span class="string">'没有参数的lambda函数！'</span></span><br><span class="line"><span class="builtin-name">print</span>(f())</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;</span>&gt;没有参数的lambda函数！</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows10安装TensorFlow</title>
+    <url>/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/</url>
+    <content><![CDATA[<h2 id="1-Anaconda下载及安装"><a href="#1-Anaconda下载及安装" class="headerlink" title="1. Anaconda下载及安装"></a>1. Anaconda下载及安装</h2><p><a href="https://www.anaconda.com/products/individual#macos" target="_blank" rel="noopener">Anaconda官网</a></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.png" alt></p>
+<a id="more"></a>
+
+<p>下载Windows的相应版本</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052(1).jpg" alt></p>
+<p>下载安装包后双击按引导安装</p>
+<p>这里要<strong>勾选!</strong>将Anaconda加入环境变量.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.jpg" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066358(1).jpg" alt></p>
+<p>等待安装完成.</p>
+<h2 id="2-TensorFlow安装"><a href="#2-TensorFlow安装" class="headerlink" title="2. TensorFlow安装"></a>2. TensorFlow安装</h2><p>开始–&gt;Anaconda3(64-bit)–&gt;Anaconda Prompt(Anaconda3)</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066505(1).jpg" style="zoom: 67%;">
+
+<p>用*<em>conda create -n *</em>新建一个名为tensorflow的环境，用python3.6版本(3.7也可)</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda create -n tensorflow <span class="attribute">python</span>=3.6</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1.png" style="zoom:80%;">
+
+<p>这里选择y表示同意安装相关软件包</p>
+<p><strong>conda activate tensorflow</strong>进入tensorflow虚拟环境环境</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">conda <span class="built_in">activate</span> tensorflow</span><br></pre></td></tr></table></figure>
+
+
+
+<p>输入以下代码安装深度学习软件包</p>
+<p><strong>conda install cudatoolkit=10.1</strong></p>
+<p><strong>conda install cudnn=7.6</strong></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda install <span class="attribute">cudatoolkit</span>=10.1</span><br><span class="line"></span><br><span class="line">conda install <span class="attribute">cudnn</span>=7.6</span><br></pre></td></tr></table></figure>
+
+<p>如果两条安装语句报错，可能是电脑硬件不支持英伟达GPU，直接跳过这两步，安装tensorflow.</p>
+<p><strong>pip install tensflow==2.1</strong></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">pip install <span class="attribute">tensflow</span>==2.1</span><br></pre></td></tr></table></figure>
+
+<p>默认Google源，下载可能会很慢.</p>
+<p>这里注意要指定tensorflow为2.1版本，不然默认安装的是2.3版本，后续使用一些函数可能会报错，如tf.Variable(),如果已经安装了tensorflow2.3并且出现函数报错，可卸载重新安装2.1版本</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">pip</span> <span class="string">uninstall tensorflow</span></span><br><span class="line"><span class="attr">pip</span> <span class="string">install tensorflow==2.1</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，进入python验证是否成功</p>
+<p>依次输入</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">python</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight elm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tf</span><span class="selector-class">.__version__</span></span><br></pre></td></tr></table></figure>
+
+
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607067507(1).jpg" style="zoom:80%;">
+
+<p>如果显示2.1.0表示安装成功.</p>
+<h2 id="3-PyCharm集成开发环境"><a href="#3-PyCharm集成开发环境" class="headerlink" title="3. PyCharm集成开发环境"></a>3. PyCharm集成开发环境</h2><p><a href="https://www.jetbrains.com/" target="_blank" rel="noopener">PyCharm官网</a></p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212.jpg" style="zoom: 50%;">
+
+
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212(1).jpg" style="zoom: 50%;">
+
+<p>下载社区版PyCharm</p>
+<p>打开安装包进行安装</p>
+<p>这里右侧的添加环境变量要<strong>！勾选</strong>，左侧根据个人习惯(可以<strong>都选上！</strong>)</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068405(1).jpg" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068602(1).png" alt></p>
+<p>这里需要重启电脑</p>
+<p>重启后打开PYCharm，新建工程，可以使用默认路径，文件夹命名‘’AI‘’，设置环境变量</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069116(1).jpg" style="zoom:67%;">
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069143(1).jpg" style="zoom:67%;">
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069206(1).jpg" style="zoom:67%;">
+
+<p>新建文件</p>
+<p>右击文件夹AI–&gt;New–&gt;File</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069401.jpg" alt></p>
+<p>命名为test.py</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069432(1).jpg" alt></p>
+<p>输入测试代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">tensorflow_version=tf.__version__</span><br><span class="line">gpu_available = tf.test.is_gpu_available()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"tensorflow version:"</span>, tensorflow_version, <span class="string">"\tGPU available:"</span>, gpu_available)</span><br><span class="line"></span><br><span class="line">a = tf.constant([<span class="number">2.0</span>, <span class="number">2.0</span>], name=<span class="string">'a'</span>)</span><br><span class="line">b = tf.constant([<span class="number">4.0</span>, <span class="number">2.0</span>], name=<span class="string">'b'</span>)</span><br><span class="line">result = tf.add(a, b, name=<span class="string">'add'</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069567(1).jpg" style="zoom: 80%;">
+
+<p>点击<strong>Run ‘test’</strong>，或者<strong>Ctrl+Shift+F10</strong>运行代码</p>
+<p>如果出现<strong>tf.tensor</strong>,说明开发环境已安装成功.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069751(1).png" alt></p>
+<p>后续需要安装一些必要的包，如sklearn,numpy,matplotlib等，点击下方Terminal出现操作台，输入相应下载命令即可.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607342902(1).png" alt></p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> sklearn</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> numpy</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> matplotlib</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>Tensorflow学习笔记</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
-        <tag>Tensorflow</tag>
-        <tag>人工智能</tag>
+        <tag>TensorFlow</tag>
+        <tag>软件安装</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>wordcloud库</title>
+    <url>/daytoy/2021/04/12/wordcloud%E5%BA%93/</url>
+    <content><![CDATA[<h2 id="一、wordcloud库基本介绍"><a href="#一、wordcloud库基本介绍" class="headerlink" title="一、wordcloud库基本介绍"></a>一、wordcloud库基本介绍</h2><p>优秀的词云展示第三方库.</p>
+<p>词云以词语为单位，更直观和艺术的展示文字.</p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> wordcloud</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="2-wordcloud库常规方法"><a href="#2-wordcloud库常规方法" class="headerlink" title="2.wordcloud库常规方法"></a>2.wordcloud库常规方法</h3><p><strong>w=wordcloud.WordCloud()</strong>生成一个词云对象.</p>
+<ul>
+<li>wordcloud库把词云当作一个WordCloud对象.</li>
+<li>wordcloud.WordCloud()代表一个文本对应词云.</li>
+<li>可以根据文本中词云出现的频率等参数绘制词云.</li>
+<li>绘制词云的形状、尺寸和颜色都可以设定.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">w.generate(txt)</td>
+<td align="center">向WordCloud对象w中加载文本txt</td>
+</tr>
+<tr>
+<td align="center">w.to_file(filename)</td>
+<td align="center">将词云输出为图像文件，.png or .jpg格式</td>
+</tr>
+</tbody></table>
+<h3 id="3-基本步骤"><a href="#3-基本步骤" class="headerlink" title="3.基本步骤"></a>3.基本步骤</h3><ol>
+<li>配置对象参数</li>
+<li>加载词云文本</li>
+<li>输出词云文件</li>
+</ol>
+<p><strong>示例</strong></p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">import wordcloud</span><br><span class="line">c = wordcloud.<span class="constructor">WordCloud()</span></span><br><span class="line">c.generate('wordcloud by Python')</span><br><span class="line">c.<span class="keyword">to</span><span class="constructor">_file('<span class="params">pywordcloud</span>.<span class="params">png</span>')</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>四步：</strong></p>
+<ol>
+<li>以空格为分隔符号，将文本分隔成单词.</li>
+<li>统计单词出现次数并过滤短单词.</li>
+<li>根据统计配置字号.</li>
+<li>布局：颜色环境尺寸.</li>
+</ol>
+<p><strong>配置对象参数</strong></p>
+<p><strong>w = wordcloud.WoedCloud(&lt;参数&gt;)</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">width</td>
+<td align="center">指定词云对象生成图片的宽度，默认400像素</td>
+</tr>
+<tr>
+<td align="center">height</td>
+<td align="center">指定词云对象生成图片的高度，默认200像素</td>
+</tr>
+<tr>
+<td align="center">min_font_size</td>
+<td align="center">指定词云中字体的最小字号，默认4号</td>
+</tr>
+<tr>
+<td align="center">max_font_size</td>
+<td align="center">指定词云中字体的最大字号，根据高度自动调节</td>
+</tr>
+<tr>
+<td align="center">font_step</td>
+<td align="center">指定词云中字体字号的步进间隔，默认1</td>
+</tr>
+<tr>
+<td align="center">font_path</td>
+<td align="center">指定字体文件的路径，默认None   e.g.”msyh.ttc”微软雅黑</td>
+</tr>
+<tr>
+<td align="center">max_words</td>
+<td align="center">指定词云显示的最大单词数量，默认200</td>
+</tr>
+<tr>
+<td align="center">stop_words</td>
+<td align="center">指定词云排除词列表   e.g. stop_words={‘Python’}</td>
+</tr>
+<tr>
+<td align="center">mask</td>
+<td align="center">指定词云形状，默认为长方形，需要引用imread()函数</td>
+</tr>
+<tr>
+<td align="center">backgroud_color</td>
+<td align="center">指定词云图片背景颜色，默认黑色 e.g.backgroud_color=’white’</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.misc <span class="keyword">import</span> imread</span><br><span class="line">mk = imread(<span class="string">'pic.png'</span>)</span><br><span class="line">w = wordcloud.WordCloud(mask=mk)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-应用实例"><a href="#4-应用实例" class="headerlink" title="4.应用实例"></a>4.应用实例</h3><p><strong>英文</strong></p>
+<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">'life is short, you need python'</span></span><br><span class="line">w = wordcloud.WordCloud( <span class="string">\</span></span><br><span class="line">        backgroud_color = <span class="string">'white'</span>)<span class="comment">#生成一个词云对象，背景设为白色</span></span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"pywordcloud.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>中文</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#需要对中文先进行分词，引入jieba库</span></span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">"程序设计语言是计算机能够理解和\</span></span><br><span class="line"><span class="string">识别用户操作意图的一种交互体系，它按照\</span></span><br><span class="line"><span class="string">特定规则组织计算机指令，使计算机能够自\</span></span><br><span class="line"><span class="string">动进行各种运算处理。"</span></span><br><span class="line">w = wordcloud.WordCloud( width=<span class="number">1000</span>,\</span><br><span class="line">    font_path=<span class="string">"msyh.ttc"</span>,height=<span class="number">700</span>)</span><br><span class="line">w.genrtate(<span class="string">''</span>.join(jieba.lcut(txt)))</span><br><span class="line">w.to_file(<span class="string">"pythoncloud.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Remark.</strong> 中文需要先分词并组成空格分隔字符串.</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/pythoncloud.png" style="zoom: 50%;">
+
+<h2 id="二、实例：政府工作报告词云"><a href="#二、实例：政府工作报告词云" class="headerlink" title="二、实例：政府工作报告词云"></a>二、实例：政府工作报告词云</h2><h3 id="1-问题分析"><a href="#1-问题分析" class="headerlink" title="1.问题分析"></a>1.问题分析</h3><ul>
+<li>需求：对于政府工作报告等政策文件，如何直观理解？</li>
+<li>体会直观价值：生成词云&amp;优化词云</li>
+<li>两份重要文件<ul>
+<li><a href="https://python123.io/resources/pye/新时代中国特色社会主义.txt" target="_blank" rel="noopener">习总书记在中国共产党第十九次全国代表大会上的报告</a></li>
+<li><a href="https://python123.io/resources/pye/关于实施乡村振兴战略的意见.txt" target="_blank" rel="noopener">中共中央 国务院关于实施乡村振兴战略的意见</a></li>
+</ul>
+</li>
+</ul>
+<p><strong>政府报告等文件—&gt;&gt;有效展示的词云</strong></p>
+<h3 id="2-基本思路"><a href="#2-基本思路" class="headerlink" title="2.基本思路"></a>2.基本思路</h3><ul>
+<li>读取文件、分词整理</li>
+<li>设置并输入词云</li>
+<li>观察结果，优化迭代</li>
+</ul>
+<h3 id="3-代码展示"><a href="#3-代码展示" class="headerlink" title="3.代码展示"></a>3.代码展示</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"新时代中国特色社会主义.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>: <span class="comment">#移除单字</span></span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"新时代中国特色社会主义.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/新时代中国特色社会主义.png" style="zoom: 50%;">
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"乡村振兴战略意见.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>:</span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"乡村振兴战略意见.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见.png" style="zoom:50%;">
+
+<h3 id="4-优化"><a href="#4-优化" class="headerlink" title="4.优化"></a>4.优化</h3><h4 id="（1）减少词云数目"><a href="#（1）减少词云数目" class="headerlink" title="（1）减少词云数目"></a>（1）减少词云数目</h4><figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">w = wordcloud.<span class="constructor">WordCloud(<span class="params">font_path</span>=<span class="string">"msyh.ttc"</span>,<span class="params">width</span>=1000, <span class="params">height</span>=700, <span class="params">background_color</span>=<span class="string">"white"</span>,<span class="params">max_words</span>=15)</span></span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见15词.png" style="zoom:50%;">
+
+<h4 id="（2）改变词云背景"><a href="#（2）改变词云背景" class="headerlink" title="（2）改变词云背景"></a>（2）改变词云背景</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment">#金色背景</span></span><br><span class="line">w = wordcloud.WordCloud(<span class="attribute">font_path</span>=<span class="string">"msyh.ttc"</span>,width=1000, <span class="attribute">height</span>=700, <span class="attribute">background_color</span>=<span class="string">"gold"</span>,max_words=15)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见gold背景.png" style="zoom:50%;">
+
+]]></content>
+      <categories>
+        <category>python学习</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -426,6 +631,204 @@
       <tags>
         <tag>python</tag>
         <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人工智能-Tensorflow2笔记(三)</title>
+    <url>/daytoy/2020/12/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%89)/</url>
+    <content><![CDATA[<h1 id="神经网络优化"><a href="#神经网络优化" class="headerlink" title="神经网络优化"></a>神经网络优化</h1><h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p><strong>tf.where()</strong></p>
+<p>条件语句，真返回A，假返回B</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">import</span> <span class="string">tensorflow</span> <span class="string">as</span> <span class="string">tf</span></span><br><span class="line"><span class="string">a</span> <span class="string">=</span> <span class="string">tf.constant([1,</span> <span class="number">2</span><span class="string">,</span> <span class="number">3</span><span class="string">,</span> <span class="number">1</span><span class="string">,</span> <span class="number">1</span><span class="string">])</span></span><br><span class="line"><span class="string">b</span> <span class="string">=</span> <span class="string">tf.constant([0,</span> <span class="number">1</span><span class="string">,</span> <span class="number">3</span><span class="string">,</span> <span class="number">4</span><span class="string">,</span> <span class="number">5</span><span class="string">])</span></span><br><span class="line"><span class="string">c</span> <span class="string">=</span> <span class="string">tf.where(tf.greater(a,</span> <span class="string">b),</span> <span class="string">a,</span> <span class="string">b)</span> <span class="comment">#若a&gt;b,返回a对应位置元素</span></span><br><span class="line"><span class="comment">#否则返回b对应位置元素</span></span><br><span class="line"><span class="string">print('c:',</span> <span class="string">c)</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">c: tf.Tensor([<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">int</span>32)</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p><strong>np.random.RandomState.rand(维度)</strong></p>
+<p>返回一个[0,1)之间的随机数，维度为空，则返回标量</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">rdm = np<span class="selector-class">.random</span>.RandomState(seed=<span class="number">1</span>) #随机数种子seed=常数，每次生成随机数相同</span><br><span class="line"><span class="selector-tag">a</span> = rdm.rand() #返回一个随机标量</span><br><span class="line"><span class="selector-tag">b</span> = rdm.rand(<span class="number">2</span>, <span class="number">3</span>) #返回维度<span class="number">2</span>行<span class="number">3</span>列随机数矩阵</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'a:'</span>, a)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'b:'</span>, b)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">result:</span></span><br><span class="line"><span class="attr">a:</span> <span class="number">0.417022004702574</span></span><br><span class="line"><span class="attr">b:</span> <span class="string">[[7.20324493e-01</span> <span class="number">1.14374817e-04</span> <span class="number">3.02332573e-01</span><span class="string">]</span></span><br><span class="line"> <span class="string">[1.46755891e-01</span> <span class="number">9.23385948e-02</span> <span class="number">1.86260211e-01</span><span class="string">]]</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>np.vstack(数组1，数组2)</strong></p>
+<p>两个数组按垂直方向叠加</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">a1 = np.<span class="built_in">array</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">a2 = np.<span class="built_in">array</span>([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line">c1 = np.vstack((a1, a2))</span><br><span class="line">print(<span class="string">'c1:\n'</span>, c1)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">c1:</span><br><span class="line"> [[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]</span><br></pre></td></tr></table></figure>
+
+<p><strong>np.mgrid(起始值：结束值：步长，起始值：结束值：步长，…)</strong></p>
+<p>[起始值 结束值)</p>
+<p>返回若干组维度相同的等差数组</p>
+<p><strong>x.reval()</strong></p>
+<p>将x变成一维数组，即把x拉直</p>
+<p><strong>np.c_[数组1，数组2]</strong></p>
+<p>返回的间隔数值点配对</p>
+<p><strong>以上3个函数经常一起使用，可以生成网格坐标点</strong></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">x, y = np<span class="selector-class">.mgrid</span>[<span class="number">1</span>:<span class="number">3</span>:<span class="number">1</span>, <span class="number">2</span>:<span class="number">4</span>:<span class="number">0.5</span>]</span><br><span class="line">grid = np<span class="selector-class">.c_</span>[x.ravel(), y.ravel()]</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'x:'</span>, x)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'y:'</span>, y)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'grid:\n'</span>, grid)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">x: [[<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>]</span><br><span class="line"> [<span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span> <span class="number">2.</span>]]</span><br><span class="line">y: [[<span class="number">2.</span>  <span class="number">2.5</span> <span class="number">3.</span>  <span class="number">3.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.5</span> <span class="number">3.</span>  <span class="number">3.5</span>]]</span><br><span class="line"> grid:</span><br><span class="line"> [[<span class="number">1.</span>  <span class="number">2.</span> ]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">2.5</span>]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">3.</span> ]</span><br><span class="line"> [<span class="number">1.</span>  <span class="number">3.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.</span> ]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">2.5</span>]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">3.</span> ]</span><br><span class="line"> [<span class="number">2.</span>  <span class="number">3.5</span>]]</span><br><span class="line"># 构成了网格坐标点</span><br></pre></td></tr></table></figure>
+
+<h2 id="神经网络-NN-复杂度"><a href="#神经网络-NN-复杂度" class="headerlink" title="神经网络(NN)复杂度"></a>神经网络(NN)复杂度</h2><p>NN复杂度：多用NN层数和NN参数个数表示</p>
+<ul>
+<li>空间复杂度</li>
+</ul>
+<p>层数 = 隐藏层层数 + 1个输出层</p>
+<p>总参数 = 总w + 总b</p>
+<ul>
+<li>时间复杂度</li>
+</ul>
+<p>乘加运算次数</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607497708(1).jpg">
+
+<p>图为2层NN.</p>
+<p>第一层参数w是3行4列的，加4个偏置项b，第二层参数是4行2列的，两个偏置项，共26个参数.</p>
+<p>每条权重线代表1次乘加运算，第1层12，第2层8次，共20次乘加运算.</p>
+<h2 id="指数衰减学习率"><a href="#指数衰减学习率" class="headerlink" title="指数衰减学习率"></a>指数衰减学习率</h2><p>先用较大学习率，快速得到较优解，逐步减小学习率，得到最优解</p>
+<p>指数衰减学习率 = 初始学习率*学习率衰减率^(当前轮数/多少轮衰减一次)</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">import tensorflow <span class="keyword">as</span> <span class="keyword">tf</span></span><br><span class="line">epoch = <span class="number">40</span></span><br><span class="line"><span class="keyword">w</span> = <span class="keyword">tf</span>.Variable(<span class="keyword">tf</span>.constant(<span class="number">5</span>, dtype=<span class="keyword">tf</span>.float32))</span><br><span class="line">lr_base = <span class="number">0.2</span></span><br><span class="line">lr_decay = <span class="number">0.99</span></span><br><span class="line">lr_step = <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> epoch in <span class="built_in">range</span>(epoch):</span><br><span class="line">    <span class="keyword">lr</span> = lr_base * lr_decay ** (epoch / lr_step)</span><br><span class="line">    with <span class="keyword">tf</span>.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        loss = <span class="keyword">tf</span>.square(<span class="keyword">w</span>+<span class="number">1</span>)</span><br><span class="line">    grads = tape.gradient(loss, <span class="keyword">w</span>)</span><br><span class="line">    <span class="keyword">w</span>.assign_sub(<span class="keyword">lr</span> * grads)</span><br><span class="line">    <span class="keyword">print</span>(<span class="string">'After %s epoch, w is %f, loss is %f, lr is %f'</span> % (epoch, <span class="keyword">w</span>.numpy(), loss, <span class="keyword">lr</span>))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">After <span class="number">0</span> epoch, w <span class="keyword">is</span> <span class="number">2.600000</span>, loss <span class="keyword">is</span> <span class="number">36.000000</span>, lr <span class="keyword">is</span> <span class="number">0.200000</span></span><br><span class="line">After <span class="number">1</span> epoch, w <span class="keyword">is</span> <span class="number">1.174400</span>, loss <span class="keyword">is</span> <span class="number">12.959999</span>, lr <span class="keyword">is</span> <span class="number">0.198000</span></span><br><span class="line">After <span class="number">2</span> epoch, w <span class="keyword">is</span> <span class="number">0.321948</span>, loss <span class="keyword">is</span> <span class="number">4.728015</span>, lr <span class="keyword">is</span> <span class="number">0.196020</span></span><br><span class="line">After <span class="number">3</span> epoch, w <span class="keyword">is</span> <span class="number">-0.191126</span>, loss <span class="keyword">is</span> <span class="number">1.747547</span>, lr <span class="keyword">is</span> <span class="number">0.194060</span></span><br><span class="line">After <span class="number">4</span> epoch, w <span class="keyword">is</span> <span class="number">-0.501926</span>, loss <span class="keyword">is</span> <span class="number">0.654277</span>, lr <span class="keyword">is</span> <span class="number">0.192119</span></span><br><span class="line">After <span class="number">5</span> epoch, w <span class="keyword">is</span> <span class="number">-0.691392</span>, loss <span class="keyword">is</span> <span class="number">0.248077</span>, lr <span class="keyword">is</span> <span class="number">0.190198</span></span><br><span class="line">After <span class="number">6</span> epoch, w <span class="keyword">is</span> <span class="number">-0.807611</span>, loss <span class="keyword">is</span> <span class="number">0.095239</span>, lr <span class="keyword">is</span> <span class="number">0.188296</span></span><br><span class="line">After <span class="number">7</span> epoch, w <span class="keyword">is</span> <span class="number">-0.879339</span>, loss <span class="keyword">is</span> <span class="number">0.037014</span>, lr <span class="keyword">is</span> <span class="number">0.186413</span></span><br><span class="line">After <span class="number">8</span> epoch, w <span class="keyword">is</span> <span class="number">-0.923874</span>, loss <span class="keyword">is</span> <span class="number">0.014559</span>, lr <span class="keyword">is</span> <span class="number">0.184549</span></span><br><span class="line">After <span class="number">9</span> epoch, w <span class="keyword">is</span> <span class="number">-0.951691</span>, loss <span class="keyword">is</span> <span class="number">0.005795</span>, lr <span class="keyword">is</span> <span class="number">0.182703</span></span><br><span class="line">After <span class="number">10</span> epoch, w <span class="keyword">is</span> <span class="number">-0.969167</span>, loss <span class="keyword">is</span> <span class="number">0.002334</span>, lr <span class="keyword">is</span> <span class="number">0.180876</span></span><br><span class="line">... ...</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，随着迭代轮数的增加，学习率在指数衰减.</p>
+<h2 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607499785(1).jpg" alt></p>
+<p>激活函数大大提升了模型表达能力</p>
+<ul>
+<li><p>优秀的激活函数</p>
+<ul>
+<li>非线性：不会被单层网络替代，多层网络可逼近所有函数</li>
+<li>可微性：优化器大多用梯度下降更新参数</li>
+<li>单调性：保证单层网络损失函数是凸函数</li>
+<li>近似恒等性：f(x)≈x，网络更稳定</li>
+</ul>
+</li>
+<li><p>激活函数输出值范围：</p>
+<ul>
+<li>激活函数输出有限值，基于梯度的优化方法更稳定;</li>
+<li>无限值时，参数初始值对模型影响大，要使用更小的学习率.</li>
+</ul>
+</li>
+</ul>
+<p>$$<br>Sigmoid:f(x)=\frac{1}{1+e^{-x}}<br>$$</p>
+<p>特点：易造成梯度消失；输出非0均值，收敛慢；幂运算复杂，训练时间长.<br>$$<br>Tanh:f(x)=\frac{1-e^{-2x}}{1+e^{-2x}}<br>$$<br>特点：输出是0均值；易造成梯度消失；幂运算复杂，训练时间长.<br>$$<br>Relu:f(x)=max(x,0)={_{x,x&gt;=0}^{0,x&lt;0}<br>$$<br>优点：在正区间内解决了梯度消失问题；只需判断输入是否大于0，计算速度快；收敛速度快于sigmoid和tanh</p>
+<p>缺点：输出非0均值，收敛慢；Dead ReIU问题：输入特征是负数时，激活函数输出是0，反向传播梯度是0，参数无法更新，导致神经元死亡.<br>$$<br>Leaky Relu:f(x)=max(\alpha x,x)<br>$$<br>实际操作中，选择relu做激活函数的网络会更多.</p>
+<p>对于使用激活函数的建议：</p>
+<ul>
+<li>首选relu函数</li>
+<li>学习率设置较小值</li>
+<li>输入特征标准化，即满足以0为均值，1为标准差的正态分布</li>
+<li>初始参数中心化，即随机生成的参数满足0为均值，sqrt(2/当前层输入特征个数)为标准差的正态分布.</li>
+</ul>
+<h2 id="损失函数-loss"><a href="#损失函数-loss" class="headerlink" title="损失函数(loss)"></a>损失函数(loss)</h2><p>预测值与已知答案的差距</p>
+<p>主流的三种损失函数：均方误差、自定义、交叉熵</p>
+<p><strong>均方误差mse：</strong><br>$$<br>MSE(y_,y)=\frac{\sum_{i=1}^{n}(y-y_{-})^{2}}{n}<br>$$<br><strong>loss_mse = tf.reduce_mean(tf.square(y_-y))</strong></p>
+<p>构建例子来理解：预测日销量.</p>
+<p>x1, x2是影响日销量的因素，预先采集每日x1, x2, y_(已知答案)</p>
+<p>构造数据集X，Y_=x1+x2  噪声：-0.05~0.05 拟合可以预测销量的函数</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line"><span class="keyword">import</span> numpy as np</span><br><span class="line">SEED = <span class="number">23455</span> #随机数种子，保证生成的随机数是一样的</span><br><span class="line"></span><br><span class="line">rdm = np.random.RandomState(seed=SEED)</span><br><span class="line">x = rdm.rand(<span class="number">32</span>, <span class="number">2</span>)</span><br><span class="line">y_ = [[x1 + x2 + (rdm.rand() / <span class="number">10.0</span> - <span class="number">0.05</span>)] <span class="keyword">for</span> (x1, x2) <span class="keyword">in</span> x] #制造的数据集</span><br><span class="line"># rdm.rand()生成<span class="number">0</span>~<span class="number">1</span>随机数 /<span class="number">10</span> 变成<span class="number">0</span>~<span class="number">0.1</span> <span class="number">-0.05</span> 变成<span class="number">-0.05</span>~<span class="number">0.05</span></span><br><span class="line">x = tf.<span class="keyword">cast</span>(x, dtype=tf.<span class="built_in">float</span>32)</span><br><span class="line"></span><br><span class="line">w1 = tf.Variable(tf.random.normal([<span class="number">2</span>, <span class="number">1</span>], stddev=<span class="number">1</span>, seed=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">epoch = <span class="number">15000</span></span><br><span class="line">lr = <span class="number">0.02</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(epoch):</span><br><span class="line">    with tf.GradientTape() as tape:</span><br><span class="line">        y = tf.matmul(x, w1)</span><br><span class="line">        loss_mse = tf.reduce_mean(tf.square(y_-y))</span><br><span class="line">    grads = tape.gradient(loss_mse, w1)</span><br><span class="line">    w1.assign_sub(lr * grads)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> epoch % <span class="number">500</span> == <span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'After %d training steps,w1 is '</span> %(epoch) )</span><br><span class="line">        print(w1.numpy(), <span class="string">'\n'</span>)</span><br><span class="line">print(<span class="string">'Final w1 is :'</span>, w1.numpy())</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">Final w1 is : <span class="string">[[1.004296  ]</span></span><br><span class="line"><span class="string"> [0.99483895]]</span></span><br></pre></td></tr></table></figure>
+
+<p>输出参数值接近1，最后得到答案y=1.004296x1+0.99483895x2，而标准答案是y=x1+x2，拟合正确.</p>
+<p><strong>交叉熵</strong></p>
+<p>表示两个概率分布之间的距离.交叉熵越大，概率分布越远；交叉熵越小，概率分布越近.</p>
+<p>交叉熵损失函数CE(Cross Entropy)<br>$$<br>H(y_,y)=-\sum y_{-}*lny<br>$$<br>e.g 二分类</p>
+<p>已知答案y_=(1,0)，表示第一个事件发生概率为1，第二个事件发生概率为0，神经网络预测了两个结果 y1=(0.6,0.4),y2=(0.8,0.2),哪个更接近标准答案？<br>$$<br>H_{1}((1,0),(0.6,0.4))=-(1<em>ln0.6+0</em>ln0.4)=-(-0.511+0)=0.511\<br>H_{2}((1,0),(0.8,0.2))=-(1<em>ln0.8+0</em>ln0.2)=-(-0.223+0)=0.2223\<br>H_{1}&gt;H_{2}<br>$$<br>y2预测更准确.</p>
+<p>交叉熵计算公式<strong>tf.losses.categorical_crossentropy(y_,y)</strong></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">loss_ce1 = tf<span class="selector-class">.losses</span>.categorical_crossentropy([<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0.6</span>, <span class="number">0.4</span>])</span><br><span class="line">loss_ce2 = tf<span class="selector-class">.losses</span>.categorical_crossentropy([<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0.8</span>, <span class="number">0.2</span>])</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'loss_ce1:'</span>, loss_ce1)</span></span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">'loss_ce2:'</span>, loss_ce2)</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">loss_ce1: tf.Tensor(<span class="number">0.5108256</span>, shape=(), dtype=<span class="built_in">float</span>32)</span><br><span class="line">loss_ce2: tf.Tensor(<span class="number">0.22314353</span>, shape=(), dtype=<span class="built_in">float</span>32)</span><br></pre></td></tr></table></figure>
+
+<p><strong>softmax与交叉熵结合</strong></p>
+<p>输出先经过softmax符合概率分布，再计算y与y_的交叉熵损失函数，将两者结合的函数：</p>
+<p><strong>tf.nn.softmax_cross_entropy_with_logits(y_,y)</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow as tf</span><br><span class="line"><span class="keyword">import</span> numpy as np</span><br><span class="line">y_ = np.<span class="built_in">array</span>([[<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">y = np.<span class="built_in">array</span>([[<span class="number">12</span>, <span class="number">3</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">10</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">4</span>, <span class="number">6.5</span>, <span class="number">1.2</span>], [<span class="number">3</span>, <span class="number">6</span>, <span class="number">1</span>]])</span><br><span class="line">y_pro = tf.nn.softmax(y)</span><br><span class="line">loss_ce1 = tf.losses.categorical_crossentropy(y_, y_pro)</span><br><span class="line">loss_ce2 = tf.nn.softmax_cross_entropy_with_logits(y_, y)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'分步计算结果：\n'</span>, loss_ce1)</span><br><span class="line">print(<span class="string">'结合计算结果：\n'</span>, loss_ce2)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">result:</span><br><span class="line">分步计算结果：</span><br><span class="line"> tf.Tensor(</span><br><span class="line">[<span class="number">1.68795487e-04</span> <span class="number">1.03475622e-03</span> <span class="number">6.58839038e-02</span> <span class="number">2.58349207e+00</span></span><br><span class="line"> <span class="number">5.49852354e-02</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">float</span>64)</span><br><span class="line">结合计算结果：</span><br><span class="line"> tf.Tensor(</span><br><span class="line">[<span class="number">1.68795487e-04</span> <span class="number">1.03475622e-03</span> <span class="number">6.58839038e-02</span> <span class="number">2.58349207e+00</span></span><br><span class="line"> <span class="number">5.49852354e-02</span>], shape=(<span class="number">5</span>,), dtype=<span class="built_in">float</span>64)</span><br></pre></td></tr></table></figure>
+
+<h2 id="欠拟合与过拟合"><a href="#欠拟合与过拟合" class="headerlink" title="欠拟合与过拟合"></a>欠拟合与过拟合</h2><p><strong>欠拟合</strong></p>
+<p>模型不能有效拟合数据集,是对现有数据集学习不彻底.</p>
+<p><strong>过拟合</strong></p>
+<p>模型对当前数据拟合得太好了，但对新数据难以判断，泛化能力差.</p>
+<p><strong>欠拟合的解决</strong></p>
+<ul>
+<li>增加输入特征项，给网络更多维度的输入特征</li>
+<li>增加网络参数</li>
+<li>减少正则化参数</li>
+</ul>
+<p><strong>过拟合的解决</strong></p>
+<ul>
+<li>数据清洗，减少噪声，使数据集更纯净.</li>
+<li>增大训练集</li>
+<li>采用正则化</li>
+<li>增大正则化参数</li>
+</ul>
+<p><strong>正则化缓解过拟合</strong></p>
+<p>即在损失函数中引入模型复杂度指标，利用给W加权值，弱化训练数据的噪声(一般不正则化b)</p>
+<p>损失函数变成两部分的和：</p>
+<p>loss = loss(y与y_)+REGULARIZER * loss(w)</p>
+<p>第一部分是模型中所有参数的损失函数，描述了预测结果与正确结果间的差距，如交叉熵、均方误差.</p>
+<p>第二部分是参数的权重，用超参数REGULARIZER给出参数w在总loss中比重 .</p>
+<p>loss(w)计算有两种方法</p>
+<ul>
+<li>L1正则化</li>
+</ul>
+<p>$$<br>loss_{L1}(w)=\sum_{i} |w_{i}|<br>$$</p>
+<p>大概率使很多参数变为0，该方法通过稀疏参数，即减少参数的数量，降低复杂度.</p>
+<ul>
+<li>L2正则化</li>
+</ul>
+<p>$$<br>loss_{L2}(w)=\sum_{i}|w_{i}^{2}|<br>$$</p>
+<p>使参数接近0但不为0，即通过减小参数值大小降低复杂度.</p>
+]]></content>
+      <categories>
+        <category>Tensorflow学习笔记</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>Tensorflow</tag>
+        <tag>人工智能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人工智能-Tensorflow2笔记(二)</title>
+    <url>/daytoy/2020/12/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%BA%8C)/</url>
+    <content><![CDATA[<h2 id="神经网络实现鸢尾花分类"><a href="#神经网络实现鸢尾花分类" class="headerlink" title="神经网络实现鸢尾花分类"></a>神经网络实现鸢尾花分类</h2><p>准备数据</p>
+<ul>
+<li>数据集读入</li>
+<li>数据集乱序</li>
+<li>生成训练集和测试集,训练集，测试集不能有交集</li>
+<li>配成（输入特征，标签）对，每次读入一部分(batch)</li>
+</ul>
+<p>搭建网络</p>
+<ul>
+<li>定义神经网络中所有可训练参数</li>
+</ul>
+<p>参数优化</p>
+<ul>
+<li>嵌套循环迭代，with结构更新参数，显示当前loss</li>
+</ul>
+<p>测试效果</p>
+<ul>
+<li>计算当前参数向后传播准确率，显示当前acc</li>
+<li>准确率acc/损失函数loss可视化</li>
+</ul>
+<a id="more"></a>
+
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="built_in">import</span> tensorflow as tf</span><br><span class="line"><span class="built_in">import</span> numpy as np</span><br><span class="line">from matplotlib <span class="built_in">import</span> pyplot as plt</span><br><span class="line"><span class="comment">#从sklearn包datasets读入数据集：</span></span><br><span class="line">from sklearn <span class="built_in">import</span> datasets</span><br><span class="line"><span class="attr">x_data</span> = datasets.load_iris().data  <span class="comment">#返回iris数据集所有输入特征</span></span><br><span class="line"><span class="attr">y_data</span> = datasets.load_iris().target <span class="comment">#返回iris数据集中所有标签</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集乱序</span></span><br><span class="line">np.random.seed(<span class="number">116</span>) <span class="comment">#使用相同的随机数种子，使输入特征/标签一一对应，即配对不会乱</span></span><br><span class="line">np.random.shuffle(x_data)</span><br><span class="line">np.random.seed(<span class="number">116</span>)</span><br><span class="line">np.random.shuffle(y_data)</span><br><span class="line">tf.random.set_seed(<span class="number">116</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集分出训练集，测试集,不能有交集</span></span><br><span class="line"><span class="comment">#打乱数据集中前120个作为训练集</span></span><br><span class="line"><span class="attr">x_train</span> = x_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">y_train</span> = y_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">x_test</span> = x_data[-<span class="number">30</span>:]</span><br><span class="line"><span class="attr">y_test</span> = y_data[-<span class="number">30</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换x数据类型</span></span><br><span class="line"><span class="attr">x_train</span> = tf.cast(x_train, tf.float32)</span><br><span class="line"><span class="attr">x_test</span> = tf.cast(x_test, tf.float32)</span><br><span class="line"></span><br><span class="line"><span class="comment">#from_tensor_slices配成【输入特征、标签】对，每次喂入神经网络一部分数据(batch)</span></span><br><span class="line"><span class="comment">#每32对打包为一个batch</span></span><br><span class="line"><span class="attr">train_db</span> = tf.data.Dataset.from_tensor_slices((x_train, y_train)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="attr">test_db</span> = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="comment">#定义神经网络所有可训练参数</span></span><br><span class="line"><span class="comment">#输入特征是4，输入层为4个输入节点，只有一层网络，输出节点数=分类数，3分类</span></span><br><span class="line"><span class="comment">#参数w1是4行3列张量</span></span><br><span class="line"><span class="attr">w1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">4</span>, <span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"><span class="attr">b1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"></span><br><span class="line"><span class="attr">lr</span> = <span class="number">0.1</span> <span class="comment">#学习率为0.1</span></span><br><span class="line"><span class="attr">train_loss_results</span> = []  <span class="comment">#将每轮loss记录下来，为后面画loss曲线提供数据</span></span><br><span class="line"><span class="attr">test_acc</span> = [] <span class="comment">#记录acc</span></span><br><span class="line"><span class="attr">Epoch</span> = <span class="number">500</span> <span class="comment">#循环500次</span></span><br><span class="line"><span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#每轮分4个step，loss_all记录四个step生成的4个loss的和</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#两层循环迭代更新参数</span></span><br><span class="line"><span class="comment">#第一层for循环是针对整个数据集循环，用epoch表示</span></span><br><span class="line"><span class="comment">#第二层for循环是针对batch的，用step表示</span></span><br><span class="line">for epoch <span class="keyword">in</span> range(Epoch):</span><br><span class="line">    for step, (x_train, y_train) <span class="keyword">in</span> enumerate(train_db):</span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape() as tape: <span class="comment">#with结构记录梯度信息</span></span><br><span class="line">            <span class="attr">y</span> = tf.matmul(x_train, w1) + b1 <span class="comment">#神经网络乘加运算</span></span><br><span class="line">            <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#使输出y符合概率分布</span></span><br><span class="line">            <span class="attr">y_</span> = tf.one_hot(y_train, <span class="attr">depth=3)</span> <span class="comment">#将标签转换为独热码格式，方便计算loss</span></span><br><span class="line">            <span class="attr">loss</span> = tf.reduce_mean(tf.square(y_ -y)) <span class="comment">#采用均方误差损失函数MSE</span></span><br><span class="line">            loss_all += loss.numpy() <span class="comment">#将每个step计算出的loss累加，为后续求loss平均值提供数据</span></span><br><span class="line">        <span class="attr">grads</span> = tape.gradient(loss, [w1, b1])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 实现梯度更新</span></span><br><span class="line">        w1.assign_sub(lr * grads[<span class="number">0</span>]) <span class="comment">#参数w1自更新</span></span><br><span class="line">        b1.assign_sub(lr * grads[<span class="number">1</span>]) <span class="comment">#参数b1自更新</span></span><br><span class="line">    <span class="comment">#每个epoch 打印loss信息</span></span><br><span class="line">    print('Epoch &#123;&#125;, loss: &#123;&#125;'.format(epoch, loss_all/<span class="number">4</span>)) <span class="comment">#120组数据，需要batch级别循环4次，除以4求得每次step迭代平均loss</span></span><br><span class="line">    train_loss_results.append(loss_all / <span class="number">4</span>) <span class="comment">#将4个step的loss求平均记录在此变量中</span></span><br><span class="line">    <span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#loss_all归零，为记录下一个epoch的loss做准备</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#测试部分</span></span><br><span class="line">    <span class="comment">#计算当前参数前向传播后准确率，显示当前acc</span></span><br><span class="line">    <span class="comment">#total_corrrect为预测对的样本个数， total_number为测试的总样本数，初始化为0</span></span><br><span class="line">    total_correct, <span class="attr">total_number</span> = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    for x_test, y_test <span class="keyword">in</span> test_db:</span><br><span class="line">        <span class="attr">y</span> = tf.matmul(x_test, w1) + b1 <span class="comment">#y为预测结果</span></span><br><span class="line">        <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#y符合概率分布</span></span><br><span class="line">        <span class="attr">pred</span> = tf.argmax(y, <span class="attr">axis=1)</span> <span class="comment">#返回y中最大值索引，即预测分类</span></span><br><span class="line">        <span class="comment">#将pred转换为y_test数据类型</span></span><br><span class="line">        <span class="attr">pred</span> = tf.cast(pred, <span class="attr">dtype=y_test.dtype)</span></span><br><span class="line">        <span class="comment"># 若分类正确，correct=1，否则为0，将bool型转换为int型</span></span><br><span class="line">        <span class="attr">correct</span> = tf.cast(tf.equal(pred, y_test), <span class="attr">dtype=tf.int32)</span></span><br><span class="line">        <span class="comment"># 将每个batch的correct数加起来</span></span><br><span class="line">        <span class="attr">correct</span> = tf.reduce_sum(correct)</span><br><span class="line">        total_correct += int(correct) <span class="comment">#将所有batch中correct数加起来</span></span><br><span class="line">        <span class="comment">#total_number为测试总样本数，即x_test行数，shape[0]</span></span><br><span class="line">        <span class="attr">total_number</span> = x_test.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment">#总准确率为 total_correct / total_number</span></span><br><span class="line">    <span class="attr">acc</span> = total_correct / total_number</span><br><span class="line">    test_acc.append(acc)</span><br><span class="line">    print(<span class="string">"test_acc:"</span>, acc)</span><br><span class="line">    print('----------------------')</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制loss曲线</span></span><br><span class="line">plt.title('Loss Function Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel(<span class="string">"Loss"</span>)</span><br><span class="line">plt.plot(train_loss_results, <span class="attr">label='$loss$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制Accuary曲线</span></span><br><span class="line">plt.title('Acc Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel('Acc')</span><br><span class="line">plt.plot(test_acc, <span class="attr">label='$Accuary$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>程序在PyCharm中运行.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Epoch.jpg" alt></p>
+<p>从图中可见，随着迭代次数增加，损失函数值逐渐减小，对测试集的预测准确率逐渐增大直至达到100%正确.下面两张图给出了损失函数及预测准确率的变化图像.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Loss_Function_Curve.png" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Acc_Curve.png" alt></p>
+]]></content>
+      <categories>
+        <category>Tensorflow学习笔记</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>Tensorflow</tag>
+        <tag>人工智能</tag>
       </tags>
   </entry>
   <entry>
@@ -737,106 +1140,6 @@
         <tag>深度学习</tag>
         <tag>Tensorflow</tag>
         <tag>人工智能</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows10安装TensorFlow</title>
-    <url>/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/</url>
-    <content><![CDATA[<h2 id="1-Anaconda下载及安装"><a href="#1-Anaconda下载及安装" class="headerlink" title="1. Anaconda下载及安装"></a>1. Anaconda下载及安装</h2><p><a href="https://www.anaconda.com/products/individual#macos" target="_blank" rel="noopener">Anaconda官网</a></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.png" alt></p>
-<a id="more"></a>
-
-<p>下载Windows的相应版本</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052(1).jpg" alt></p>
-<p>下载安装包后双击按引导安装</p>
-<p>这里要<strong>勾选!</strong>将Anaconda加入环境变量.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.jpg" alt></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066358(1).jpg" alt></p>
-<p>等待安装完成.</p>
-<h2 id="2-TensorFlow安装"><a href="#2-TensorFlow安装" class="headerlink" title="2. TensorFlow安装"></a>2. TensorFlow安装</h2><p>开始–&gt;Anaconda3(64-bit)–&gt;Anaconda Prompt(Anaconda3)</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066505(1).jpg" style="zoom: 67%;">
-
-<p>用*<em>conda create -n *</em>新建一个名为tensorflow的环境，用python3.6版本(3.7也可)</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda create -n tensorflow <span class="attribute">python</span>=3.6</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1.png" style="zoom:80%;">
-
-<p>这里选择y表示同意安装相关软件包</p>
-<p><strong>conda activate tensorflow</strong>进入tensorflow虚拟环境环境</p>
-<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">conda <span class="built_in">activate</span> tensorflow</span><br></pre></td></tr></table></figure>
-
-
-
-<p>输入以下代码安装深度学习软件包</p>
-<p><strong>conda install cudatoolkit=10.1</strong></p>
-<p><strong>conda install cudnn=7.6</strong></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda install <span class="attribute">cudatoolkit</span>=10.1</span><br><span class="line"></span><br><span class="line">conda install <span class="attribute">cudnn</span>=7.6</span><br></pre></td></tr></table></figure>
-
-<p>如果两条安装语句报错，可能是电脑硬件不支持英伟达GPU，直接跳过这两步，安装tensorflow.</p>
-<p><strong>pip install tensflow==2.1</strong></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">pip install <span class="attribute">tensflow</span>==2.1</span><br></pre></td></tr></table></figure>
-
-<p>默认Google源，下载可能会很慢.</p>
-<p>这里注意要指定tensorflow为2.1版本，不然默认安装的是2.3版本，后续使用一些函数可能会报错，如tf.Variable(),如果已经安装了tensorflow2.3并且出现函数报错，可卸载重新安装2.1版本</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">pip</span> <span class="string">uninstall tensorflow</span></span><br><span class="line"><span class="attr">pip</span> <span class="string">install tensorflow==2.1</span></span><br></pre></td></tr></table></figure>
-
-<p>安装完成后，进入python验证是否成功</p>
-<p>依次输入</p>
-<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">python</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight elm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tf</span><span class="selector-class">.__version__</span></span><br></pre></td></tr></table></figure>
-
-
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607067507(1).jpg" style="zoom:80%;">
-
-<p>如果显示2.1.0表示安装成功.</p>
-<h2 id="3-PyCharm集成开发环境"><a href="#3-PyCharm集成开发环境" class="headerlink" title="3. PyCharm集成开发环境"></a>3. PyCharm集成开发环境</h2><p><a href="https://www.jetbrains.com/" target="_blank" rel="noopener">PyCharm官网</a></p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212.jpg" style="zoom: 50%;">
-
-
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212(1).jpg" style="zoom: 50%;">
-
-<p>下载社区版PyCharm</p>
-<p>打开安装包进行安装</p>
-<p>这里右侧的添加环境变量要<strong>！勾选</strong>，左侧根据个人习惯(可以<strong>都选上！</strong>)</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068405(1).jpg" alt></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068602(1).png" alt></p>
-<p>这里需要重启电脑</p>
-<p>重启后打开PYCharm，新建工程，可以使用默认路径，文件夹命名‘’AI‘’，设置环境变量</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069116(1).jpg" style="zoom:67%;">
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069143(1).jpg" style="zoom:67%;">
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069206(1).jpg" style="zoom:67%;">
-
-<p>新建文件</p>
-<p>右击文件夹AI–&gt;New–&gt;File</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069401.jpg" alt></p>
-<p>命名为test.py</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069432(1).jpg" alt></p>
-<p>输入测试代码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">tensorflow_version=tf.__version__</span><br><span class="line">gpu_available = tf.test.is_gpu_available()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"tensorflow version:"</span>, tensorflow_version, <span class="string">"\tGPU available:"</span>, gpu_available)</span><br><span class="line"></span><br><span class="line">a = tf.constant([<span class="number">2.0</span>, <span class="number">2.0</span>], name=<span class="string">'a'</span>)</span><br><span class="line">b = tf.constant([<span class="number">4.0</span>, <span class="number">2.0</span>], name=<span class="string">'b'</span>)</span><br><span class="line">result = tf.add(a, b, name=<span class="string">'add'</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069567(1).jpg" style="zoom: 80%;">
-
-<p>点击<strong>Run ‘test’</strong>，或者<strong>Ctrl+Shift+F10</strong>运行代码</p>
-<p>如果出现<strong>tf.tensor</strong>,说明开发环境已安装成功.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069751(1).png" alt></p>
-<p>后续需要安装一些必要的包，如sklearn,numpy,matplotlib等，点击下方Terminal出现操作台，输入相应下载命令即可.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607342902(1).png" alt></p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> sklearn</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> numpy</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> matplotlib</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Tensorflow学习笔记</category>
-      </categories>
-      <tags>
-        <tag>TensorFlow</tag>
-        <tag>软件安装</tag>
       </tags>
   </entry>
   <entry>
