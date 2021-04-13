@@ -1,6 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>DBSCAN聚类算法</title>
+    <url>/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="DBSCAN"><a href="#DBSCAN" class="headerlink" title="DBSCAN"></a>DBSCAN</h1><h2 id="一、算法简介"><a href="#一、算法简介" class="headerlink" title="一、算法简介"></a>一、算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
+<p>在密集区域的点称为<strong>核心点</strong>，由DBSCAN的两个重要参数<strong>半径eps</strong>和<strong>最小采样点个数min_sample</strong>确定，其定义如下：如果在距一个给定数据点eps距离内至少有min_sample个数据点，那么这个数据点就是核心点。DBSCAN最终会将彼此距离小于eps的核心点分到同一簇中。</p>
+<a id="more"></a>
+
+<h4 id="算法过程描述"><a href="#算法过程描述" class="headerlink" title="算法过程描述"></a>算法过程描述</h4><p>首先任取一个点，找到这个点的距离小于等于eps的所有点，如果距起始点的距离在eps之内的数据点个数小于min_sample，那么这个点被标记为<strong>噪音点</strong>，也就是说它不属于任何簇。如果距离在eps之内的数据点个数大于min_sample，则这个点被标记为<strong>核心点</strong>，并分配一个新的<strong>簇标签</strong>。然后访问该点的所有eps以内的邻居，如果它们还没有被分配簇，那么就将刚才的簇标签分配给它们，如果它们也是核心点，那么继续依次访问其邻居，以此类推，否则即为<strong>边界点</strong>，不再访问其邻居。簇逐渐增大，直到簇的eps距离内没有更多的核心点为止。然后选取另一个尚未被访问的点，重复相同的过程。</p>
+<p>最后，一共有三种类型的点：核心点、边界点、噪音点。如果DBSCAN算法在特定数据集运行多次，那么核心点的聚类始终相同，同样的点也始终被标记为噪音点。但边界点可能与不止一个簇的核心点相邻，这与数据点的访问顺序有关。一般情况下，边界点较少，因此这种歧义并不是很重要。</p>
+<p>从上述描述中可以看到，DBSCAN算法不需要设置簇的个数，只需要确定两个参数eps、min_sample，实际上它们可以隐式地控制找到簇的个数。eps决定了点与点之间“接近”的含义，将eps设置过小，意味着没有核心点出现，可能导致所有点被标记为噪音点；eps设置过大，可能导致所有点形成单个簇。min_sample主要用于判断稀疏区域内点被标记为异常值还是形成自己的簇，决定了簇的最小尺寸。因此，两个参数的选取还是至关重要的。</p>
+<p><strong>注：</strong>采用缩放技术使数据特征具有相似的范围，有时会更便于找到eps较好的取值。</p>
+<h2 id="二、DBSCAN算法可视化展示"><a href="#二、DBSCAN算法可视化展示" class="headerlink" title="二、DBSCAN算法可视化展示"></a>二、DBSCAN算法可视化展示</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E5%87%A0%E4%BD%95%E7%9B%B4%E8%A7%82.png" alt></p>
+<p>DBSCAN聚类算法在二维平面中对数据点进行聚类的简化过程如图所示，选取min_sample=2，此时图中蓝色为噪音点，不属于任何簇；红色为核心点，黄色为边界点，它们均划分在同一簇中。</p>
+<p>国外有个网站，可以把DBSCAN的过程以<strong>动图</strong>展示出来，可以选择几种不同的数据集，还可以自行设置参数，很有趣.</p>
+<h2 id="三、算法实现"><a href="#三、算法实现" class="headerlink" title="三、算法实现"></a>三、算法实现</h2><h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a><strong>算法流程</strong></h4><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.jpg" style="zoom:80%;">
+
+<h4 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h4><p>DBSCAN可在python中的sklearn库调用实现，以下给出两个简单实例对算法的聚类效果进行展示.</p>
+<h5 id="实例一：半圆形数据分簇"><a href="#实例一：半圆形数据分簇" class="headerlink" title="实例一：半圆形数据分簇"></a>实例一：半圆形数据分簇</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_moons</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">X, y = make_moons(n_samples=<span class="number">200</span>, noise=<span class="number">0.05</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将数据缩放成平均值为0、方差为1</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">scaler.fit(X)</span><br><span class="line">X_scaled = scaler.transform(X)</span><br><span class="line"></span><br><span class="line">dbscan = DBSCAN()</span><br><span class="line">clusters = dbscan.fit_predict(X_scaled)</span><br><span class="line"><span class="comment">#绘制簇分配</span></span><br><span class="line">plt.scatter(X_scaled[:, <span class="number">0</span>], X_scaled[:, <span class="number">1</span>], c=clusters, s=<span class="number">60</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Feature 0"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Feature 1"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/two_moons.png" alt></p>
+<p>上图展示了在two_moons数据集上运行DBSCAN的结果，利用默认设置(eps=0.5)，算法找到了两个半圆形并将其分开.由于算法得到了2个簇，默认参数的设置效果似乎很好，若eps=0.2，将会得到8个簇，显然太多了；若eps=0.7，则会导致只有1个簇.</p>
+<h5 id="实例二：品牌啤酒聚类分析"><a href="#实例二：品牌啤酒聚类分析" class="headerlink" title="实例二：品牌啤酒聚类分析"></a>实例二：品牌啤酒聚类分析</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> colors</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入数据</span></span><br><span class="line">beer = pd.read_csv(<span class="string">'beer.txt'</span>, sep=<span class="string">' '</span>)</span><br><span class="line">print(beer)<span class="comment">#查看数据集</span></span><br><span class="line"></span><br><span class="line">X = beer[[<span class="string">'calories'</span>, <span class="string">'sodium'</span>, <span class="string">'alcohol'</span>, <span class="string">'cost'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置半径为10，最小样本量2</span></span><br><span class="line">db = DBSCAN(eps=<span class="number">10</span>, min_samples=<span class="number">2</span>).fit(X)</span><br><span class="line"></span><br><span class="line">labels = db.labels_</span><br><span class="line">beer[<span class="string">'cluster_db'</span>] = labels <span class="comment">#在数据集最后一列加上DBSCAN聚类后的结果</span></span><br><span class="line">beer.sort_values(<span class="string">'cluster_db'</span>)</span><br><span class="line">print(beer)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看根据DBSCAN聚类后的分组统计结果(均值)</span></span><br><span class="line">print(beer.groupby(<span class="string">'cluster_db'</span>).mean())</span><br><span class="line"></span><br><span class="line"><span class="comment">#画出在不同两个指标下样本的分布情况</span></span><br><span class="line">print(pd.plotting.scatter_matrix(X, figsize=(<span class="number">10</span>, <span class="number">10</span>), s=<span class="number">100</span>))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看数据集：</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310630(1).jpg" alt="数据集"></p>
+<p>聚类结果：</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310722(1).jpg" alt="聚类结果"></p>
+<p>下表给出了聚类后分组的均值结果.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618309915(1).jpg" alt></p>
+<p>图中展示了在不同两个指标下样本的分布情况.</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Figure_1.png" style="zoom: 80%;">
+
+<h2 id="四、算法优缺点"><a href="#四、算法优缺点" class="headerlink" title="四、算法优缺点"></a>四、算法优缺点</h2><h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>不需要先验地指定簇的个数；</li>
+<li>可以处理任意形状大小的簇，且结果相对而言优于K均值聚类；</li>
+<li>基于密度定义，对噪音不敏感，可检测出数据异常点.</li>
+</ol>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ol>
+<li>高维数据有些困难；</li>
+<li>sklearn中效率较低</li>
+<li>对于密度不均匀、距离相差较大的数据集，聚类结果较差；</li>
+<li>调参较为复杂，需要多次尝试，不同的参数组合对最终结果影响较大.</li>
+</ol>
+<h2 id="五、算法改进：自适应的DBSCAN算法"><a href="#五、算法改进：自适应的DBSCAN算法" class="headerlink" title="五、算法改进：自适应的DBSCAN算法"></a>五、算法改进：自适应的DBSCAN算法</h2><p>由于DBSCAN算法对eps和min_sample两个参数十分敏感，参数的确定是既重要又困难的事情，有学者进行了自适应确定DBSCAN算法参数的研究，即通过数据集自动确定两个参数.相应论文可以在知网查阅.</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">李文杰, 闫世强, 蒋莹,等. 自适应确定DBSCAN算法参数的算法研究[J]. 计算机工程与应用, 2019, 55(05):1-7.</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>聚类算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Matlab数据处理--数据降维</title>
     <url>/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
     <content><![CDATA[<p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
@@ -134,6 +187,106 @@
       </tags>
   </entry>
   <entry>
+    <title>Windows10安装TensorFlow</title>
+    <url>/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/</url>
+    <content><![CDATA[<h2 id="1-Anaconda下载及安装"><a href="#1-Anaconda下载及安装" class="headerlink" title="1. Anaconda下载及安装"></a>1. Anaconda下载及安装</h2><p><a href="https://www.anaconda.com/products/individual#macos" target="_blank" rel="noopener">Anaconda官网</a></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.png" alt></p>
+<a id="more"></a>
+
+<p>下载Windows的相应版本</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052(1).jpg" alt></p>
+<p>下载安装包后双击按引导安装</p>
+<p>这里要<strong>勾选!</strong>将Anaconda加入环境变量.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.jpg" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066358(1).jpg" alt></p>
+<p>等待安装完成.</p>
+<h2 id="2-TensorFlow安装"><a href="#2-TensorFlow安装" class="headerlink" title="2. TensorFlow安装"></a>2. TensorFlow安装</h2><p>开始–&gt;Anaconda3(64-bit)–&gt;Anaconda Prompt(Anaconda3)</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066505(1).jpg" style="zoom: 67%;">
+
+<p>用*<em>conda create -n *</em>新建一个名为tensorflow的环境，用python3.6版本(3.7也可)</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda create -n tensorflow <span class="attribute">python</span>=3.6</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1.png" style="zoom:80%;">
+
+<p>这里选择y表示同意安装相关软件包</p>
+<p><strong>conda activate tensorflow</strong>进入tensorflow虚拟环境环境</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">conda <span class="built_in">activate</span> tensorflow</span><br></pre></td></tr></table></figure>
+
+
+
+<p>输入以下代码安装深度学习软件包</p>
+<p><strong>conda install cudatoolkit=10.1</strong></p>
+<p><strong>conda install cudnn=7.6</strong></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda install <span class="attribute">cudatoolkit</span>=10.1</span><br><span class="line"></span><br><span class="line">conda install <span class="attribute">cudnn</span>=7.6</span><br></pre></td></tr></table></figure>
+
+<p>如果两条安装语句报错，可能是电脑硬件不支持英伟达GPU，直接跳过这两步，安装tensorflow.</p>
+<p><strong>pip install tensflow==2.1</strong></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">pip install <span class="attribute">tensflow</span>==2.1</span><br></pre></td></tr></table></figure>
+
+<p>默认Google源，下载可能会很慢.</p>
+<p>这里注意要指定tensorflow为2.1版本，不然默认安装的是2.3版本，后续使用一些函数可能会报错，如tf.Variable(),如果已经安装了tensorflow2.3并且出现函数报错，可卸载重新安装2.1版本</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">pip</span> <span class="string">uninstall tensorflow</span></span><br><span class="line"><span class="attr">pip</span> <span class="string">install tensorflow==2.1</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，进入python验证是否成功</p>
+<p>依次输入</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">python</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight elm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tf</span><span class="selector-class">.__version__</span></span><br></pre></td></tr></table></figure>
+
+
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607067507(1).jpg" style="zoom:80%;">
+
+<p>如果显示2.1.0表示安装成功.</p>
+<h2 id="3-PyCharm集成开发环境"><a href="#3-PyCharm集成开发环境" class="headerlink" title="3. PyCharm集成开发环境"></a>3. PyCharm集成开发环境</h2><p><a href="https://www.jetbrains.com/" target="_blank" rel="noopener">PyCharm官网</a></p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212.jpg" style="zoom: 50%;">
+
+
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212(1).jpg" style="zoom: 50%;">
+
+<p>下载社区版PyCharm</p>
+<p>打开安装包进行安装</p>
+<p>这里右侧的添加环境变量要<strong>！勾选</strong>，左侧根据个人习惯(可以<strong>都选上！</strong>)</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068405(1).jpg" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068602(1).png" alt></p>
+<p>这里需要重启电脑</p>
+<p>重启后打开PYCharm，新建工程，可以使用默认路径，文件夹命名‘’AI‘’，设置环境变量</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069116(1).jpg" style="zoom:67%;">
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069143(1).jpg" style="zoom:67%;">
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069206(1).jpg" style="zoom:67%;">
+
+<p>新建文件</p>
+<p>右击文件夹AI–&gt;New–&gt;File</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069401.jpg" alt></p>
+<p>命名为test.py</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069432(1).jpg" alt></p>
+<p>输入测试代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">tensorflow_version=tf.__version__</span><br><span class="line">gpu_available = tf.test.is_gpu_available()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"tensorflow version:"</span>, tensorflow_version, <span class="string">"\tGPU available:"</span>, gpu_available)</span><br><span class="line"></span><br><span class="line">a = tf.constant([<span class="number">2.0</span>, <span class="number">2.0</span>], name=<span class="string">'a'</span>)</span><br><span class="line">b = tf.constant([<span class="number">4.0</span>, <span class="number">2.0</span>], name=<span class="string">'b'</span>)</span><br><span class="line">result = tf.add(a, b, name=<span class="string">'add'</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069567(1).jpg" style="zoom: 80%;">
+
+<p>点击<strong>Run ‘test’</strong>，或者<strong>Ctrl+Shift+F10</strong>运行代码</p>
+<p>如果出现<strong>tf.tensor</strong>,说明开发环境已安装成功.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069751(1).png" alt></p>
+<p>后续需要安装一些必要的包，如sklearn,numpy,matplotlib等，点击下方Terminal出现操作台，输入相应下载命令即可.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607342902(1).png" alt></p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> sklearn</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> numpy</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> matplotlib</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Tensorflow学习笔记</category>
+      </categories>
+      <tags>
+        <tag>TensorFlow</tag>
+        <tag>软件安装</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python turtle库&quot;一箭穿心&quot;代码实现</title>
     <url>/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<p>利用python中的turtle库实现“一箭穿心”简单绘图</p>
@@ -255,253 +408,6 @@
 ]]></content>
       <categories>
         <category>python学习笔记</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows10安装TensorFlow</title>
-    <url>/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/</url>
-    <content><![CDATA[<h2 id="1-Anaconda下载及安装"><a href="#1-Anaconda下载及安装" class="headerlink" title="1. Anaconda下载及安装"></a>1. Anaconda下载及安装</h2><p><a href="https://www.anaconda.com/products/individual#macos" target="_blank" rel="noopener">Anaconda官网</a></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.png" alt></p>
-<a id="more"></a>
-
-<p>下载Windows的相应版本</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052(1).jpg" alt></p>
-<p>下载安装包后双击按引导安装</p>
-<p>这里要<strong>勾选!</strong>将Anaconda加入环境变量.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.jpg" alt></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066358(1).jpg" alt></p>
-<p>等待安装完成.</p>
-<h2 id="2-TensorFlow安装"><a href="#2-TensorFlow安装" class="headerlink" title="2. TensorFlow安装"></a>2. TensorFlow安装</h2><p>开始–&gt;Anaconda3(64-bit)–&gt;Anaconda Prompt(Anaconda3)</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066505(1).jpg" style="zoom: 67%;">
-
-<p>用*<em>conda create -n *</em>新建一个名为tensorflow的环境，用python3.6版本(3.7也可)</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda create -n tensorflow <span class="attribute">python</span>=3.6</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1.png" style="zoom:80%;">
-
-<p>这里选择y表示同意安装相关软件包</p>
-<p><strong>conda activate tensorflow</strong>进入tensorflow虚拟环境环境</p>
-<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">conda <span class="built_in">activate</span> tensorflow</span><br></pre></td></tr></table></figure>
-
-
-
-<p>输入以下代码安装深度学习软件包</p>
-<p><strong>conda install cudatoolkit=10.1</strong></p>
-<p><strong>conda install cudnn=7.6</strong></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda install <span class="attribute">cudatoolkit</span>=10.1</span><br><span class="line"></span><br><span class="line">conda install <span class="attribute">cudnn</span>=7.6</span><br></pre></td></tr></table></figure>
-
-<p>如果两条安装语句报错，可能是电脑硬件不支持英伟达GPU，直接跳过这两步，安装tensorflow.</p>
-<p><strong>pip install tensflow==2.1</strong></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">pip install <span class="attribute">tensflow</span>==2.1</span><br></pre></td></tr></table></figure>
-
-<p>默认Google源，下载可能会很慢.</p>
-<p>这里注意要指定tensorflow为2.1版本，不然默认安装的是2.3版本，后续使用一些函数可能会报错，如tf.Variable(),如果已经安装了tensorflow2.3并且出现函数报错，可卸载重新安装2.1版本</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">pip</span> <span class="string">uninstall tensorflow</span></span><br><span class="line"><span class="attr">pip</span> <span class="string">install tensorflow==2.1</span></span><br></pre></td></tr></table></figure>
-
-<p>安装完成后，进入python验证是否成功</p>
-<p>依次输入</p>
-<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">python</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight elm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tf</span><span class="selector-class">.__version__</span></span><br></pre></td></tr></table></figure>
-
-
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607067507(1).jpg" style="zoom:80%;">
-
-<p>如果显示2.1.0表示安装成功.</p>
-<h2 id="3-PyCharm集成开发环境"><a href="#3-PyCharm集成开发环境" class="headerlink" title="3. PyCharm集成开发环境"></a>3. PyCharm集成开发环境</h2><p><a href="https://www.jetbrains.com/" target="_blank" rel="noopener">PyCharm官网</a></p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212.jpg" style="zoom: 50%;">
-
-
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212(1).jpg" style="zoom: 50%;">
-
-<p>下载社区版PyCharm</p>
-<p>打开安装包进行安装</p>
-<p>这里右侧的添加环境变量要<strong>！勾选</strong>，左侧根据个人习惯(可以<strong>都选上！</strong>)</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068405(1).jpg" alt></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068602(1).png" alt></p>
-<p>这里需要重启电脑</p>
-<p>重启后打开PYCharm，新建工程，可以使用默认路径，文件夹命名‘’AI‘’，设置环境变量</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069116(1).jpg" style="zoom:67%;">
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069143(1).jpg" style="zoom:67%;">
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069206(1).jpg" style="zoom:67%;">
-
-<p>新建文件</p>
-<p>右击文件夹AI–&gt;New–&gt;File</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069401.jpg" alt></p>
-<p>命名为test.py</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069432(1).jpg" alt></p>
-<p>输入测试代码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">tensorflow_version=tf.__version__</span><br><span class="line">gpu_available = tf.test.is_gpu_available()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"tensorflow version:"</span>, tensorflow_version, <span class="string">"\tGPU available:"</span>, gpu_available)</span><br><span class="line"></span><br><span class="line">a = tf.constant([<span class="number">2.0</span>, <span class="number">2.0</span>], name=<span class="string">'a'</span>)</span><br><span class="line">b = tf.constant([<span class="number">4.0</span>, <span class="number">2.0</span>], name=<span class="string">'b'</span>)</span><br><span class="line">result = tf.add(a, b, name=<span class="string">'add'</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069567(1).jpg" style="zoom: 80%;">
-
-<p>点击<strong>Run ‘test’</strong>，或者<strong>Ctrl+Shift+F10</strong>运行代码</p>
-<p>如果出现<strong>tf.tensor</strong>,说明开发环境已安装成功.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069751(1).png" alt></p>
-<p>后续需要安装一些必要的包，如sklearn,numpy,matplotlib等，点击下方Terminal出现操作台，输入相应下载命令即可.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607342902(1).png" alt></p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> sklearn</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> numpy</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> matplotlib</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Tensorflow学习笔记</category>
-      </categories>
-      <tags>
-        <tag>TensorFlow</tag>
-        <tag>软件安装</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>wordcloud库</title>
-    <url>/daytoy/2021/04/12/wordcloud%E5%BA%93/</url>
-    <content><![CDATA[<h2 id="一、wordcloud库基本介绍"><a href="#一、wordcloud库基本介绍" class="headerlink" title="一、wordcloud库基本介绍"></a>一、wordcloud库基本介绍</h2><p>优秀的词云展示第三方库.</p>
-<p>词云以词语为单位，更直观和艺术的展示文字.</p>
-<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> wordcloud</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h3 id="2-wordcloud库常规方法"><a href="#2-wordcloud库常规方法" class="headerlink" title="2.wordcloud库常规方法"></a>2.wordcloud库常规方法</h3><p><strong>w=wordcloud.WordCloud()</strong>生成一个词云对象.</p>
-<ul>
-<li>wordcloud库把词云当作一个WordCloud对象.</li>
-<li>wordcloud.WordCloud()代表一个文本对应词云.</li>
-<li>可以根据文本中词云出现的频率等参数绘制词云.</li>
-<li>绘制词云的形状、尺寸和颜色都可以设定.</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">方法</th>
-<th align="center">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">w.generate(txt)</td>
-<td align="center">向WordCloud对象w中加载文本txt</td>
-</tr>
-<tr>
-<td align="center">w.to_file(filename)</td>
-<td align="center">将词云输出为图像文件，.png or .jpg格式</td>
-</tr>
-</tbody></table>
-<h3 id="3-基本步骤"><a href="#3-基本步骤" class="headerlink" title="3.基本步骤"></a>3.基本步骤</h3><ol>
-<li>配置对象参数</li>
-<li>加载词云文本</li>
-<li>输出词云文件</li>
-</ol>
-<p><strong>示例</strong></p>
-<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">import wordcloud</span><br><span class="line">c = wordcloud.<span class="constructor">WordCloud()</span></span><br><span class="line">c.generate('wordcloud by Python')</span><br><span class="line">c.<span class="keyword">to</span><span class="constructor">_file('<span class="params">pywordcloud</span>.<span class="params">png</span>')</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>四步：</strong></p>
-<ol>
-<li>以空格为分隔符号，将文本分隔成单词.</li>
-<li>统计单词出现次数并过滤短单词.</li>
-<li>根据统计配置字号.</li>
-<li>布局：颜色环境尺寸.</li>
-</ol>
-<p><strong>配置对象参数</strong></p>
-<p><strong>w = wordcloud.WoedCloud(&lt;参数&gt;)</strong></p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">width</td>
-<td align="center">指定词云对象生成图片的宽度，默认400像素</td>
-</tr>
-<tr>
-<td align="center">height</td>
-<td align="center">指定词云对象生成图片的高度，默认200像素</td>
-</tr>
-<tr>
-<td align="center">min_font_size</td>
-<td align="center">指定词云中字体的最小字号，默认4号</td>
-</tr>
-<tr>
-<td align="center">max_font_size</td>
-<td align="center">指定词云中字体的最大字号，根据高度自动调节</td>
-</tr>
-<tr>
-<td align="center">font_step</td>
-<td align="center">指定词云中字体字号的步进间隔，默认1</td>
-</tr>
-<tr>
-<td align="center">font_path</td>
-<td align="center">指定字体文件的路径，默认None   e.g.”msyh.ttc”微软雅黑</td>
-</tr>
-<tr>
-<td align="center">max_words</td>
-<td align="center">指定词云显示的最大单词数量，默认200</td>
-</tr>
-<tr>
-<td align="center">stop_words</td>
-<td align="center">指定词云排除词列表   e.g. stop_words={‘Python’}</td>
-</tr>
-<tr>
-<td align="center">mask</td>
-<td align="center">指定词云形状，默认为长方形，需要引用imread()函数</td>
-</tr>
-<tr>
-<td align="center">backgroud_color</td>
-<td align="center">指定词云图片背景颜色，默认黑色 e.g.backgroud_color=’white’</td>
-</tr>
-</tbody></table>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.misc <span class="keyword">import</span> imread</span><br><span class="line">mk = imread(<span class="string">'pic.png'</span>)</span><br><span class="line">w = wordcloud.WordCloud(mask=mk)</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-应用实例"><a href="#4-应用实例" class="headerlink" title="4.应用实例"></a>4.应用实例</h3><p><strong>英文</strong></p>
-<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">'life is short, you need python'</span></span><br><span class="line">w = wordcloud.WordCloud( <span class="string">\</span></span><br><span class="line">        backgroud_color = <span class="string">'white'</span>)<span class="comment">#生成一个词云对象，背景设为白色</span></span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"pywordcloud.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>中文</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#需要对中文先进行分词，引入jieba库</span></span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">"程序设计语言是计算机能够理解和\</span></span><br><span class="line"><span class="string">识别用户操作意图的一种交互体系，它按照\</span></span><br><span class="line"><span class="string">特定规则组织计算机指令，使计算机能够自\</span></span><br><span class="line"><span class="string">动进行各种运算处理。"</span></span><br><span class="line">w = wordcloud.WordCloud( width=<span class="number">1000</span>,\</span><br><span class="line">    font_path=<span class="string">"msyh.ttc"</span>,height=<span class="number">700</span>)</span><br><span class="line">w.genrtate(<span class="string">''</span>.join(jieba.lcut(txt)))</span><br><span class="line">w.to_file(<span class="string">"pythoncloud.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>Remark.</strong> 中文需要先分词并组成空格分隔字符串.</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/pythoncloud.png" style="zoom: 50%;">
-
-<h2 id="二、实例：政府工作报告词云"><a href="#二、实例：政府工作报告词云" class="headerlink" title="二、实例：政府工作报告词云"></a>二、实例：政府工作报告词云</h2><h3 id="1-问题分析"><a href="#1-问题分析" class="headerlink" title="1.问题分析"></a>1.问题分析</h3><ul>
-<li>需求：对于政府工作报告等政策文件，如何直观理解？</li>
-<li>体会直观价值：生成词云&amp;优化词云</li>
-<li>两份重要文件<ul>
-<li><a href="https://python123.io/resources/pye/新时代中国特色社会主义.txt" target="_blank" rel="noopener">习总书记在中国共产党第十九次全国代表大会上的报告</a></li>
-<li><a href="https://python123.io/resources/pye/关于实施乡村振兴战略的意见.txt" target="_blank" rel="noopener">中共中央 国务院关于实施乡村振兴战略的意见</a></li>
-</ul>
-</li>
-</ul>
-<p><strong>政府报告等文件—&gt;&gt;有效展示的词云</strong></p>
-<h3 id="2-基本思路"><a href="#2-基本思路" class="headerlink" title="2.基本思路"></a>2.基本思路</h3><ul>
-<li>读取文件、分词整理</li>
-<li>设置并输入词云</li>
-<li>观察结果，优化迭代</li>
-</ul>
-<h3 id="3-代码展示"><a href="#3-代码展示" class="headerlink" title="3.代码展示"></a>3.代码展示</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"新时代中国特色社会主义.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>: <span class="comment">#移除单字</span></span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"新时代中国特色社会主义.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/新时代中国特色社会主义.png" style="zoom: 50%;">
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"乡村振兴战略意见.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>:</span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"乡村振兴战略意见.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见.png" style="zoom:50%;">
-
-<h3 id="4-优化"><a href="#4-优化" class="headerlink" title="4.优化"></a>4.优化</h3><h4 id="（1）减少词云数目"><a href="#（1）减少词云数目" class="headerlink" title="（1）减少词云数目"></a>（1）减少词云数目</h4><figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">w = wordcloud.<span class="constructor">WordCloud(<span class="params">font_path</span>=<span class="string">"msyh.ttc"</span>,<span class="params">width</span>=1000, <span class="params">height</span>=700, <span class="params">background_color</span>=<span class="string">"white"</span>,<span class="params">max_words</span>=15)</span></span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见15词.png" style="zoom:50%;">
-
-<h4 id="（2）改变词云背景"><a href="#（2）改变词云背景" class="headerlink" title="（2）改变词云背景"></a>（2）改变词云背景</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment">#金色背景</span></span><br><span class="line">w = wordcloud.WordCloud(<span class="attribute">font_path</span>=<span class="string">"msyh.ttc"</span>,width=1000, <span class="attribute">height</span>=700, <span class="attribute">background_color</span>=<span class="string">"gold"</span>,max_words=15)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见gold背景.png" style="zoom:50%;">
-
-]]></content>
-      <categories>
-        <category>python学习</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -664,6 +570,153 @@
       </tags>
   </entry>
   <entry>
+    <title>wordcloud库</title>
+    <url>/daytoy/2021/04/12/wordcloud%E5%BA%93/</url>
+    <content><![CDATA[<h2 id="一、wordcloud库基本介绍"><a href="#一、wordcloud库基本介绍" class="headerlink" title="一、wordcloud库基本介绍"></a>一、wordcloud库基本介绍</h2><p>优秀的词云展示第三方库.</p>
+<p>词云以词语为单位，更直观和艺术的展示文字.</p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> wordcloud</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="2-wordcloud库常规方法"><a href="#2-wordcloud库常规方法" class="headerlink" title="2.wordcloud库常规方法"></a>2.wordcloud库常规方法</h3><p><strong>w=wordcloud.WordCloud()</strong>生成一个词云对象.</p>
+<ul>
+<li>wordcloud库把词云当作一个WordCloud对象.</li>
+<li>wordcloud.WordCloud()代表一个文本对应词云.</li>
+<li>可以根据文本中词云出现的频率等参数绘制词云.</li>
+<li>绘制词云的形状、尺寸和颜色都可以设定.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">w.generate(txt)</td>
+<td align="center">向WordCloud对象w中加载文本txt</td>
+</tr>
+<tr>
+<td align="center">w.to_file(filename)</td>
+<td align="center">将词云输出为图像文件，.png or .jpg格式</td>
+</tr>
+</tbody></table>
+<h3 id="3-基本步骤"><a href="#3-基本步骤" class="headerlink" title="3.基本步骤"></a>3.基本步骤</h3><ol>
+<li>配置对象参数</li>
+<li>加载词云文本</li>
+<li>输出词云文件</li>
+</ol>
+<p><strong>示例</strong></p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">import wordcloud</span><br><span class="line">c = wordcloud.<span class="constructor">WordCloud()</span></span><br><span class="line">c.generate('wordcloud by Python')</span><br><span class="line">c.<span class="keyword">to</span><span class="constructor">_file('<span class="params">pywordcloud</span>.<span class="params">png</span>')</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>四步：</strong></p>
+<ol>
+<li>以空格为分隔符号，将文本分隔成单词.</li>
+<li>统计单词出现次数并过滤短单词.</li>
+<li>根据统计配置字号.</li>
+<li>布局：颜色环境尺寸.</li>
+</ol>
+<p><strong>配置对象参数</strong></p>
+<p><strong>w = wordcloud.WoedCloud(&lt;参数&gt;)</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">width</td>
+<td align="center">指定词云对象生成图片的宽度，默认400像素</td>
+</tr>
+<tr>
+<td align="center">height</td>
+<td align="center">指定词云对象生成图片的高度，默认200像素</td>
+</tr>
+<tr>
+<td align="center">min_font_size</td>
+<td align="center">指定词云中字体的最小字号，默认4号</td>
+</tr>
+<tr>
+<td align="center">max_font_size</td>
+<td align="center">指定词云中字体的最大字号，根据高度自动调节</td>
+</tr>
+<tr>
+<td align="center">font_step</td>
+<td align="center">指定词云中字体字号的步进间隔，默认1</td>
+</tr>
+<tr>
+<td align="center">font_path</td>
+<td align="center">指定字体文件的路径，默认None   e.g.”msyh.ttc”微软雅黑</td>
+</tr>
+<tr>
+<td align="center">max_words</td>
+<td align="center">指定词云显示的最大单词数量，默认200</td>
+</tr>
+<tr>
+<td align="center">stop_words</td>
+<td align="center">指定词云排除词列表   e.g. stop_words={‘Python’}</td>
+</tr>
+<tr>
+<td align="center">mask</td>
+<td align="center">指定词云形状，默认为长方形，需要引用imread()函数</td>
+</tr>
+<tr>
+<td align="center">backgroud_color</td>
+<td align="center">指定词云图片背景颜色，默认黑色 e.g.backgroud_color=’white’</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.misc <span class="keyword">import</span> imread</span><br><span class="line">mk = imread(<span class="string">'pic.png'</span>)</span><br><span class="line">w = wordcloud.WordCloud(mask=mk)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-应用实例"><a href="#4-应用实例" class="headerlink" title="4.应用实例"></a>4.应用实例</h3><p><strong>英文</strong></p>
+<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">'life is short, you need python'</span></span><br><span class="line">w = wordcloud.WordCloud( <span class="string">\</span></span><br><span class="line">        backgroud_color = <span class="string">'white'</span>)<span class="comment">#生成一个词云对象，背景设为白色</span></span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"pywordcloud.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>中文</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#需要对中文先进行分词，引入jieba库</span></span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">"程序设计语言是计算机能够理解和\</span></span><br><span class="line"><span class="string">识别用户操作意图的一种交互体系，它按照\</span></span><br><span class="line"><span class="string">特定规则组织计算机指令，使计算机能够自\</span></span><br><span class="line"><span class="string">动进行各种运算处理。"</span></span><br><span class="line">w = wordcloud.WordCloud( width=<span class="number">1000</span>,\</span><br><span class="line">    font_path=<span class="string">"msyh.ttc"</span>,height=<span class="number">700</span>)</span><br><span class="line">w.genrtate(<span class="string">''</span>.join(jieba.lcut(txt)))</span><br><span class="line">w.to_file(<span class="string">"pythoncloud.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Remark.</strong> 中文需要先分词并组成空格分隔字符串.</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/pythoncloud.png" style="zoom: 50%;">
+
+<h2 id="二、实例：政府工作报告词云"><a href="#二、实例：政府工作报告词云" class="headerlink" title="二、实例：政府工作报告词云"></a>二、实例：政府工作报告词云</h2><h3 id="1-问题分析"><a href="#1-问题分析" class="headerlink" title="1.问题分析"></a>1.问题分析</h3><ul>
+<li>需求：对于政府工作报告等政策文件，如何直观理解？</li>
+<li>体会直观价值：生成词云&amp;优化词云</li>
+<li>两份重要文件<ul>
+<li><a href="https://python123.io/resources/pye/新时代中国特色社会主义.txt" target="_blank" rel="noopener">习总书记在中国共产党第十九次全国代表大会上的报告</a></li>
+<li><a href="https://python123.io/resources/pye/关于实施乡村振兴战略的意见.txt" target="_blank" rel="noopener">中共中央 国务院关于实施乡村振兴战略的意见</a></li>
+</ul>
+</li>
+</ul>
+<p><strong>政府报告等文件—&gt;&gt;有效展示的词云</strong></p>
+<h3 id="2-基本思路"><a href="#2-基本思路" class="headerlink" title="2.基本思路"></a>2.基本思路</h3><ul>
+<li>读取文件、分词整理</li>
+<li>设置并输入词云</li>
+<li>观察结果，优化迭代</li>
+</ul>
+<h3 id="3-代码展示"><a href="#3-代码展示" class="headerlink" title="3.代码展示"></a>3.代码展示</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"新时代中国特色社会主义.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>: <span class="comment">#移除单字</span></span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"新时代中国特色社会主义.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/新时代中国特色社会主义.png" style="zoom: 50%;">
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"乡村振兴战略意见.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>:</span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"乡村振兴战略意见.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见.png" style="zoom:50%;">
+
+<h3 id="4-优化"><a href="#4-优化" class="headerlink" title="4.优化"></a>4.优化</h3><h4 id="（1）减少词云数目"><a href="#（1）减少词云数目" class="headerlink" title="（1）减少词云数目"></a>（1）减少词云数目</h4><figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">w = wordcloud.<span class="constructor">WordCloud(<span class="params">font_path</span>=<span class="string">"msyh.ttc"</span>,<span class="params">width</span>=1000, <span class="params">height</span>=700, <span class="params">background_color</span>=<span class="string">"white"</span>,<span class="params">max_words</span>=15)</span></span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见15词.png" style="zoom:50%;">
+
+<h4 id="（2）改变词云背景"><a href="#（2）改变词云背景" class="headerlink" title="（2）改变词云背景"></a>（2）改变词云背景</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment">#金色背景</span></span><br><span class="line">w = wordcloud.WordCloud(<span class="attribute">font_path</span>=<span class="string">"msyh.ttc"</span>,width=1000, <span class="attribute">height</span>=700, <span class="attribute">background_color</span>=<span class="string">"gold"</span>,max_words=15)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见gold背景.png" style="zoom:50%;">
+
+]]></content>
+      <categories>
+        <category>python学习</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python机器学习之鸢尾花分类问题</title>
     <url>/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<p><font size="4" face="楷体"><strong>已知：</strong>鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm.</font></p>
@@ -787,48 +840,6 @@
       <tags>
         <tag>python</tag>
         <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>人工智能-Tensorflow2笔记(二)</title>
-    <url>/daytoy/2020/12/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%BA%8C)/</url>
-    <content><![CDATA[<h2 id="神经网络实现鸢尾花分类"><a href="#神经网络实现鸢尾花分类" class="headerlink" title="神经网络实现鸢尾花分类"></a>神经网络实现鸢尾花分类</h2><p>准备数据</p>
-<ul>
-<li>数据集读入</li>
-<li>数据集乱序</li>
-<li>生成训练集和测试集,训练集，测试集不能有交集</li>
-<li>配成（输入特征，标签）对，每次读入一部分(batch)</li>
-</ul>
-<p>搭建网络</p>
-<ul>
-<li>定义神经网络中所有可训练参数</li>
-</ul>
-<p>参数优化</p>
-<ul>
-<li>嵌套循环迭代，with结构更新参数，显示当前loss</li>
-</ul>
-<p>测试效果</p>
-<ul>
-<li>计算当前参数向后传播准确率，显示当前acc</li>
-<li>准确率acc/损失函数loss可视化</li>
-</ul>
-<a id="more"></a>
-
-<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="built_in">import</span> tensorflow as tf</span><br><span class="line"><span class="built_in">import</span> numpy as np</span><br><span class="line">from matplotlib <span class="built_in">import</span> pyplot as plt</span><br><span class="line"><span class="comment">#从sklearn包datasets读入数据集：</span></span><br><span class="line">from sklearn <span class="built_in">import</span> datasets</span><br><span class="line"><span class="attr">x_data</span> = datasets.load_iris().data  <span class="comment">#返回iris数据集所有输入特征</span></span><br><span class="line"><span class="attr">y_data</span> = datasets.load_iris().target <span class="comment">#返回iris数据集中所有标签</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集乱序</span></span><br><span class="line">np.random.seed(<span class="number">116</span>) <span class="comment">#使用相同的随机数种子，使输入特征/标签一一对应，即配对不会乱</span></span><br><span class="line">np.random.shuffle(x_data)</span><br><span class="line">np.random.seed(<span class="number">116</span>)</span><br><span class="line">np.random.shuffle(y_data)</span><br><span class="line">tf.random.set_seed(<span class="number">116</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集分出训练集，测试集,不能有交集</span></span><br><span class="line"><span class="comment">#打乱数据集中前120个作为训练集</span></span><br><span class="line"><span class="attr">x_train</span> = x_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">y_train</span> = y_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">x_test</span> = x_data[-<span class="number">30</span>:]</span><br><span class="line"><span class="attr">y_test</span> = y_data[-<span class="number">30</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换x数据类型</span></span><br><span class="line"><span class="attr">x_train</span> = tf.cast(x_train, tf.float32)</span><br><span class="line"><span class="attr">x_test</span> = tf.cast(x_test, tf.float32)</span><br><span class="line"></span><br><span class="line"><span class="comment">#from_tensor_slices配成【输入特征、标签】对，每次喂入神经网络一部分数据(batch)</span></span><br><span class="line"><span class="comment">#每32对打包为一个batch</span></span><br><span class="line"><span class="attr">train_db</span> = tf.data.Dataset.from_tensor_slices((x_train, y_train)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="attr">test_db</span> = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="comment">#定义神经网络所有可训练参数</span></span><br><span class="line"><span class="comment">#输入特征是4，输入层为4个输入节点，只有一层网络，输出节点数=分类数，3分类</span></span><br><span class="line"><span class="comment">#参数w1是4行3列张量</span></span><br><span class="line"><span class="attr">w1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">4</span>, <span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"><span class="attr">b1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"></span><br><span class="line"><span class="attr">lr</span> = <span class="number">0.1</span> <span class="comment">#学习率为0.1</span></span><br><span class="line"><span class="attr">train_loss_results</span> = []  <span class="comment">#将每轮loss记录下来，为后面画loss曲线提供数据</span></span><br><span class="line"><span class="attr">test_acc</span> = [] <span class="comment">#记录acc</span></span><br><span class="line"><span class="attr">Epoch</span> = <span class="number">500</span> <span class="comment">#循环500次</span></span><br><span class="line"><span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#每轮分4个step，loss_all记录四个step生成的4个loss的和</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#两层循环迭代更新参数</span></span><br><span class="line"><span class="comment">#第一层for循环是针对整个数据集循环，用epoch表示</span></span><br><span class="line"><span class="comment">#第二层for循环是针对batch的，用step表示</span></span><br><span class="line">for epoch <span class="keyword">in</span> range(Epoch):</span><br><span class="line">    for step, (x_train, y_train) <span class="keyword">in</span> enumerate(train_db):</span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape() as tape: <span class="comment">#with结构记录梯度信息</span></span><br><span class="line">            <span class="attr">y</span> = tf.matmul(x_train, w1) + b1 <span class="comment">#神经网络乘加运算</span></span><br><span class="line">            <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#使输出y符合概率分布</span></span><br><span class="line">            <span class="attr">y_</span> = tf.one_hot(y_train, <span class="attr">depth=3)</span> <span class="comment">#将标签转换为独热码格式，方便计算loss</span></span><br><span class="line">            <span class="attr">loss</span> = tf.reduce_mean(tf.square(y_ -y)) <span class="comment">#采用均方误差损失函数MSE</span></span><br><span class="line">            loss_all += loss.numpy() <span class="comment">#将每个step计算出的loss累加，为后续求loss平均值提供数据</span></span><br><span class="line">        <span class="attr">grads</span> = tape.gradient(loss, [w1, b1])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 实现梯度更新</span></span><br><span class="line">        w1.assign_sub(lr * grads[<span class="number">0</span>]) <span class="comment">#参数w1自更新</span></span><br><span class="line">        b1.assign_sub(lr * grads[<span class="number">1</span>]) <span class="comment">#参数b1自更新</span></span><br><span class="line">    <span class="comment">#每个epoch 打印loss信息</span></span><br><span class="line">    print('Epoch &#123;&#125;, loss: &#123;&#125;'.format(epoch, loss_all/<span class="number">4</span>)) <span class="comment">#120组数据，需要batch级别循环4次，除以4求得每次step迭代平均loss</span></span><br><span class="line">    train_loss_results.append(loss_all / <span class="number">4</span>) <span class="comment">#将4个step的loss求平均记录在此变量中</span></span><br><span class="line">    <span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#loss_all归零，为记录下一个epoch的loss做准备</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#测试部分</span></span><br><span class="line">    <span class="comment">#计算当前参数前向传播后准确率，显示当前acc</span></span><br><span class="line">    <span class="comment">#total_corrrect为预测对的样本个数， total_number为测试的总样本数，初始化为0</span></span><br><span class="line">    total_correct, <span class="attr">total_number</span> = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    for x_test, y_test <span class="keyword">in</span> test_db:</span><br><span class="line">        <span class="attr">y</span> = tf.matmul(x_test, w1) + b1 <span class="comment">#y为预测结果</span></span><br><span class="line">        <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#y符合概率分布</span></span><br><span class="line">        <span class="attr">pred</span> = tf.argmax(y, <span class="attr">axis=1)</span> <span class="comment">#返回y中最大值索引，即预测分类</span></span><br><span class="line">        <span class="comment">#将pred转换为y_test数据类型</span></span><br><span class="line">        <span class="attr">pred</span> = tf.cast(pred, <span class="attr">dtype=y_test.dtype)</span></span><br><span class="line">        <span class="comment"># 若分类正确，correct=1，否则为0，将bool型转换为int型</span></span><br><span class="line">        <span class="attr">correct</span> = tf.cast(tf.equal(pred, y_test), <span class="attr">dtype=tf.int32)</span></span><br><span class="line">        <span class="comment"># 将每个batch的correct数加起来</span></span><br><span class="line">        <span class="attr">correct</span> = tf.reduce_sum(correct)</span><br><span class="line">        total_correct += int(correct) <span class="comment">#将所有batch中correct数加起来</span></span><br><span class="line">        <span class="comment">#total_number为测试总样本数，即x_test行数，shape[0]</span></span><br><span class="line">        <span class="attr">total_number</span> = x_test.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment">#总准确率为 total_correct / total_number</span></span><br><span class="line">    <span class="attr">acc</span> = total_correct / total_number</span><br><span class="line">    test_acc.append(acc)</span><br><span class="line">    print(<span class="string">"test_acc:"</span>, acc)</span><br><span class="line">    print('----------------------')</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制loss曲线</span></span><br><span class="line">plt.title('Loss Function Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel(<span class="string">"Loss"</span>)</span><br><span class="line">plt.plot(train_loss_results, <span class="attr">label='$loss$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制Accuary曲线</span></span><br><span class="line">plt.title('Acc Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel('Acc')</span><br><span class="line">plt.plot(test_acc, <span class="attr">label='$Accuary$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<p>程序在PyCharm中运行.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Epoch.jpg" alt></p>
-<p>从图中可见，随着迭代次数增加，损失函数值逐渐减小，对测试集的预测准确率逐渐增大直至达到100%正确.下面两张图给出了损失函数及预测准确率的变化图像.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Loss_Function_Curve.png" alt></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Acc_Curve.png" alt></p>
-]]></content>
-      <categories>
-        <category>Tensorflow学习笔记</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>Tensorflow</tag>
-        <tag>人工智能</tag>
       </tags>
   </entry>
   <entry>
@@ -1132,6 +1143,48 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#鸢尾花数据集读入</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">x_data = datasets.load_iris().data <span class="comment">#.data 返回iris数据集所有输入特征</span></span><br><span class="line">y_data = datasets.load_iris().target <span class="comment"># .target 返回iris数据集所有标签</span></span><br><span class="line">print(<span class="string">'x_data from datasets: \n'</span>, x_data)</span><br><span class="line">print(<span class="string">'y_data from datasets: \n'</span>, y_data)</span><br><span class="line"></span><br><span class="line">x_data = DataFrame(x_data, columns=[<span class="string">'花萼长度'</span>, <span class="string">'花萼宽度'</span>, <span class="string">'花瓣长度'</span>, <span class="string">'花瓣宽度'</span>])</span><br><span class="line">pd.set_option(<span class="string">'display.unicode.east_asian_width'</span>, <span class="literal">True</span>) <span class="comment"># 设置列名对齐</span></span><br><span class="line">print(<span class="string">'x_data add index: \n'</span>, x_data)</span><br><span class="line"></span><br><span class="line">x_data[<span class="string">'类别'</span>] = y_data  <span class="comment">#新加一列，列标签为’类别‘，数据为y_data</span></span><br><span class="line">print(<span class="string">'x_data add a column: \n'</span>, x_data)</span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <categories>
+        <category>Tensorflow学习笔记</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>Tensorflow</tag>
+        <tag>人工智能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人工智能-Tensorflow2笔记(二)</title>
+    <url>/daytoy/2020/12/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%BA%8C)/</url>
+    <content><![CDATA[<h2 id="神经网络实现鸢尾花分类"><a href="#神经网络实现鸢尾花分类" class="headerlink" title="神经网络实现鸢尾花分类"></a>神经网络实现鸢尾花分类</h2><p>准备数据</p>
+<ul>
+<li>数据集读入</li>
+<li>数据集乱序</li>
+<li>生成训练集和测试集,训练集，测试集不能有交集</li>
+<li>配成（输入特征，标签）对，每次读入一部分(batch)</li>
+</ul>
+<p>搭建网络</p>
+<ul>
+<li>定义神经网络中所有可训练参数</li>
+</ul>
+<p>参数优化</p>
+<ul>
+<li>嵌套循环迭代，with结构更新参数，显示当前loss</li>
+</ul>
+<p>测试效果</p>
+<ul>
+<li>计算当前参数向后传播准确率，显示当前acc</li>
+<li>准确率acc/损失函数loss可视化</li>
+</ul>
+<a id="more"></a>
+
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="built_in">import</span> tensorflow as tf</span><br><span class="line"><span class="built_in">import</span> numpy as np</span><br><span class="line">from matplotlib <span class="built_in">import</span> pyplot as plt</span><br><span class="line"><span class="comment">#从sklearn包datasets读入数据集：</span></span><br><span class="line">from sklearn <span class="built_in">import</span> datasets</span><br><span class="line"><span class="attr">x_data</span> = datasets.load_iris().data  <span class="comment">#返回iris数据集所有输入特征</span></span><br><span class="line"><span class="attr">y_data</span> = datasets.load_iris().target <span class="comment">#返回iris数据集中所有标签</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集乱序</span></span><br><span class="line">np.random.seed(<span class="number">116</span>) <span class="comment">#使用相同的随机数种子，使输入特征/标签一一对应，即配对不会乱</span></span><br><span class="line">np.random.shuffle(x_data)</span><br><span class="line">np.random.seed(<span class="number">116</span>)</span><br><span class="line">np.random.shuffle(y_data)</span><br><span class="line">tf.random.set_seed(<span class="number">116</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集分出训练集，测试集,不能有交集</span></span><br><span class="line"><span class="comment">#打乱数据集中前120个作为训练集</span></span><br><span class="line"><span class="attr">x_train</span> = x_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">y_train</span> = y_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">x_test</span> = x_data[-<span class="number">30</span>:]</span><br><span class="line"><span class="attr">y_test</span> = y_data[-<span class="number">30</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换x数据类型</span></span><br><span class="line"><span class="attr">x_train</span> = tf.cast(x_train, tf.float32)</span><br><span class="line"><span class="attr">x_test</span> = tf.cast(x_test, tf.float32)</span><br><span class="line"></span><br><span class="line"><span class="comment">#from_tensor_slices配成【输入特征、标签】对，每次喂入神经网络一部分数据(batch)</span></span><br><span class="line"><span class="comment">#每32对打包为一个batch</span></span><br><span class="line"><span class="attr">train_db</span> = tf.data.Dataset.from_tensor_slices((x_train, y_train)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="attr">test_db</span> = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="comment">#定义神经网络所有可训练参数</span></span><br><span class="line"><span class="comment">#输入特征是4，输入层为4个输入节点，只有一层网络，输出节点数=分类数，3分类</span></span><br><span class="line"><span class="comment">#参数w1是4行3列张量</span></span><br><span class="line"><span class="attr">w1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">4</span>, <span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"><span class="attr">b1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"></span><br><span class="line"><span class="attr">lr</span> = <span class="number">0.1</span> <span class="comment">#学习率为0.1</span></span><br><span class="line"><span class="attr">train_loss_results</span> = []  <span class="comment">#将每轮loss记录下来，为后面画loss曲线提供数据</span></span><br><span class="line"><span class="attr">test_acc</span> = [] <span class="comment">#记录acc</span></span><br><span class="line"><span class="attr">Epoch</span> = <span class="number">500</span> <span class="comment">#循环500次</span></span><br><span class="line"><span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#每轮分4个step，loss_all记录四个step生成的4个loss的和</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#两层循环迭代更新参数</span></span><br><span class="line"><span class="comment">#第一层for循环是针对整个数据集循环，用epoch表示</span></span><br><span class="line"><span class="comment">#第二层for循环是针对batch的，用step表示</span></span><br><span class="line">for epoch <span class="keyword">in</span> range(Epoch):</span><br><span class="line">    for step, (x_train, y_train) <span class="keyword">in</span> enumerate(train_db):</span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape() as tape: <span class="comment">#with结构记录梯度信息</span></span><br><span class="line">            <span class="attr">y</span> = tf.matmul(x_train, w1) + b1 <span class="comment">#神经网络乘加运算</span></span><br><span class="line">            <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#使输出y符合概率分布</span></span><br><span class="line">            <span class="attr">y_</span> = tf.one_hot(y_train, <span class="attr">depth=3)</span> <span class="comment">#将标签转换为独热码格式，方便计算loss</span></span><br><span class="line">            <span class="attr">loss</span> = tf.reduce_mean(tf.square(y_ -y)) <span class="comment">#采用均方误差损失函数MSE</span></span><br><span class="line">            loss_all += loss.numpy() <span class="comment">#将每个step计算出的loss累加，为后续求loss平均值提供数据</span></span><br><span class="line">        <span class="attr">grads</span> = tape.gradient(loss, [w1, b1])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 实现梯度更新</span></span><br><span class="line">        w1.assign_sub(lr * grads[<span class="number">0</span>]) <span class="comment">#参数w1自更新</span></span><br><span class="line">        b1.assign_sub(lr * grads[<span class="number">1</span>]) <span class="comment">#参数b1自更新</span></span><br><span class="line">    <span class="comment">#每个epoch 打印loss信息</span></span><br><span class="line">    print('Epoch &#123;&#125;, loss: &#123;&#125;'.format(epoch, loss_all/<span class="number">4</span>)) <span class="comment">#120组数据，需要batch级别循环4次，除以4求得每次step迭代平均loss</span></span><br><span class="line">    train_loss_results.append(loss_all / <span class="number">4</span>) <span class="comment">#将4个step的loss求平均记录在此变量中</span></span><br><span class="line">    <span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#loss_all归零，为记录下一个epoch的loss做准备</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#测试部分</span></span><br><span class="line">    <span class="comment">#计算当前参数前向传播后准确率，显示当前acc</span></span><br><span class="line">    <span class="comment">#total_corrrect为预测对的样本个数， total_number为测试的总样本数，初始化为0</span></span><br><span class="line">    total_correct, <span class="attr">total_number</span> = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    for x_test, y_test <span class="keyword">in</span> test_db:</span><br><span class="line">        <span class="attr">y</span> = tf.matmul(x_test, w1) + b1 <span class="comment">#y为预测结果</span></span><br><span class="line">        <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#y符合概率分布</span></span><br><span class="line">        <span class="attr">pred</span> = tf.argmax(y, <span class="attr">axis=1)</span> <span class="comment">#返回y中最大值索引，即预测分类</span></span><br><span class="line">        <span class="comment">#将pred转换为y_test数据类型</span></span><br><span class="line">        <span class="attr">pred</span> = tf.cast(pred, <span class="attr">dtype=y_test.dtype)</span></span><br><span class="line">        <span class="comment"># 若分类正确，correct=1，否则为0，将bool型转换为int型</span></span><br><span class="line">        <span class="attr">correct</span> = tf.cast(tf.equal(pred, y_test), <span class="attr">dtype=tf.int32)</span></span><br><span class="line">        <span class="comment"># 将每个batch的correct数加起来</span></span><br><span class="line">        <span class="attr">correct</span> = tf.reduce_sum(correct)</span><br><span class="line">        total_correct += int(correct) <span class="comment">#将所有batch中correct数加起来</span></span><br><span class="line">        <span class="comment">#total_number为测试总样本数，即x_test行数，shape[0]</span></span><br><span class="line">        <span class="attr">total_number</span> = x_test.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment">#总准确率为 total_correct / total_number</span></span><br><span class="line">    <span class="attr">acc</span> = total_correct / total_number</span><br><span class="line">    test_acc.append(acc)</span><br><span class="line">    print(<span class="string">"test_acc:"</span>, acc)</span><br><span class="line">    print('----------------------')</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制loss曲线</span></span><br><span class="line">plt.title('Loss Function Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel(<span class="string">"Loss"</span>)</span><br><span class="line">plt.plot(train_loss_results, <span class="attr">label='$loss$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制Accuary曲线</span></span><br><span class="line">plt.title('Acc Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel('Acc')</span><br><span class="line">plt.plot(test_acc, <span class="attr">label='$Accuary$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>程序在PyCharm中运行.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Epoch.jpg" alt></p>
+<p>从图中可见，随着迭代次数增加，损失函数值逐渐减小，对测试集的预测准确率逐渐增大直至达到100%正确.下面两张图给出了损失函数及预测准确率的变化图像.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Loss_Function_Curve.png" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Acc_Curve.png" alt></p>
 ]]></content>
       <categories>
         <category>Tensorflow学习笔记</category>

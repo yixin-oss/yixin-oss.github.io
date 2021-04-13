@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/daytoy/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/daytoy/images/heart.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/daytoy/images/heart.jpg">
+  <link rel="mask-icon" href="/daytoy/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/daytoy/css/main.css">
+
+
+<link rel="stylesheet" href="/daytoy/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/daytoy/lib/pace/pace-theme-minimal.min.css">
+  <script src="/daytoy/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yixin-oss.gitee.io","root":"/daytoy/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="DBSCAN一、算法简介DBSCAN(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的密集区域。密集区域最终将有相对较空的区域分隔开。 在密集区域的点称为核心点，由DBSCAN的两个重要参数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DBSCAN聚类算法">
+<meta property="og:url" content="http://yixin-oss.gitee.io/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Daytoy">
+<meta property="og:description" content="DBSCAN一、算法简介DBSCAN(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的密集区域。密集区域最终将有相对较空的区域分隔开。 在密集区域的点称为核心点，由DBSCAN的两个重要参数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E5%87%A0%E4%BD%95%E7%9B%B4%E8%A7%82.png">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.jpg">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/two_moons.png">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310630(1).jpg">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310722(1).jpg">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618309915(1).jpg">
+<meta property="og:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/Figure_1.png">
+<meta property="article:published_time" content="2021-04-13T11:09:34.540Z">
+<meta property="article:modified_time" content="2021-04-13T11:09:26.628Z">
+<meta property="article:author" content="亦新">
+<meta property="article:tag" content="聚类算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E5%87%A0%E4%BD%95%E7%9B%B4%E8%A7%82.png">
+
+<link rel="canonical" href="http://yixin-oss.gitee.io/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>DBSCAN聚类算法 | Daytoy</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/daytoy/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Daytoy</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Always be happy</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/daytoy/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/daytoy/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/daytoy/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/daytoy/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yixin-oss.gitee.io/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/daytoy/images/hexohead.gif">
+      <meta itemprop="name" content="亦新">
+      <meta itemprop="description" content="热爱可抵岁月漫长">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Daytoy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DBSCAN聚类算法
+        </h1>
+
+        <div class="post-meta">
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="DBSCAN"><a href="#DBSCAN" class="headerlink" title="DBSCAN"></a>DBSCAN</h1><h2 id="一、算法简介"><a href="#一、算法简介" class="headerlink" title="一、算法简介"></a>一、算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
+<p>在密集区域的点称为<strong>核心点</strong>，由DBSCAN的两个重要参数<strong>半径eps</strong>和<strong>最小采样点个数min_sample</strong>确定，其定义如下：如果在距一个给定数据点eps距离内至少有min_sample个数据点，那么这个数据点就是核心点。DBSCAN最终会将彼此距离小于eps的核心点分到同一簇中。</p>
+<a id="more"></a>
+
+<h4 id="算法过程描述"><a href="#算法过程描述" class="headerlink" title="算法过程描述"></a>算法过程描述</h4><p>首先任取一个点，找到这个点的距离小于等于eps的所有点，如果距起始点的距离在eps之内的数据点个数小于min_sample，那么这个点被标记为<strong>噪音点</strong>，也就是说它不属于任何簇。如果距离在eps之内的数据点个数大于min_sample，则这个点被标记为<strong>核心点</strong>，并分配一个新的<strong>簇标签</strong>。然后访问该点的所有eps以内的邻居，如果它们还没有被分配簇，那么就将刚才的簇标签分配给它们，如果它们也是核心点，那么继续依次访问其邻居，以此类推，否则即为<strong>边界点</strong>，不再访问其邻居。簇逐渐增大，直到簇的eps距离内没有更多的核心点为止。然后选取另一个尚未被访问的点，重复相同的过程。</p>
+<p>最后，一共有三种类型的点：核心点、边界点、噪音点。如果DBSCAN算法在特定数据集运行多次，那么核心点的聚类始终相同，同样的点也始终被标记为噪音点。但边界点可能与不止一个簇的核心点相邻，这与数据点的访问顺序有关。一般情况下，边界点较少，因此这种歧义并不是很重要。</p>
+<p>从上述描述中可以看到，DBSCAN算法不需要设置簇的个数，只需要确定两个参数eps、min_sample，实际上它们可以隐式地控制找到簇的个数。eps决定了点与点之间“接近”的含义，将eps设置过小，意味着没有核心点出现，可能导致所有点被标记为噪音点；eps设置过大，可能导致所有点形成单个簇。min_sample主要用于判断稀疏区域内点被标记为异常值还是形成自己的簇，决定了簇的最小尺寸。因此，两个参数的选取还是至关重要的。</p>
+<p><strong>注：</strong>采用缩放技术使数据特征具有相似的范围，有时会更便于找到eps较好的取值。</p>
+<h2 id="二、DBSCAN算法可视化展示"><a href="#二、DBSCAN算法可视化展示" class="headerlink" title="二、DBSCAN算法可视化展示"></a>二、DBSCAN算法可视化展示</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E5%87%A0%E4%BD%95%E7%9B%B4%E8%A7%82.png" alt></p>
+<p>DBSCAN聚类算法在二维平面中对数据点进行聚类的简化过程如图所示，选取min_sample=2，此时图中蓝色为噪音点，不属于任何簇；红色为核心点，黄色为边界点，它们均划分在同一簇中。</p>
+<p>国外有个网站，可以把DBSCAN的过程以<strong>动图</strong>展示出来，可以选择几种不同的数据集，还可以自行设置参数，很有趣.</p>
+<h2 id="三、算法实现"><a href="#三、算法实现" class="headerlink" title="三、算法实现"></a>三、算法实现</h2><h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a><strong>算法流程</strong></h4><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.jpg" style="zoom:80%;">
+
+<h4 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h4><p>DBSCAN可在python中的sklearn库调用实现，以下给出两个简单实例对算法的聚类效果进行展示.</p>
+<h5 id="实例一：半圆形数据分簇"><a href="#实例一：半圆形数据分簇" class="headerlink" title="实例一：半圆形数据分簇"></a>实例一：半圆形数据分簇</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_moons</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">X, y = make_moons(n_samples=<span class="number">200</span>, noise=<span class="number">0.05</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将数据缩放成平均值为0、方差为1</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">scaler.fit(X)</span><br><span class="line">X_scaled = scaler.transform(X)</span><br><span class="line"></span><br><span class="line">dbscan = DBSCAN()</span><br><span class="line">clusters = dbscan.fit_predict(X_scaled)</span><br><span class="line"><span class="comment">#绘制簇分配</span></span><br><span class="line">plt.scatter(X_scaled[:, <span class="number">0</span>], X_scaled[:, <span class="number">1</span>], c=clusters, s=<span class="number">60</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Feature 0"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Feature 1"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/two_moons.png" alt></p>
+<p>上图展示了在two_moons数据集上运行DBSCAN的结果，利用默认设置(eps=0.5)，算法找到了两个半圆形并将其分开.由于算法得到了2个簇，默认参数的设置效果似乎很好，若eps=0.2，将会得到8个簇，显然太多了；若eps=0.7，则会导致只有1个簇.</p>
+<h5 id="实例二：品牌啤酒聚类分析"><a href="#实例二：品牌啤酒聚类分析" class="headerlink" title="实例二：品牌啤酒聚类分析"></a>实例二：品牌啤酒聚类分析</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> colors</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入数据</span></span><br><span class="line">beer = pd.read_csv(<span class="string">'beer.txt'</span>, sep=<span class="string">' '</span>)</span><br><span class="line">print(beer)<span class="comment">#查看数据集</span></span><br><span class="line"></span><br><span class="line">X = beer[[<span class="string">'calories'</span>, <span class="string">'sodium'</span>, <span class="string">'alcohol'</span>, <span class="string">'cost'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置半径为10，最小样本量2</span></span><br><span class="line">db = DBSCAN(eps=<span class="number">10</span>, min_samples=<span class="number">2</span>).fit(X)</span><br><span class="line"></span><br><span class="line">labels = db.labels_</span><br><span class="line">beer[<span class="string">'cluster_db'</span>] = labels <span class="comment">#在数据集最后一列加上DBSCAN聚类后的结果</span></span><br><span class="line">beer.sort_values(<span class="string">'cluster_db'</span>)</span><br><span class="line">print(beer)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看根据DBSCAN聚类后的分组统计结果(均值)</span></span><br><span class="line">print(beer.groupby(<span class="string">'cluster_db'</span>).mean())</span><br><span class="line"></span><br><span class="line"><span class="comment">#画出在不同两个指标下样本的分布情况</span></span><br><span class="line">print(pd.plotting.scatter_matrix(X, figsize=(<span class="number">10</span>, <span class="number">10</span>), s=<span class="number">100</span>))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看数据集：</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310630(1).jpg" alt="数据集"></p>
+<p>聚类结果：</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310722(1).jpg" alt="聚类结果"></p>
+<p>下表给出了聚类后分组的均值结果.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618309915(1).jpg" alt></p>
+<p>图中展示了在不同两个指标下样本的分布情况.</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Figure_1.png" style="zoom: 80%;">
+
+<h2 id="四、算法优缺点"><a href="#四、算法优缺点" class="headerlink" title="四、算法优缺点"></a>四、算法优缺点</h2><h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>不需要先验地指定簇的个数；</li>
+<li>可以处理任意形状大小的簇，且结果相对而言优于K均值聚类；</li>
+<li>基于密度定义，对噪音不敏感，可检测出数据异常点.</li>
+</ol>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ol>
+<li>高维数据有些困难；</li>
+<li>sklearn中效率较低</li>
+<li>对于密度不均匀、距离相差较大的数据集，聚类结果较差；</li>
+<li>调参较为复杂，需要多次尝试，不同的参数组合对最终结果影响较大.</li>
+</ol>
+<h2 id="五、算法改进：自适应的DBSCAN算法"><a href="#五、算法改进：自适应的DBSCAN算法" class="headerlink" title="五、算法改进：自适应的DBSCAN算法"></a>五、算法改进：自适应的DBSCAN算法</h2><p>由于DBSCAN算法对eps和min_sample两个参数十分敏感，参数的确定是既重要又困难的事情，有学者进行了自适应确定DBSCAN算法参数的研究，即通过数据集自动确定两个参数.相应论文可以在知网查阅.</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">李文杰, 闫世强, 蒋莹,等. 自适应确定DBSCAN算法参数的算法研究[J]. 计算机工程与应用, 2019, 55(05):1-7.</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+        <div class="reward-container">
+  <div>Your support will encourage me to continue to write!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/wechatpay.jpg" alt="亦新 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/daytoy/images/alipay.jpg" alt="亦新 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/daytoy/tags/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 聚类算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/daytoy/2021/04/12/wordcloud%E5%BA%93/" rel="prev" title="wordcloud库">
+      <i class="fa fa-chevron-left"></i> wordcloud库
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DBSCAN"><span class="nav-number">1.</span> <span class="nav-text">DBSCAN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、算法简介"><span class="nav-number">1.1.</span> <span class="nav-text">一、算法简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法过程描述"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">算法过程描述</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、DBSCAN算法可视化展示"><span class="nav-number">1.2.</span> <span class="nav-text">二、DBSCAN算法可视化展示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、算法实现"><span class="nav-number">1.3.</span> <span class="nav-text">三、算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法流程"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法实现"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实例一：半圆形数据分簇"><span class="nav-number">1.3.0.2.1.</span> <span class="nav-text">实例一：半圆形数据分簇</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实例二：品牌啤酒聚类分析"><span class="nav-number">1.3.0.2.2.</span> <span class="nav-text">实例二：品牌啤酒聚类分析</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、算法优缺点"><span class="nav-number">1.4.</span> <span class="nav-text">四、算法优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点："><span class="nav-number">1.4.0.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点："><span class="nav-number">1.4.0.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、算法改进：自适应的DBSCAN算法"><span class="nav-number">1.5.</span> <span class="nav-text">五、算法改进：自适应的DBSCAN算法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="亦新"
+      src="/daytoy/images/hexohead.gif">
+  <p class="site-author-name" itemprop="name">亦新</p>
+  <div class="site-description" itemprop="description">热爱可抵岁月漫长</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/daytoy/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/daytoy/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/daytoy/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      
+      <div id="music163player">
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=0&id=5353663714&auto=1&height=66"></iframe>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+    
+    
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+    
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦新</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">32k</span>
+</div>
+
+<!-- 网站运行时间的设置 -->
+    <span id="timeDate">载入天数...</span>
+    <span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+    <script>
+        var now = new Date();
+        function createtime() {
+            var grt= new Date("11/14/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+            now.setTime(now.getTime()+250);
+            days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+            hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+            if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+            mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+            seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+            snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+            document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+            document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/daytoy/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/daytoy/js/utils.js"></script>
+
+
+<script src="/daytoy/js/schemes/pisces.js"></script>
+
+
+<script src="/daytoy/js/next-boot.js"></script>
+
+<script src="/daytoy/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/daytoy/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/daytoy/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/daytoy/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
+
+
+  
+    <script src="/js/cursor/love.min.js"></script>
+  
+
