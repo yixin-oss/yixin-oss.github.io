@@ -3,7 +3,7 @@
   <entry>
     <title>DBSCAN聚类算法</title>
     <url>/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<h1 id="DBSCAN"><a href="#DBSCAN" class="headerlink" title="DBSCAN"></a>DBSCAN</h1><h2 id="一、算法简介"><a href="#一、算法简介" class="headerlink" title="一、算法简介"></a>一、算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
+    <content><![CDATA[<h2 id="一、算法简介"><a href="#一、算法简介" class="headerlink" title="一、算法简介"></a>一、算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
 <p>在密集区域的点称为<strong>核心点</strong>，由DBSCAN的两个重要参数<strong>半径eps</strong>和<strong>最小采样点个数min_sample</strong>确定，其定义如下：如果在距一个给定数据点eps距离内至少有min_sample个数据点，那么这个数据点就是核心点。DBSCAN最终会将彼此距离小于eps的核心点分到同一簇中。</p>
 <a id="more"></a>
 
@@ -49,8 +49,12 @@
 <figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">李文杰, 闫世强, 蒋莹,等. 自适应确定DBSCAN算法参数的算法研究[J]. 计算机工程与应用, 2019, 55(05):1-7.</span><br></pre></td></tr></table></figure>
 
 ]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
       <tags>
         <tag>聚类算法</tag>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -414,6 +418,279 @@
       </tags>
   </entry>
   <entry>
+    <title>python机器学习之鸢尾花分类问题</title>
+    <url>/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p><font size="4" face="楷体"><strong>已知：</strong>鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm.</font></p>
+<p><font size="4" face="楷体"><strong>目标：</strong>构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.</font></p>
+<a id="more"></a>
+
+<p><font size="4" face="楷体"><strong>分析：</strong>有已知品种的测量数据，这是一个监督学习问题，数据集中每朵花分属于三个类别，这是三分类问题.</font></p>
+<p><font size="4" face="楷体">以下代码均在 <strong>Jupyter Notebook</strong>  中编写及运行.</font></p>
+<p><font size="5" face="楷体"> 必要的库调用</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> mglearn</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">mglearn库可在Jupyter Notebook 代码块中直接运行以下命令行下载，其它的库下载方式同理，下载成功后即可调用.</font></p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> mglearn</span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">数据准备</font></p>
+<p><font size="4" face="楷体">数据集包含在scikit-learn的datasets模块中，可调用load_iris函数加载数据.<br>    </font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line">iris_dataset=load_iris()</span><br><span class="line"><span class="comment">#这里返回的是Bunch对象，与字典类似，包含键和值.</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">利用print和.format方法可以查看数据集的相关信息.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Keys of iris_dataset:\n&#123;&#125;'</span>.format(iris_dataset.keys()))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">Keys of iris_dataset:</span><br><span class="line"><span class="function"><span class="title">dict_keys</span><span class="params">([<span class="string">'data'</span>, <span class="string">'target'</span>, <span class="string">'frame'</span>, <span class="string">'target_names'</span>, <span class="string">'DESCR'</span>, <span class="string">'feature_names'</span>, <span class="string">'filename'</span>])</span></span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">DESCR键对应的值是数据集的简要说明.</font></p>
+<p><font size="4" face="楷体">targets_names键对应的值是字符串数组，包含预测花的品种:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Target names:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>]))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Target</span> <span class="selector-tag">names</span>: <span class="selector-attr">[<span class="string">'setosa'</span> <span class="string">'versicolor'</span> <span class="string">'virginica'</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">feature_names键对应值是字符串列表，对每个特征进行说明:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'feature_names'</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">[<span class="symbol">'sepal</span> length (<span class="name">cm</span>)', <span class="symbol">'sepal</span> width (<span class="name">cm</span>)', <span class="symbol">'petal</span> length (<span class="name">cm</span>)', <span class="symbol">'petal</span> width (<span class="name">cm</span>)']</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">数据包含在target和data字段中，data是测量数据，格式为Numpy数组:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(type(iris_dataset[<span class="string">'data'</span>]))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'numpy.ndarray'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">data数组每行对应一朵花，列代表每朵花四个测量数据:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">iris_dataset[<span class="string">'data'</span>].shape</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">150</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">数组中共包含150朵不同的花测量数据.</font></p>
+<p><font size="4" face="楷体">查看前5朵花数据：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'data'</span>][:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[[<span class="number">5.1</span> <span class="number">3.5</span> <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.9</span> <span class="number">3.</span>  <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.7</span> <span class="number">3.2</span> <span class="number">1.3</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.6</span> <span class="number">3.1</span> <span class="number">1.5</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">5.</span>  <span class="number">3.6</span> <span class="number">1.4</span> <span class="number">0.2</span>]]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">target数组包含每朵花测量的品种，是一维Numpy数组,每朵花对应其中一个数据：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>].shape)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">150</span>,)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">品种已转换成0~2整数.</font></p>
+<p><font size="5" face="楷体">训练数据与测试数据</font></p>
+<p><font size="4" face="楷体">将收集好的带标签数据按比例分成两部分:<strong>训练数据</strong>（构建机器学习模型）、<strong>测试数据</strong>（评估模型性能）</font></p>
+<p><font size="4" face="楷体">由于原始数据点是按标签排序的，如果只取数据后一部分数据作测试，无法评估模型好坏，因此要将数据打乱，确保测试数据包含所有类别的数据.</font></p>
+<p><font size="4" face="楷体">这里用到了scikit-learn库中的train_test_split函数，将数据集打乱拆分，将75%数据作为训练集，其余25%数据为测试集.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">这里利用random_state参数指定随机数升成器种子，确保每次运行函数输出固定不变.</font></p>
+<p><font size="4" face="楷体">查看输出数据的形状</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'X_train shape:&#123;&#125;'</span>.format(X_train.shape))</span><br><span class="line">print(<span class="string">'y_train shape:&#123;&#125;'</span>.format(y_train.shape))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">X_train shape:(<span class="number">112</span>, <span class="number">4</span>)</span><br><span class="line">y_train shape:(<span class="number">112</span>,)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(X_test.shape)</span><br><span class="line">print(y_test.shape)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">38</span>, <span class="number">4</span>)</span><br><span class="line">(<span class="name">38</span>,)</span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">构建模型:k近邻算法</font></p>
+<p><font size="4" face="楷体">含义：考虑训练集中与新数据最近的任意k个邻居，而不是只考虑最近的一个.用这些邻居中数量最多的类别作出预测.<br></font></p>
+<p><font size="4" face="楷体">现在只考虑1个邻居的情况.</font></p>
+<p><font size="4" face="楷体">scikit-learn中所有机器学习模型都是在各自类中实现的，k近邻算法在neighbors模块的KNeighborsClassifiter类中实现.<br>    将类实化为对象需要设置模型参数.<br></font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(n_neighbors=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">knn对象对算法进行了封装，既包括用训练数据构建模型的算法，也包括对新数据点进行预测的算法，还包括算法从训练数据提取的信息.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#基于训练集构建模型，需要调用knn对象的fit方法</span></span><br><span class="line">knn.fit(X_train,y_train)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果：</font></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">KNeighborsClassifier</span><span class="params">(n_neighbors=<span class="number">1</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">作出预测</font></p>
+<p><font size="4" face="楷体">对一朵新的已知测量数据的鸢尾花进行预测:</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">x_new=np.<span class="built_in">array</span>([[<span class="number">5</span>,<span class="number">2.9</span>,<span class="number">1</span>,<span class="number">0.2</span>]])</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">调用knn对象predict方法进行预测：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">prediction=knn.predict(x_new)</span><br><span class="line">print(<span class="string">'Prediction:&#123;&#125;'</span>.format(prediction))</span><br><span class="line">print(<span class="string">'Predicted target name:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>][prediction]))</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">预测结果：</font></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Prediction</span>:<span class="selector-attr">[0]</span></span><br><span class="line"><span class="selector-tag">Predicted</span> <span class="selector-tag">target</span> <span class="selector-tag">name</span>:<span class="selector-attr">[<span class="string">'setosa'</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">评估模型</font></p>
+<p><font size="4" face="楷体">对测试数据进行预测并与实际标签对比.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_pred=knn.predict(X_test)</span><br><span class="line">print(y_pred)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果:</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">使用knn对象的score对象计算测试集精度：</font></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(score)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">0.9736842105263158</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">这个模型测试集的精度约为0.97，就是说对于测试集中鸢尾花的预测有97%是正确的.高精度意味着模型可信.</font></p>
+<p><font size="5" face="楷体">汇总</font></p>
+<p><font size="4" face="楷体">整个训练和评估过程所必需的代码：</font></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets import load_iris</span><br><span class="line"><span class="attribute">iris_dataset</span>=load_iris()</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection import train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],<span class="attribute">random_state</span>=0)</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors import KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(<span class="attribute">n_neighbors</span>=1)</span><br><span class="line">knn.fit(X_train,y_train)</span><br><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">"Test set score:&#123;&#125;"</span>.format(score))</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>wordcloud库</title>
+    <url>/daytoy/2021/04/12/wordcloud%E5%BA%93/</url>
+    <content><![CDATA[<h2 id="一、wordcloud库基本介绍"><a href="#一、wordcloud库基本介绍" class="headerlink" title="一、wordcloud库基本介绍"></a>一、wordcloud库基本介绍</h2><p>优秀的词云展示第三方库.</p>
+<p>词云以词语为单位，更直观和艺术的展示文字.</p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> wordcloud</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="2-wordcloud库常规方法"><a href="#2-wordcloud库常规方法" class="headerlink" title="2.wordcloud库常规方法"></a>2.wordcloud库常规方法</h3><p><strong>w=wordcloud.WordCloud()</strong>生成一个词云对象.</p>
+<ul>
+<li>wordcloud库把词云当作一个WordCloud对象.</li>
+<li>wordcloud.WordCloud()代表一个文本对应词云.</li>
+<li>可以根据文本中词云出现的频率等参数绘制词云.</li>
+<li>绘制词云的形状、尺寸和颜色都可以设定.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">w.generate(txt)</td>
+<td align="center">向WordCloud对象w中加载文本txt</td>
+</tr>
+<tr>
+<td align="center">w.to_file(filename)</td>
+<td align="center">将词云输出为图像文件，.png or .jpg格式</td>
+</tr>
+</tbody></table>
+<h3 id="3-基本步骤"><a href="#3-基本步骤" class="headerlink" title="3.基本步骤"></a>3.基本步骤</h3><ol>
+<li>配置对象参数</li>
+<li>加载词云文本</li>
+<li>输出词云文件</li>
+</ol>
+<p><strong>示例</strong></p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">import wordcloud</span><br><span class="line">c = wordcloud.<span class="constructor">WordCloud()</span></span><br><span class="line">c.generate('wordcloud by Python')</span><br><span class="line">c.<span class="keyword">to</span><span class="constructor">_file('<span class="params">pywordcloud</span>.<span class="params">png</span>')</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>四步：</strong></p>
+<ol>
+<li>以空格为分隔符号，将文本分隔成单词.</li>
+<li>统计单词出现次数并过滤短单词.</li>
+<li>根据统计配置字号.</li>
+<li>布局：颜色环境尺寸.</li>
+</ol>
+<p><strong>配置对象参数</strong></p>
+<p><strong>w = wordcloud.WoedCloud(&lt;参数&gt;)</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">width</td>
+<td align="center">指定词云对象生成图片的宽度，默认400像素</td>
+</tr>
+<tr>
+<td align="center">height</td>
+<td align="center">指定词云对象生成图片的高度，默认200像素</td>
+</tr>
+<tr>
+<td align="center">min_font_size</td>
+<td align="center">指定词云中字体的最小字号，默认4号</td>
+</tr>
+<tr>
+<td align="center">max_font_size</td>
+<td align="center">指定词云中字体的最大字号，根据高度自动调节</td>
+</tr>
+<tr>
+<td align="center">font_step</td>
+<td align="center">指定词云中字体字号的步进间隔，默认1</td>
+</tr>
+<tr>
+<td align="center">font_path</td>
+<td align="center">指定字体文件的路径，默认None   e.g.”msyh.ttc”微软雅黑</td>
+</tr>
+<tr>
+<td align="center">max_words</td>
+<td align="center">指定词云显示的最大单词数量，默认200</td>
+</tr>
+<tr>
+<td align="center">stop_words</td>
+<td align="center">指定词云排除词列表   e.g. stop_words={‘Python’}</td>
+</tr>
+<tr>
+<td align="center">mask</td>
+<td align="center">指定词云形状，默认为长方形，需要引用imread()函数</td>
+</tr>
+<tr>
+<td align="center">backgroud_color</td>
+<td align="center">指定词云图片背景颜色，默认黑色 e.g.backgroud_color=’white’</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.misc <span class="keyword">import</span> imread</span><br><span class="line">mk = imread(<span class="string">'pic.png'</span>)</span><br><span class="line">w = wordcloud.WordCloud(mask=mk)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-应用实例"><a href="#4-应用实例" class="headerlink" title="4.应用实例"></a>4.应用实例</h3><p><strong>英文</strong></p>
+<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">'life is short, you need python'</span></span><br><span class="line">w = wordcloud.WordCloud( <span class="string">\</span></span><br><span class="line">        backgroud_color = <span class="string">'white'</span>)<span class="comment">#生成一个词云对象，背景设为白色</span></span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"pywordcloud.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>中文</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#需要对中文先进行分词，引入jieba库</span></span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">"程序设计语言是计算机能够理解和\</span></span><br><span class="line"><span class="string">识别用户操作意图的一种交互体系，它按照\</span></span><br><span class="line"><span class="string">特定规则组织计算机指令，使计算机能够自\</span></span><br><span class="line"><span class="string">动进行各种运算处理。"</span></span><br><span class="line">w = wordcloud.WordCloud( width=<span class="number">1000</span>,\</span><br><span class="line">    font_path=<span class="string">"msyh.ttc"</span>,height=<span class="number">700</span>)</span><br><span class="line">w.genrtate(<span class="string">''</span>.join(jieba.lcut(txt)))</span><br><span class="line">w.to_file(<span class="string">"pythoncloud.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Remark.</strong> 中文需要先分词并组成空格分隔字符串.</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/pythoncloud.png" style="zoom: 50%;">
+
+<h2 id="二、实例：政府工作报告词云"><a href="#二、实例：政府工作报告词云" class="headerlink" title="二、实例：政府工作报告词云"></a>二、实例：政府工作报告词云</h2><h3 id="1-问题分析"><a href="#1-问题分析" class="headerlink" title="1.问题分析"></a>1.问题分析</h3><ul>
+<li>需求：对于政府工作报告等政策文件，如何直观理解？</li>
+<li>体会直观价值：生成词云&amp;优化词云</li>
+<li>两份重要文件<ul>
+<li><a href="https://python123.io/resources/pye/新时代中国特色社会主义.txt" target="_blank" rel="noopener">习总书记在中国共产党第十九次全国代表大会上的报告</a></li>
+<li><a href="https://python123.io/resources/pye/关于实施乡村振兴战略的意见.txt" target="_blank" rel="noopener">中共中央 国务院关于实施乡村振兴战略的意见</a></li>
+</ul>
+</li>
+</ul>
+<p><strong>政府报告等文件—&gt;&gt;有效展示的词云</strong></p>
+<h3 id="2-基本思路"><a href="#2-基本思路" class="headerlink" title="2.基本思路"></a>2.基本思路</h3><ul>
+<li>读取文件、分词整理</li>
+<li>设置并输入词云</li>
+<li>观察结果，优化迭代</li>
+</ul>
+<h3 id="3-代码展示"><a href="#3-代码展示" class="headerlink" title="3.代码展示"></a>3.代码展示</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"新时代中国特色社会主义.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>: <span class="comment">#移除单字</span></span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"新时代中国特色社会主义.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/新时代中国特色社会主义.png" style="zoom: 50%;">
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"乡村振兴战略意见.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>:</span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"乡村振兴战略意见.png"</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见.png" style="zoom:50%;">
+
+<h3 id="4-优化"><a href="#4-优化" class="headerlink" title="4.优化"></a>4.优化</h3><h4 id="（1）减少词云数目"><a href="#（1）减少词云数目" class="headerlink" title="（1）减少词云数目"></a>（1）减少词云数目</h4><figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">w = wordcloud.<span class="constructor">WordCloud(<span class="params">font_path</span>=<span class="string">"msyh.ttc"</span>,<span class="params">width</span>=1000, <span class="params">height</span>=700, <span class="params">background_color</span>=<span class="string">"white"</span>,<span class="params">max_words</span>=15)</span></span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见15词.png" style="zoom:50%;">
+
+<h4 id="（2）改变词云背景"><a href="#（2）改变词云背景" class="headerlink" title="（2）改变词云背景"></a>（2）改变词云背景</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment">#金色背景</span></span><br><span class="line">w = wordcloud.WordCloud(<span class="attribute">font_path</span>=<span class="string">"msyh.ttc"</span>,width=1000, <span class="attribute">height</span>=700, <span class="attribute">background_color</span>=<span class="string">"gold"</span>,max_words=15)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见gold背景.png" style="zoom:50%;">
+
+]]></content>
+      <categories>
+        <category>python学习</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>人工智能-Tensorflow2笔记(三)</title>
     <url>/daytoy/2020/12/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%B8%89)/</url>
     <content><![CDATA[<h1 id="神经网络优化"><a href="#神经网络优化" class="headerlink" title="神经网络优化"></a>神经网络优化</h1><h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p><strong>tf.where()</strong></p>
@@ -570,276 +847,45 @@
       </tags>
   </entry>
   <entry>
-    <title>wordcloud库</title>
-    <url>/daytoy/2021/04/12/wordcloud%E5%BA%93/</url>
-    <content><![CDATA[<h2 id="一、wordcloud库基本介绍"><a href="#一、wordcloud库基本介绍" class="headerlink" title="一、wordcloud库基本介绍"></a>一、wordcloud库基本介绍</h2><p>优秀的词云展示第三方库.</p>
-<p>词云以词语为单位，更直观和艺术的展示文字.</p>
-<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> wordcloud</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h3 id="2-wordcloud库常规方法"><a href="#2-wordcloud库常规方法" class="headerlink" title="2.wordcloud库常规方法"></a>2.wordcloud库常规方法</h3><p><strong>w=wordcloud.WordCloud()</strong>生成一个词云对象.</p>
+    <title>人工智能-Tensorflow2笔记(二)</title>
+    <url>/daytoy/2020/12/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%BA%8C)/</url>
+    <content><![CDATA[<h2 id="神经网络实现鸢尾花分类"><a href="#神经网络实现鸢尾花分类" class="headerlink" title="神经网络实现鸢尾花分类"></a>神经网络实现鸢尾花分类</h2><p>准备数据</p>
 <ul>
-<li>wordcloud库把词云当作一个WordCloud对象.</li>
-<li>wordcloud.WordCloud()代表一个文本对应词云.</li>
-<li>可以根据文本中词云出现的频率等参数绘制词云.</li>
-<li>绘制词云的形状、尺寸和颜色都可以设定.</li>
+<li>数据集读入</li>
+<li>数据集乱序</li>
+<li>生成训练集和测试集,训练集，测试集不能有交集</li>
+<li>配成（输入特征，标签）对，每次读入一部分(batch)</li>
 </ul>
-<table>
-<thead>
-<tr>
-<th align="center">方法</th>
-<th align="center">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">w.generate(txt)</td>
-<td align="center">向WordCloud对象w中加载文本txt</td>
-</tr>
-<tr>
-<td align="center">w.to_file(filename)</td>
-<td align="center">将词云输出为图像文件，.png or .jpg格式</td>
-</tr>
-</tbody></table>
-<h3 id="3-基本步骤"><a href="#3-基本步骤" class="headerlink" title="3.基本步骤"></a>3.基本步骤</h3><ol>
-<li>配置对象参数</li>
-<li>加载词云文本</li>
-<li>输出词云文件</li>
-</ol>
-<p><strong>示例</strong></p>
-<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">import wordcloud</span><br><span class="line">c = wordcloud.<span class="constructor">WordCloud()</span></span><br><span class="line">c.generate('wordcloud by Python')</span><br><span class="line">c.<span class="keyword">to</span><span class="constructor">_file('<span class="params">pywordcloud</span>.<span class="params">png</span>')</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>四步：</strong></p>
-<ol>
-<li>以空格为分隔符号，将文本分隔成单词.</li>
-<li>统计单词出现次数并过滤短单词.</li>
-<li>根据统计配置字号.</li>
-<li>布局：颜色环境尺寸.</li>
-</ol>
-<p><strong>配置对象参数</strong></p>
-<p><strong>w = wordcloud.WoedCloud(&lt;参数&gt;)</strong></p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">width</td>
-<td align="center">指定词云对象生成图片的宽度，默认400像素</td>
-</tr>
-<tr>
-<td align="center">height</td>
-<td align="center">指定词云对象生成图片的高度，默认200像素</td>
-</tr>
-<tr>
-<td align="center">min_font_size</td>
-<td align="center">指定词云中字体的最小字号，默认4号</td>
-</tr>
-<tr>
-<td align="center">max_font_size</td>
-<td align="center">指定词云中字体的最大字号，根据高度自动调节</td>
-</tr>
-<tr>
-<td align="center">font_step</td>
-<td align="center">指定词云中字体字号的步进间隔，默认1</td>
-</tr>
-<tr>
-<td align="center">font_path</td>
-<td align="center">指定字体文件的路径，默认None   e.g.”msyh.ttc”微软雅黑</td>
-</tr>
-<tr>
-<td align="center">max_words</td>
-<td align="center">指定词云显示的最大单词数量，默认200</td>
-</tr>
-<tr>
-<td align="center">stop_words</td>
-<td align="center">指定词云排除词列表   e.g. stop_words={‘Python’}</td>
-</tr>
-<tr>
-<td align="center">mask</td>
-<td align="center">指定词云形状，默认为长方形，需要引用imread()函数</td>
-</tr>
-<tr>
-<td align="center">backgroud_color</td>
-<td align="center">指定词云图片背景颜色，默认黑色 e.g.backgroud_color=’white’</td>
-</tr>
-</tbody></table>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.misc <span class="keyword">import</span> imread</span><br><span class="line">mk = imread(<span class="string">'pic.png'</span>)</span><br><span class="line">w = wordcloud.WordCloud(mask=mk)</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-应用实例"><a href="#4-应用实例" class="headerlink" title="4.应用实例"></a>4.应用实例</h3><p><strong>英文</strong></p>
-<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">'life is short, you need python'</span></span><br><span class="line">w = wordcloud.WordCloud( <span class="string">\</span></span><br><span class="line">        backgroud_color = <span class="string">'white'</span>)<span class="comment">#生成一个词云对象，背景设为白色</span></span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"pywordcloud.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>中文</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#需要对中文先进行分词，引入jieba库</span></span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">txt = <span class="string">"程序设计语言是计算机能够理解和\</span></span><br><span class="line"><span class="string">识别用户操作意图的一种交互体系，它按照\</span></span><br><span class="line"><span class="string">特定规则组织计算机指令，使计算机能够自\</span></span><br><span class="line"><span class="string">动进行各种运算处理。"</span></span><br><span class="line">w = wordcloud.WordCloud( width=<span class="number">1000</span>,\</span><br><span class="line">    font_path=<span class="string">"msyh.ttc"</span>,height=<span class="number">700</span>)</span><br><span class="line">w.genrtate(<span class="string">''</span>.join(jieba.lcut(txt)))</span><br><span class="line">w.to_file(<span class="string">"pythoncloud.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>Remark.</strong> 中文需要先分词并组成空格分隔字符串.</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/pythoncloud.png" style="zoom: 50%;">
-
-<h2 id="二、实例：政府工作报告词云"><a href="#二、实例：政府工作报告词云" class="headerlink" title="二、实例：政府工作报告词云"></a>二、实例：政府工作报告词云</h2><h3 id="1-问题分析"><a href="#1-问题分析" class="headerlink" title="1.问题分析"></a>1.问题分析</h3><ul>
-<li>需求：对于政府工作报告等政策文件，如何直观理解？</li>
-<li>体会直观价值：生成词云&amp;优化词云</li>
-<li>两份重要文件<ul>
-<li><a href="https://python123.io/resources/pye/新时代中国特色社会主义.txt" target="_blank" rel="noopener">习总书记在中国共产党第十九次全国代表大会上的报告</a></li>
-<li><a href="https://python123.io/resources/pye/关于实施乡村振兴战略的意见.txt" target="_blank" rel="noopener">中共中央 国务院关于实施乡村振兴战略的意见</a></li>
+<p>搭建网络</p>
+<ul>
+<li>定义神经网络中所有可训练参数</li>
 </ul>
-</li>
+<p>参数优化</p>
+<ul>
+<li>嵌套循环迭代，with结构更新参数，显示当前loss</li>
 </ul>
-<p><strong>政府报告等文件—&gt;&gt;有效展示的词云</strong></p>
-<h3 id="2-基本思路"><a href="#2-基本思路" class="headerlink" title="2.基本思路"></a>2.基本思路</h3><ul>
-<li>读取文件、分词整理</li>
-<li>设置并输入词云</li>
-<li>观察结果，优化迭代</li>
+<p>测试效果</p>
+<ul>
+<li>计算当前参数向后传播准确率，显示当前acc</li>
+<li>准确率acc/损失函数loss可视化</li>
 </ul>
-<h3 id="3-代码展示"><a href="#3-代码展示" class="headerlink" title="3.代码展示"></a>3.代码展示</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"新时代中国特色社会主义.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>: <span class="comment">#移除单字</span></span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"新时代中国特色社会主义.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/新时代中国特色社会主义.png" style="zoom: 50%;">
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> wordcloud</span><br><span class="line">f = open(<span class="string">"乡村振兴战略意见.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">t = f.read()</span><br><span class="line">f.close()</span><br><span class="line">ls =jieba.lcut(t)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ls)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">if</span> len(ls[i])==<span class="number">1</span>:</span><br><span class="line">        ls.remove(ls[i])</span><br><span class="line">txt = <span class="string">" "</span>.join(ls)</span><br><span class="line">w = wordcloud.WordCloud(font_path=<span class="string">"msyh.ttc"</span>,width=<span class="number">1000</span>, height=<span class="number">700</span>, background_color=<span class="string">"white"</span>)</span><br><span class="line">w.generate(txt)</span><br><span class="line">w.to_file(<span class="string">"乡村振兴战略意见.png"</span>)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见.png" style="zoom:50%;">
-
-<h3 id="4-优化"><a href="#4-优化" class="headerlink" title="4.优化"></a>4.优化</h3><h4 id="（1）减少词云数目"><a href="#（1）减少词云数目" class="headerlink" title="（1）减少词云数目"></a>（1）减少词云数目</h4><figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">w = wordcloud.<span class="constructor">WordCloud(<span class="params">font_path</span>=<span class="string">"msyh.ttc"</span>,<span class="params">width</span>=1000, <span class="params">height</span>=700, <span class="params">background_color</span>=<span class="string">"white"</span>,<span class="params">max_words</span>=15)</span></span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见15词.png" style="zoom:50%;">
-
-<h4 id="（2）改变词云背景"><a href="#（2）改变词云背景" class="headerlink" title="（2）改变词云背景"></a>（2）改变词云背景</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment">#金色背景</span></span><br><span class="line">w = wordcloud.WordCloud(<span class="attribute">font_path</span>=<span class="string">"msyh.ttc"</span>,width=1000, <span class="attribute">height</span>=700, <span class="attribute">background_color</span>=<span class="string">"gold"</span>,max_words=15)</span><br></pre></td></tr></table></figure>
-
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/乡村振兴战略意见gold背景.png" style="zoom:50%;">
-
-]]></content>
-      <categories>
-        <category>python学习</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python机器学习之鸢尾花分类问题</title>
-    <url>/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p><font size="4" face="楷体"><strong>已知：</strong>鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm.</font></p>
-<p><font size="4" face="楷体"><strong>目标：</strong>构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.</font></p>
 <a id="more"></a>
 
-<p><font size="4" face="楷体"><strong>分析：</strong>有已知品种的测量数据，这是一个监督学习问题，数据集中每朵花分属于三个类别，这是三分类问题.</font></p>
-<p><font size="4" face="楷体">以下代码均在 <strong>Jupyter Notebook</strong>  中编写及运行.</font></p>
-<p><font size="5" face="楷体"> 必要的库调用</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> mglearn</span><br></pre></td></tr></table></figure>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="built_in">import</span> tensorflow as tf</span><br><span class="line"><span class="built_in">import</span> numpy as np</span><br><span class="line">from matplotlib <span class="built_in">import</span> pyplot as plt</span><br><span class="line"><span class="comment">#从sklearn包datasets读入数据集：</span></span><br><span class="line">from sklearn <span class="built_in">import</span> datasets</span><br><span class="line"><span class="attr">x_data</span> = datasets.load_iris().data  <span class="comment">#返回iris数据集所有输入特征</span></span><br><span class="line"><span class="attr">y_data</span> = datasets.load_iris().target <span class="comment">#返回iris数据集中所有标签</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集乱序</span></span><br><span class="line">np.random.seed(<span class="number">116</span>) <span class="comment">#使用相同的随机数种子，使输入特征/标签一一对应，即配对不会乱</span></span><br><span class="line">np.random.shuffle(x_data)</span><br><span class="line">np.random.seed(<span class="number">116</span>)</span><br><span class="line">np.random.shuffle(y_data)</span><br><span class="line">tf.random.set_seed(<span class="number">116</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集分出训练集，测试集,不能有交集</span></span><br><span class="line"><span class="comment">#打乱数据集中前120个作为训练集</span></span><br><span class="line"><span class="attr">x_train</span> = x_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">y_train</span> = y_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">x_test</span> = x_data[-<span class="number">30</span>:]</span><br><span class="line"><span class="attr">y_test</span> = y_data[-<span class="number">30</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换x数据类型</span></span><br><span class="line"><span class="attr">x_train</span> = tf.cast(x_train, tf.float32)</span><br><span class="line"><span class="attr">x_test</span> = tf.cast(x_test, tf.float32)</span><br><span class="line"></span><br><span class="line"><span class="comment">#from_tensor_slices配成【输入特征、标签】对，每次喂入神经网络一部分数据(batch)</span></span><br><span class="line"><span class="comment">#每32对打包为一个batch</span></span><br><span class="line"><span class="attr">train_db</span> = tf.data.Dataset.from_tensor_slices((x_train, y_train)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="attr">test_db</span> = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="comment">#定义神经网络所有可训练参数</span></span><br><span class="line"><span class="comment">#输入特征是4，输入层为4个输入节点，只有一层网络，输出节点数=分类数，3分类</span></span><br><span class="line"><span class="comment">#参数w1是4行3列张量</span></span><br><span class="line"><span class="attr">w1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">4</span>, <span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"><span class="attr">b1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"></span><br><span class="line"><span class="attr">lr</span> = <span class="number">0.1</span> <span class="comment">#学习率为0.1</span></span><br><span class="line"><span class="attr">train_loss_results</span> = []  <span class="comment">#将每轮loss记录下来，为后面画loss曲线提供数据</span></span><br><span class="line"><span class="attr">test_acc</span> = [] <span class="comment">#记录acc</span></span><br><span class="line"><span class="attr">Epoch</span> = <span class="number">500</span> <span class="comment">#循环500次</span></span><br><span class="line"><span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#每轮分4个step，loss_all记录四个step生成的4个loss的和</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#两层循环迭代更新参数</span></span><br><span class="line"><span class="comment">#第一层for循环是针对整个数据集循环，用epoch表示</span></span><br><span class="line"><span class="comment">#第二层for循环是针对batch的，用step表示</span></span><br><span class="line">for epoch <span class="keyword">in</span> range(Epoch):</span><br><span class="line">    for step, (x_train, y_train) <span class="keyword">in</span> enumerate(train_db):</span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape() as tape: <span class="comment">#with结构记录梯度信息</span></span><br><span class="line">            <span class="attr">y</span> = tf.matmul(x_train, w1) + b1 <span class="comment">#神经网络乘加运算</span></span><br><span class="line">            <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#使输出y符合概率分布</span></span><br><span class="line">            <span class="attr">y_</span> = tf.one_hot(y_train, <span class="attr">depth=3)</span> <span class="comment">#将标签转换为独热码格式，方便计算loss</span></span><br><span class="line">            <span class="attr">loss</span> = tf.reduce_mean(tf.square(y_ -y)) <span class="comment">#采用均方误差损失函数MSE</span></span><br><span class="line">            loss_all += loss.numpy() <span class="comment">#将每个step计算出的loss累加，为后续求loss平均值提供数据</span></span><br><span class="line">        <span class="attr">grads</span> = tape.gradient(loss, [w1, b1])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 实现梯度更新</span></span><br><span class="line">        w1.assign_sub(lr * grads[<span class="number">0</span>]) <span class="comment">#参数w1自更新</span></span><br><span class="line">        b1.assign_sub(lr * grads[<span class="number">1</span>]) <span class="comment">#参数b1自更新</span></span><br><span class="line">    <span class="comment">#每个epoch 打印loss信息</span></span><br><span class="line">    print('Epoch &#123;&#125;, loss: &#123;&#125;'.format(epoch, loss_all/<span class="number">4</span>)) <span class="comment">#120组数据，需要batch级别循环4次，除以4求得每次step迭代平均loss</span></span><br><span class="line">    train_loss_results.append(loss_all / <span class="number">4</span>) <span class="comment">#将4个step的loss求平均记录在此变量中</span></span><br><span class="line">    <span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#loss_all归零，为记录下一个epoch的loss做准备</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#测试部分</span></span><br><span class="line">    <span class="comment">#计算当前参数前向传播后准确率，显示当前acc</span></span><br><span class="line">    <span class="comment">#total_corrrect为预测对的样本个数， total_number为测试的总样本数，初始化为0</span></span><br><span class="line">    total_correct, <span class="attr">total_number</span> = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    for x_test, y_test <span class="keyword">in</span> test_db:</span><br><span class="line">        <span class="attr">y</span> = tf.matmul(x_test, w1) + b1 <span class="comment">#y为预测结果</span></span><br><span class="line">        <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#y符合概率分布</span></span><br><span class="line">        <span class="attr">pred</span> = tf.argmax(y, <span class="attr">axis=1)</span> <span class="comment">#返回y中最大值索引，即预测分类</span></span><br><span class="line">        <span class="comment">#将pred转换为y_test数据类型</span></span><br><span class="line">        <span class="attr">pred</span> = tf.cast(pred, <span class="attr">dtype=y_test.dtype)</span></span><br><span class="line">        <span class="comment"># 若分类正确，correct=1，否则为0，将bool型转换为int型</span></span><br><span class="line">        <span class="attr">correct</span> = tf.cast(tf.equal(pred, y_test), <span class="attr">dtype=tf.int32)</span></span><br><span class="line">        <span class="comment"># 将每个batch的correct数加起来</span></span><br><span class="line">        <span class="attr">correct</span> = tf.reduce_sum(correct)</span><br><span class="line">        total_correct += int(correct) <span class="comment">#将所有batch中correct数加起来</span></span><br><span class="line">        <span class="comment">#total_number为测试总样本数，即x_test行数，shape[0]</span></span><br><span class="line">        <span class="attr">total_number</span> = x_test.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment">#总准确率为 total_correct / total_number</span></span><br><span class="line">    <span class="attr">acc</span> = total_correct / total_number</span><br><span class="line">    test_acc.append(acc)</span><br><span class="line">    print(<span class="string">"test_acc:"</span>, acc)</span><br><span class="line">    print('----------------------')</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制loss曲线</span></span><br><span class="line">plt.title('Loss Function Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel(<span class="string">"Loss"</span>)</span><br><span class="line">plt.plot(train_loss_results, <span class="attr">label='$loss$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制Accuary曲线</span></span><br><span class="line">plt.title('Acc Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel('Acc')</span><br><span class="line">plt.plot(test_acc, <span class="attr">label='$Accuary$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
-<p><font size="4" face="楷体">mglearn库可在Jupyter Notebook 代码块中直接运行以下命令行下载，其它的库下载方式同理，下载成功后即可调用.</font></p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> mglearn</span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">数据准备</font></p>
-<p><font size="4" face="楷体">数据集包含在scikit-learn的datasets模块中，可调用load_iris函数加载数据.<br>    </font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line">iris_dataset=load_iris()</span><br><span class="line"><span class="comment">#这里返回的是Bunch对象，与字典类似，包含键和值.</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">利用print和.format方法可以查看数据集的相关信息.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Keys of iris_dataset:\n&#123;&#125;'</span>.format(iris_dataset.keys()))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">Keys of iris_dataset:</span><br><span class="line"><span class="function"><span class="title">dict_keys</span><span class="params">([<span class="string">'data'</span>, <span class="string">'target'</span>, <span class="string">'frame'</span>, <span class="string">'target_names'</span>, <span class="string">'DESCR'</span>, <span class="string">'feature_names'</span>, <span class="string">'filename'</span>])</span></span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">DESCR键对应的值是数据集的简要说明.</font></p>
-<p><font size="4" face="楷体">targets_names键对应的值是字符串数组，包含预测花的品种:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Target names:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>]))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Target</span> <span class="selector-tag">names</span>: <span class="selector-attr">[<span class="string">'setosa'</span> <span class="string">'versicolor'</span> <span class="string">'virginica'</span>]</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">feature_names键对应值是字符串列表，对每个特征进行说明:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'feature_names'</span>])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">[<span class="symbol">'sepal</span> length (<span class="name">cm</span>)', <span class="symbol">'sepal</span> width (<span class="name">cm</span>)', <span class="symbol">'petal</span> length (<span class="name">cm</span>)', <span class="symbol">'petal</span> width (<span class="name">cm</span>)']</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">数据包含在target和data字段中，data是测量数据，格式为Numpy数组:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(type(iris_dataset[<span class="string">'data'</span>]))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'numpy.ndarray'</span>&gt;</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">data数组每行对应一朵花，列代表每朵花四个测量数据:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">iris_dataset[<span class="string">'data'</span>].shape</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">150</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">数组中共包含150朵不同的花测量数据.</font></p>
-<p><font size="4" face="楷体">查看前5朵花数据：</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'data'</span>][:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[[<span class="number">5.1</span> <span class="number">3.5</span> <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.9</span> <span class="number">3.</span>  <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.7</span> <span class="number">3.2</span> <span class="number">1.3</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.6</span> <span class="number">3.1</span> <span class="number">1.5</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">5.</span>  <span class="number">3.6</span> <span class="number">1.4</span> <span class="number">0.2</span>]]</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">target数组包含每朵花测量的品种，是一维Numpy数组,每朵花对应其中一个数据：</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>].shape)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">150</span>,)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">品种已转换成0~2整数.</font></p>
-<p><font size="5" face="楷体">训练数据与测试数据</font></p>
-<p><font size="4" face="楷体">将收集好的带标签数据按比例分成两部分:<strong>训练数据</strong>（构建机器学习模型）、<strong>测试数据</strong>（评估模型性能）</font></p>
-<p><font size="4" face="楷体">由于原始数据点是按标签排序的，如果只取数据后一部分数据作测试，无法评估模型好坏，因此要将数据打乱，确保测试数据包含所有类别的数据.</font></p>
-<p><font size="4" face="楷体">这里用到了scikit-learn库中的train_test_split函数，将数据集打乱拆分，将75%数据作为训练集，其余25%数据为测试集.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">这里利用random_state参数指定随机数升成器种子，确保每次运行函数输出固定不变.</font></p>
-<p><font size="4" face="楷体">查看输出数据的形状</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'X_train shape:&#123;&#125;'</span>.format(X_train.shape))</span><br><span class="line">print(<span class="string">'y_train shape:&#123;&#125;'</span>.format(y_train.shape))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">X_train shape:(<span class="number">112</span>, <span class="number">4</span>)</span><br><span class="line">y_train shape:(<span class="number">112</span>,)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(X_test.shape)</span><br><span class="line">print(y_test.shape)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">38</span>, <span class="number">4</span>)</span><br><span class="line">(<span class="name">38</span>,)</span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">构建模型:k近邻算法</font></p>
-<p><font size="4" face="楷体">含义：考虑训练集中与新数据最近的任意k个邻居，而不是只考虑最近的一个.用这些邻居中数量最多的类别作出预测.<br></font></p>
-<p><font size="4" face="楷体">现在只考虑1个邻居的情况.</font></p>
-<p><font size="4" face="楷体">scikit-learn中所有机器学习模型都是在各自类中实现的，k近邻算法在neighbors模块的KNeighborsClassifiter类中实现.<br>    将类实化为对象需要设置模型参数.<br></font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(n_neighbors=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">knn对象对算法进行了封装，既包括用训练数据构建模型的算法，也包括对新数据点进行预测的算法，还包括算法从训练数据提取的信息.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#基于训练集构建模型，需要调用knn对象的fit方法</span></span><br><span class="line">knn.fit(X_train,y_train)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">运行结果：</font></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">KNeighborsClassifier</span><span class="params">(n_neighbors=<span class="number">1</span>)</span></span></span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">作出预测</font></p>
-<p><font size="4" face="楷体">对一朵新的已知测量数据的鸢尾花进行预测:</font></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">x_new=np.<span class="built_in">array</span>([[<span class="number">5</span>,<span class="number">2.9</span>,<span class="number">1</span>,<span class="number">0.2</span>]])</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">调用knn对象predict方法进行预测：</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">prediction=knn.predict(x_new)</span><br><span class="line">print(<span class="string">'Prediction:&#123;&#125;'</span>.format(prediction))</span><br><span class="line">print(<span class="string">'Predicted target name:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>][prediction]))</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">预测结果：</font></p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Prediction</span>:<span class="selector-attr">[0]</span></span><br><span class="line"><span class="selector-tag">Predicted</span> <span class="selector-tag">target</span> <span class="selector-tag">name</span>:<span class="selector-attr">[<span class="string">'setosa'</span>]</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">评估模型</font></p>
-<p><font size="4" face="楷体">对测试数据进行预测并与实际标签对比.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_pred=knn.predict(X_test)</span><br><span class="line">print(y_pred)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">运行结果:</font></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">使用knn对象的score对象计算测试集精度：</font></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(score)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">运行结果</font></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">0.9736842105263158</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">这个模型测试集的精度约为0.97，就是说对于测试集中鸢尾花的预测有97%是正确的.高精度意味着模型可信.</font></p>
-<p><font size="5" face="楷体">汇总</font></p>
-<p><font size="4" face="楷体">整个训练和评估过程所必需的代码：</font></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets import load_iris</span><br><span class="line"><span class="attribute">iris_dataset</span>=load_iris()</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection import train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],<span class="attribute">random_state</span>=0)</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors import KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(<span class="attribute">n_neighbors</span>=1)</span><br><span class="line">knn.fit(X_train,y_train)</span><br><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">"Test set score:&#123;&#125;"</span>.format(score))</span><br></pre></td></tr></table></figure>
-
+<p>程序在PyCharm中运行.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Epoch.jpg" alt></p>
+<p>从图中可见，随着迭代次数增加，损失函数值逐渐减小，对测试集的预测准确率逐渐增大直至达到100%正确.下面两张图给出了损失函数及预测准确率的变化图像.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Loss_Function_Curve.png" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Acc_Curve.png" alt></p>
 ]]></content>
       <categories>
-        <category>python学习笔记</category>
+        <category>Tensorflow学习笔记</category>
       </categories>
       <tags>
-        <tag>python</tag>
-        <tag>机器学习</tag>
+        <tag>深度学习</tag>
+        <tag>Tensorflow</tag>
+        <tag>人工智能</tag>
       </tags>
   </entry>
   <entry>
@@ -1143,48 +1189,6 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#鸢尾花数据集读入</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">x_data = datasets.load_iris().data <span class="comment">#.data 返回iris数据集所有输入特征</span></span><br><span class="line">y_data = datasets.load_iris().target <span class="comment"># .target 返回iris数据集所有标签</span></span><br><span class="line">print(<span class="string">'x_data from datasets: \n'</span>, x_data)</span><br><span class="line">print(<span class="string">'y_data from datasets: \n'</span>, y_data)</span><br><span class="line"></span><br><span class="line">x_data = DataFrame(x_data, columns=[<span class="string">'花萼长度'</span>, <span class="string">'花萼宽度'</span>, <span class="string">'花瓣长度'</span>, <span class="string">'花瓣宽度'</span>])</span><br><span class="line">pd.set_option(<span class="string">'display.unicode.east_asian_width'</span>, <span class="literal">True</span>) <span class="comment"># 设置列名对齐</span></span><br><span class="line">print(<span class="string">'x_data add index: \n'</span>, x_data)</span><br><span class="line"></span><br><span class="line">x_data[<span class="string">'类别'</span>] = y_data  <span class="comment">#新加一列，列标签为’类别‘，数据为y_data</span></span><br><span class="line">print(<span class="string">'x_data add a column: \n'</span>, x_data)</span><br></pre></td></tr></table></figure>
 
-]]></content>
-      <categories>
-        <category>Tensorflow学习笔记</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>Tensorflow</tag>
-        <tag>人工智能</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>人工智能-Tensorflow2笔记(二)</title>
-    <url>/daytoy/2020/12/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD-Tensorflow2%E7%AC%94%E8%AE%B0(%E4%BA%8C)/</url>
-    <content><![CDATA[<h2 id="神经网络实现鸢尾花分类"><a href="#神经网络实现鸢尾花分类" class="headerlink" title="神经网络实现鸢尾花分类"></a>神经网络实现鸢尾花分类</h2><p>准备数据</p>
-<ul>
-<li>数据集读入</li>
-<li>数据集乱序</li>
-<li>生成训练集和测试集,训练集，测试集不能有交集</li>
-<li>配成（输入特征，标签）对，每次读入一部分(batch)</li>
-</ul>
-<p>搭建网络</p>
-<ul>
-<li>定义神经网络中所有可训练参数</li>
-</ul>
-<p>参数优化</p>
-<ul>
-<li>嵌套循环迭代，with结构更新参数，显示当前loss</li>
-</ul>
-<p>测试效果</p>
-<ul>
-<li>计算当前参数向后传播准确率，显示当前acc</li>
-<li>准确率acc/损失函数loss可视化</li>
-</ul>
-<a id="more"></a>
-
-<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line"><span class="built_in">import</span> tensorflow as tf</span><br><span class="line"><span class="built_in">import</span> numpy as np</span><br><span class="line">from matplotlib <span class="built_in">import</span> pyplot as plt</span><br><span class="line"><span class="comment">#从sklearn包datasets读入数据集：</span></span><br><span class="line">from sklearn <span class="built_in">import</span> datasets</span><br><span class="line"><span class="attr">x_data</span> = datasets.load_iris().data  <span class="comment">#返回iris数据集所有输入特征</span></span><br><span class="line"><span class="attr">y_data</span> = datasets.load_iris().target <span class="comment">#返回iris数据集中所有标签</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集乱序</span></span><br><span class="line">np.random.seed(<span class="number">116</span>) <span class="comment">#使用相同的随机数种子，使输入特征/标签一一对应，即配对不会乱</span></span><br><span class="line">np.random.shuffle(x_data)</span><br><span class="line">np.random.seed(<span class="number">116</span>)</span><br><span class="line">np.random.shuffle(y_data)</span><br><span class="line">tf.random.set_seed(<span class="number">116</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#数据集分出训练集，测试集,不能有交集</span></span><br><span class="line"><span class="comment">#打乱数据集中前120个作为训练集</span></span><br><span class="line"><span class="attr">x_train</span> = x_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">y_train</span> = y_data[:-<span class="number">30</span>]</span><br><span class="line"><span class="attr">x_test</span> = x_data[-<span class="number">30</span>:]</span><br><span class="line"><span class="attr">y_test</span> = y_data[-<span class="number">30</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换x数据类型</span></span><br><span class="line"><span class="attr">x_train</span> = tf.cast(x_train, tf.float32)</span><br><span class="line"><span class="attr">x_test</span> = tf.cast(x_test, tf.float32)</span><br><span class="line"></span><br><span class="line"><span class="comment">#from_tensor_slices配成【输入特征、标签】对，每次喂入神经网络一部分数据(batch)</span></span><br><span class="line"><span class="comment">#每32对打包为一个batch</span></span><br><span class="line"><span class="attr">train_db</span> = tf.data.Dataset.from_tensor_slices((x_train, y_train)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="attr">test_db</span> = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(<span class="number">32</span>)</span><br><span class="line"><span class="comment">#定义神经网络所有可训练参数</span></span><br><span class="line"><span class="comment">#输入特征是4，输入层为4个输入节点，只有一层网络，输出节点数=分类数，3分类</span></span><br><span class="line"><span class="comment">#参数w1是4行3列张量</span></span><br><span class="line"><span class="attr">w1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">4</span>, <span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"><span class="attr">b1</span> = tf.Variable(tf.random.truncated_normal([<span class="number">3</span>], <span class="attr">stddev=0.1))</span></span><br><span class="line"></span><br><span class="line"><span class="attr">lr</span> = <span class="number">0.1</span> <span class="comment">#学习率为0.1</span></span><br><span class="line"><span class="attr">train_loss_results</span> = []  <span class="comment">#将每轮loss记录下来，为后面画loss曲线提供数据</span></span><br><span class="line"><span class="attr">test_acc</span> = [] <span class="comment">#记录acc</span></span><br><span class="line"><span class="attr">Epoch</span> = <span class="number">500</span> <span class="comment">#循环500次</span></span><br><span class="line"><span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#每轮分4个step，loss_all记录四个step生成的4个loss的和</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#两层循环迭代更新参数</span></span><br><span class="line"><span class="comment">#第一层for循环是针对整个数据集循环，用epoch表示</span></span><br><span class="line"><span class="comment">#第二层for循环是针对batch的，用step表示</span></span><br><span class="line">for epoch <span class="keyword">in</span> range(Epoch):</span><br><span class="line">    for step, (x_train, y_train) <span class="keyword">in</span> enumerate(train_db):</span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape() as tape: <span class="comment">#with结构记录梯度信息</span></span><br><span class="line">            <span class="attr">y</span> = tf.matmul(x_train, w1) + b1 <span class="comment">#神经网络乘加运算</span></span><br><span class="line">            <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#使输出y符合概率分布</span></span><br><span class="line">            <span class="attr">y_</span> = tf.one_hot(y_train, <span class="attr">depth=3)</span> <span class="comment">#将标签转换为独热码格式，方便计算loss</span></span><br><span class="line">            <span class="attr">loss</span> = tf.reduce_mean(tf.square(y_ -y)) <span class="comment">#采用均方误差损失函数MSE</span></span><br><span class="line">            loss_all += loss.numpy() <span class="comment">#将每个step计算出的loss累加，为后续求loss平均值提供数据</span></span><br><span class="line">        <span class="attr">grads</span> = tape.gradient(loss, [w1, b1])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 实现梯度更新</span></span><br><span class="line">        w1.assign_sub(lr * grads[<span class="number">0</span>]) <span class="comment">#参数w1自更新</span></span><br><span class="line">        b1.assign_sub(lr * grads[<span class="number">1</span>]) <span class="comment">#参数b1自更新</span></span><br><span class="line">    <span class="comment">#每个epoch 打印loss信息</span></span><br><span class="line">    print('Epoch &#123;&#125;, loss: &#123;&#125;'.format(epoch, loss_all/<span class="number">4</span>)) <span class="comment">#120组数据，需要batch级别循环4次，除以4求得每次step迭代平均loss</span></span><br><span class="line">    train_loss_results.append(loss_all / <span class="number">4</span>) <span class="comment">#将4个step的loss求平均记录在此变量中</span></span><br><span class="line">    <span class="attr">loss_all</span> = <span class="number">0</span> <span class="comment">#loss_all归零，为记录下一个epoch的loss做准备</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#测试部分</span></span><br><span class="line">    <span class="comment">#计算当前参数前向传播后准确率，显示当前acc</span></span><br><span class="line">    <span class="comment">#total_corrrect为预测对的样本个数， total_number为测试的总样本数，初始化为0</span></span><br><span class="line">    total_correct, <span class="attr">total_number</span> = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    for x_test, y_test <span class="keyword">in</span> test_db:</span><br><span class="line">        <span class="attr">y</span> = tf.matmul(x_test, w1) + b1 <span class="comment">#y为预测结果</span></span><br><span class="line">        <span class="attr">y</span> = tf.nn.softmax(y) <span class="comment">#y符合概率分布</span></span><br><span class="line">        <span class="attr">pred</span> = tf.argmax(y, <span class="attr">axis=1)</span> <span class="comment">#返回y中最大值索引，即预测分类</span></span><br><span class="line">        <span class="comment">#将pred转换为y_test数据类型</span></span><br><span class="line">        <span class="attr">pred</span> = tf.cast(pred, <span class="attr">dtype=y_test.dtype)</span></span><br><span class="line">        <span class="comment"># 若分类正确，correct=1，否则为0，将bool型转换为int型</span></span><br><span class="line">        <span class="attr">correct</span> = tf.cast(tf.equal(pred, y_test), <span class="attr">dtype=tf.int32)</span></span><br><span class="line">        <span class="comment"># 将每个batch的correct数加起来</span></span><br><span class="line">        <span class="attr">correct</span> = tf.reduce_sum(correct)</span><br><span class="line">        total_correct += int(correct) <span class="comment">#将所有batch中correct数加起来</span></span><br><span class="line">        <span class="comment">#total_number为测试总样本数，即x_test行数，shape[0]</span></span><br><span class="line">        <span class="attr">total_number</span> = x_test.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment">#总准确率为 total_correct / total_number</span></span><br><span class="line">    <span class="attr">acc</span> = total_correct / total_number</span><br><span class="line">    test_acc.append(acc)</span><br><span class="line">    print(<span class="string">"test_acc:"</span>, acc)</span><br><span class="line">    print('----------------------')</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制loss曲线</span></span><br><span class="line">plt.title('Loss Function Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel(<span class="string">"Loss"</span>)</span><br><span class="line">plt.plot(train_loss_results, <span class="attr">label='$loss$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制Accuary曲线</span></span><br><span class="line">plt.title('Acc Curve')</span><br><span class="line">plt.xlabel('Epoch')</span><br><span class="line">plt.ylabel('Acc')</span><br><span class="line">plt.plot(test_acc, <span class="attr">label='$Accuary$')</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<p>程序在PyCharm中运行.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Epoch.jpg" alt></p>
-<p>从图中可见，随着迭代次数增加，损失函数值逐渐减小，对测试集的预测准确率逐渐增大直至达到100%正确.下面两张图给出了损失函数及预测准确率的变化图像.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Loss_Function_Curve.png" alt></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Acc_Curve.png" alt></p>
 ]]></content>
       <categories>
         <category>Tensorflow学习笔记</category>
