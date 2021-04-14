@@ -236,7 +236,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="一、算法简介"><a href="#一、算法简介" class="headerlink" title="一、算法简介"></a>一、算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
+          <h2 id="算法简介"><a href="#算法简介" class="headerlink" title="算法简介"></a>算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
 <p>在密集区域的点称为<strong>核心点</strong>，由DBSCAN的两个重要参数<strong>半径eps</strong>和<strong>最小采样点个数min_sample</strong>确定，其定义如下：如果在距一个给定数据点eps距离内至少有min_sample个数据点，那么这个数据点就是核心点。DBSCAN最终会将彼此距离小于eps的核心点分到同一簇中。</p>
           <!--noindex-->
             <div class="post-button">
