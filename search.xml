@@ -1,63 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>DBSCAN聚类算法</title>
-    <url>/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="一、算法简介"><a href="#一、算法简介" class="headerlink" title="一、算法简介"></a>一、算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
-<p>在密集区域的点称为<strong>核心点</strong>，由DBSCAN的两个重要参数<strong>半径eps</strong>和<strong>最小采样点个数min_sample</strong>确定，其定义如下：如果在距一个给定数据点eps距离内至少有min_sample个数据点，那么这个数据点就是核心点。DBSCAN最终会将彼此距离小于eps的核心点分到同一簇中。</p>
-<a id="more"></a>
-
-<h4 id="算法过程描述"><a href="#算法过程描述" class="headerlink" title="算法过程描述"></a>算法过程描述</h4><p>首先任取一个点，找到这个点的距离小于等于eps的所有点，如果距起始点的距离在eps之内的数据点个数小于min_sample，那么这个点被标记为<strong>噪音点</strong>，也就是说它不属于任何簇。如果距离在eps之内的数据点个数大于min_sample，则这个点被标记为<strong>核心点</strong>，并分配一个新的<strong>簇标签</strong>。然后访问该点的所有eps以内的邻居，如果它们还没有被分配簇，那么就将刚才的簇标签分配给它们，如果它们也是核心点，那么继续依次访问其邻居，以此类推，否则即为<strong>边界点</strong>，不再访问其邻居。簇逐渐增大，直到簇的eps距离内没有更多的核心点为止。然后选取另一个尚未被访问的点，重复相同的过程。</p>
-<p>最后，一共有三种类型的点：核心点、边界点、噪音点。如果DBSCAN算法在特定数据集运行多次，那么核心点的聚类始终相同，同样的点也始终被标记为噪音点。但边界点可能与不止一个簇的核心点相邻，这与数据点的访问顺序有关。一般情况下，边界点较少，因此这种歧义并不是很重要。</p>
-<p>从上述描述中可以看到，DBSCAN算法不需要设置簇的个数，只需要确定两个参数eps、min_sample，实际上它们可以隐式地控制找到簇的个数。eps决定了点与点之间“接近”的含义，将eps设置过小，意味着没有核心点出现，可能导致所有点被标记为噪音点；eps设置过大，可能导致所有点形成单个簇。min_sample主要用于判断稀疏区域内点被标记为异常值还是形成自己的簇，决定了簇的最小尺寸。因此，两个参数的选取还是至关重要的。</p>
-<p><strong>注：</strong>采用缩放技术使数据特征具有相似的范围，有时会更便于找到eps较好的取值。</p>
-<h2 id="二、DBSCAN算法可视化展示"><a href="#二、DBSCAN算法可视化展示" class="headerlink" title="二、DBSCAN算法可视化展示"></a>二、DBSCAN算法可视化展示</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E5%87%A0%E4%BD%95%E7%9B%B4%E8%A7%82.png" alt></p>
-<p>DBSCAN聚类算法在二维平面中对数据点进行聚类的简化过程如图所示，选取min_sample=2，此时图中蓝色为噪音点，不属于任何簇；红色为核心点，黄色为边界点，它们均划分在同一簇中。</p>
-<p>国外有个网站，可以把DBSCAN的过程以<strong>动图</strong>展示出来，可以选择几种不同的数据集，还可以自行设置参数，很有趣.</p>
-<h2 id="三、算法实现"><a href="#三、算法实现" class="headerlink" title="三、算法实现"></a>三、算法实现</h2><h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a><strong>算法流程</strong></h4><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.jpg" style="zoom:80%;">
-
-<h4 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h4><p>DBSCAN可在python中的sklearn库调用实现，以下给出两个简单实例对算法的聚类效果进行展示.</p>
-<h5 id="实例一：半圆形数据分簇"><a href="#实例一：半圆形数据分簇" class="headerlink" title="实例一：半圆形数据分簇"></a>实例一：半圆形数据分簇</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_moons</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">X, y = make_moons(n_samples=<span class="number">200</span>, noise=<span class="number">0.05</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将数据缩放成平均值为0、方差为1</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">scaler.fit(X)</span><br><span class="line">X_scaled = scaler.transform(X)</span><br><span class="line"></span><br><span class="line">dbscan = DBSCAN()</span><br><span class="line">clusters = dbscan.fit_predict(X_scaled)</span><br><span class="line"><span class="comment">#绘制簇分配</span></span><br><span class="line">plt.scatter(X_scaled[:, <span class="number">0</span>], X_scaled[:, <span class="number">1</span>], c=clusters, s=<span class="number">60</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Feature 0"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Feature 1"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/two_moons.png" alt></p>
-<p>上图展示了在two_moons数据集上运行DBSCAN的结果，利用默认设置(eps=0.5)，算法找到了两个半圆形并将其分开.由于算法得到了2个簇，默认参数的设置效果似乎很好，若eps=0.2，将会得到8个簇，显然太多了；若eps=0.7，则会导致只有1个簇.</p>
-<h5 id="实例二：品牌啤酒聚类分析"><a href="#实例二：品牌啤酒聚类分析" class="headerlink" title="实例二：品牌啤酒聚类分析"></a>实例二：品牌啤酒聚类分析</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> colors</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入数据</span></span><br><span class="line">beer = pd.read_csv(<span class="string">'beer.txt'</span>, sep=<span class="string">' '</span>)</span><br><span class="line">print(beer)<span class="comment">#查看数据集</span></span><br><span class="line"></span><br><span class="line">X = beer[[<span class="string">'calories'</span>, <span class="string">'sodium'</span>, <span class="string">'alcohol'</span>, <span class="string">'cost'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置半径为10，最小样本量2</span></span><br><span class="line">db = DBSCAN(eps=<span class="number">10</span>, min_samples=<span class="number">2</span>).fit(X)</span><br><span class="line"></span><br><span class="line">labels = db.labels_</span><br><span class="line">beer[<span class="string">'cluster_db'</span>] = labels <span class="comment">#在数据集最后一列加上DBSCAN聚类后的结果</span></span><br><span class="line">beer.sort_values(<span class="string">'cluster_db'</span>)</span><br><span class="line">print(beer)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看根据DBSCAN聚类后的分组统计结果(均值)</span></span><br><span class="line">print(beer.groupby(<span class="string">'cluster_db'</span>).mean())</span><br><span class="line"></span><br><span class="line"><span class="comment">#画出在不同两个指标下样本的分布情况</span></span><br><span class="line">print(pd.plotting.scatter_matrix(X, figsize=(<span class="number">10</span>, <span class="number">10</span>), s=<span class="number">100</span>))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-
-
-<p>查看数据集：</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310630(1).jpg" alt="数据集"></p>
-<p>聚类结果：</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310722(1).jpg" alt="聚类结果"></p>
-<p>下表给出了聚类后分组的均值结果.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618309915(1).jpg" alt></p>
-<p>图中展示了在不同两个指标下样本的分布情况.</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Figure_1.png" style="zoom: 80%;">
-
-<h2 id="四、算法优缺点"><a href="#四、算法优缺点" class="headerlink" title="四、算法优缺点"></a>四、算法优缺点</h2><h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ol>
-<li>不需要先验地指定簇的个数；</li>
-<li>可以处理任意形状大小的簇，且结果相对而言优于K均值聚类；</li>
-<li>基于密度定义，对噪音不敏感，可检测出数据异常点.</li>
-</ol>
-<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ol>
-<li>高维数据有些困难；</li>
-<li>sklearn中效率较低</li>
-<li>对于密度不均匀、距离相差较大的数据集，聚类结果较差；</li>
-<li>调参较为复杂，需要多次尝试，不同的参数组合对最终结果影响较大.</li>
-</ol>
-<h2 id="五、算法改进：自适应的DBSCAN算法"><a href="#五、算法改进：自适应的DBSCAN算法" class="headerlink" title="五、算法改进：自适应的DBSCAN算法"></a>五、算法改进：自适应的DBSCAN算法</h2><p>由于DBSCAN算法对eps和min_sample两个参数十分敏感，参数的确定是既重要又困难的事情，有学者进行了自适应确定DBSCAN算法参数的研究，即通过数据集自动确定两个参数.相应论文可以在知网查阅.</p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">李文杰, 闫世强, 蒋莹,等. 自适应确定DBSCAN算法参数的算法研究[J]. 计算机工程与应用, 2019, 55(05):1-7.</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>聚类算法</tag>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Matlab数据处理--数据降维</title>
     <url>/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
     <content><![CDATA[<p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
@@ -116,6 +59,190 @@
       <tags>
         <tag>Matlab</tag>
         <tag>数据分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DBSCAN聚类算法</title>
+    <url>/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="一、算法简介"><a href="#一、算法简介" class="headerlink" title="一、算法简介"></a>一、算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
+<p>在密集区域的点称为<strong>核心点</strong>，由DBSCAN的两个重要参数<strong>半径eps</strong>和<strong>最小采样点个数min_sample</strong>确定，其定义如下：如果在距一个给定数据点eps距离内至少有min_sample个数据点，那么这个数据点就是核心点。DBSCAN最终会将彼此距离小于eps的核心点分到同一簇中。</p>
+<a id="more"></a>
+
+<h4 id="算法过程描述"><a href="#算法过程描述" class="headerlink" title="算法过程描述"></a>算法过程描述</h4><p>首先任取一个点，找到这个点的距离小于等于eps的所有点，如果距起始点的距离在eps之内的数据点个数小于min_sample，那么这个点被标记为<strong>噪音点</strong>，也就是说它不属于任何簇。如果距离在eps之内的数据点个数大于min_sample，则这个点被标记为<strong>核心点</strong>，并分配一个新的<strong>簇标签</strong>。然后访问该点的所有eps以内的邻居，如果它们还没有被分配簇，那么就将刚才的簇标签分配给它们，如果它们也是核心点，那么继续依次访问其邻居，以此类推，否则即为<strong>边界点</strong>，不再访问其邻居。簇逐渐增大，直到簇的eps距离内没有更多的核心点为止。然后选取另一个尚未被访问的点，重复相同的过程。</p>
+<p>最后，一共有三种类型的点：核心点、边界点、噪音点。如果DBSCAN算法在特定数据集运行多次，那么核心点的聚类始终相同，同样的点也始终被标记为噪音点。但边界点可能与不止一个簇的核心点相邻，这与数据点的访问顺序有关。一般情况下，边界点较少，因此这种歧义并不是很重要。</p>
+<p>从上述描述中可以看到，DBSCAN算法不需要设置簇的个数，只需要确定两个参数eps、min_sample，实际上它们可以隐式地控制找到簇的个数。eps决定了点与点之间“接近”的含义，将eps设置过小，意味着没有核心点出现，可能导致所有点被标记为噪音点；eps设置过大，可能导致所有点形成单个簇。min_sample主要用于判断稀疏区域内点被标记为异常值还是形成自己的簇，决定了簇的最小尺寸。因此，两个参数的选取还是至关重要的。</p>
+<p><strong>注：</strong>采用缩放技术使数据特征具有相似的范围，有时会更便于找到eps较好的取值。</p>
+<h2 id="二、DBSCAN算法可视化展示"><a href="#二、DBSCAN算法可视化展示" class="headerlink" title="二、DBSCAN算法可视化展示"></a>二、DBSCAN算法可视化展示</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E5%87%A0%E4%BD%95%E7%9B%B4%E8%A7%82.png" alt></p>
+<p>DBSCAN聚类算法在二维平面中对数据点进行聚类的简化过程如图所示，选取min_sample=2，此时图中蓝色为噪音点，不属于任何簇；红色为核心点，黄色为边界点，它们均划分在同一簇中。</p>
+<p>国外有个网站，可以把DBSCAN的过程以<strong>动图</strong>展示出来，可以选择几种不同的数据集，还可以自行设置参数，很有趣.</p>
+<h2 id="三、算法实现"><a href="#三、算法实现" class="headerlink" title="三、算法实现"></a>三、算法实现</h2><h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a><strong>算法流程</strong></h4><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.jpg" style="zoom:80%;">
+
+<h4 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h4><p>DBSCAN可在python中的sklearn库调用实现，以下给出两个简单实例对算法的聚类效果进行展示.</p>
+<h5 id="实例一：半圆形数据分簇"><a href="#实例一：半圆形数据分簇" class="headerlink" title="实例一：半圆形数据分簇"></a>实例一：半圆形数据分簇</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_moons</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">X, y = make_moons(n_samples=<span class="number">200</span>, noise=<span class="number">0.05</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将数据缩放成平均值为0、方差为1</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">scaler.fit(X)</span><br><span class="line">X_scaled = scaler.transform(X)</span><br><span class="line"></span><br><span class="line">dbscan = DBSCAN()</span><br><span class="line">clusters = dbscan.fit_predict(X_scaled)</span><br><span class="line"><span class="comment">#绘制簇分配</span></span><br><span class="line">plt.scatter(X_scaled[:, <span class="number">0</span>], X_scaled[:, <span class="number">1</span>], c=clusters, s=<span class="number">60</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Feature 0"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Feature 1"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/two_moons.png" alt></p>
+<p>上图展示了在two_moons数据集上运行DBSCAN的结果，利用默认设置(eps=0.5)，算法找到了两个半圆形并将其分开.由于算法得到了2个簇，默认参数的设置效果似乎很好，若eps=0.2，将会得到8个簇，显然太多了；若eps=0.7，则会导致只有1个簇.</p>
+<h5 id="实例二：品牌啤酒聚类分析"><a href="#实例二：品牌啤酒聚类分析" class="headerlink" title="实例二：品牌啤酒聚类分析"></a>实例二：品牌啤酒聚类分析</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> colors</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入数据</span></span><br><span class="line">beer = pd.read_csv(<span class="string">'beer.txt'</span>, sep=<span class="string">' '</span>)</span><br><span class="line">print(beer)<span class="comment">#查看数据集</span></span><br><span class="line"></span><br><span class="line">X = beer[[<span class="string">'calories'</span>, <span class="string">'sodium'</span>, <span class="string">'alcohol'</span>, <span class="string">'cost'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置半径为10，最小样本量2</span></span><br><span class="line">db = DBSCAN(eps=<span class="number">10</span>, min_samples=<span class="number">2</span>).fit(X)</span><br><span class="line"></span><br><span class="line">labels = db.labels_</span><br><span class="line">beer[<span class="string">'cluster_db'</span>] = labels <span class="comment">#在数据集最后一列加上DBSCAN聚类后的结果</span></span><br><span class="line">beer.sort_values(<span class="string">'cluster_db'</span>)</span><br><span class="line">print(beer)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看根据DBSCAN聚类后的分组统计结果(均值)</span></span><br><span class="line">print(beer.groupby(<span class="string">'cluster_db'</span>).mean())</span><br><span class="line"></span><br><span class="line"><span class="comment">#画出在不同两个指标下样本的分布情况</span></span><br><span class="line">print(pd.plotting.scatter_matrix(X, figsize=(<span class="number">10</span>, <span class="number">10</span>), s=<span class="number">100</span>))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看数据集：</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310630(1).jpg" alt="数据集"></p>
+<p>聚类结果：</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310722(1).jpg" alt="聚类结果"></p>
+<p>下表给出了聚类后分组的均值结果.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618309915(1).jpg" alt></p>
+<p>图中展示了在不同两个指标下样本的分布情况.</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Figure_1.png" style="zoom: 80%;">
+
+<h2 id="四、算法优缺点"><a href="#四、算法优缺点" class="headerlink" title="四、算法优缺点"></a>四、算法优缺点</h2><h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>不需要先验地指定簇的个数；</li>
+<li>可以处理任意形状大小的簇，且结果相对而言优于K均值聚类；</li>
+<li>基于密度定义，对噪音不敏感，可检测出数据异常点.</li>
+</ol>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ol>
+<li>高维数据有些困难；</li>
+<li>sklearn中效率较低</li>
+<li>对于密度不均匀、距离相差较大的数据集，聚类结果较差；</li>
+<li>调参较为复杂，需要多次尝试，不同的参数组合对最终结果影响较大.</li>
+</ol>
+<h2 id="五、算法改进：自适应的DBSCAN算法"><a href="#五、算法改进：自适应的DBSCAN算法" class="headerlink" title="五、算法改进：自适应的DBSCAN算法"></a>五、算法改进：自适应的DBSCAN算法</h2><p>由于DBSCAN算法对eps和min_sample两个参数十分敏感，参数的确定是既重要又困难的事情，有学者进行了自适应确定DBSCAN算法参数的研究，即通过数据集自动确定两个参数.相应论文可以在知网查阅.</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">李文杰, 闫世强, 蒋莹,等. 自适应确定DBSCAN算法参数的算法研究[J]. 计算机工程与应用, 2019, 55(05):1-7.</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>聚类算法</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python turtle库&quot;一箭穿心&quot;代码实现</title>
+    <url>/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>利用python中的turtle库实现“一箭穿心”简单绘图</p>
+<a id="more"></a>
+
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>源代码如下：</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">turtle</span> <span class="selector-tag">as</span> <span class="selector-tag">t</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.color</span>(<span class="string">'red'</span>,<span class="string">'pink'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.hideturtle</span>()#隐藏画笔形状</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.speed</span>(<span class="string">'fast'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.begin_fill</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.width</span>(<span class="number">4</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.goto</span>(<span class="number">50</span>,-<span class="number">30</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">270</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.end_fill</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.color</span>(<span class="string">'black'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.goto</span>(<span class="number">230</span>,-<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line">#尾<span class="selector-tag">1</span><span class="selector-class">.1</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">1</span><span class="selector-class">.2</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">80</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾间</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">2</span><span class="selector-class">.1</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">2</span><span class="selector-class">.2</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#箭身</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">145</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line">#箭矢</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">30</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">60</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">120</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">60</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.done</span>()</span><br></pre></td></tr></table></figure>
+
+<p>整体的思路就是运用了turtle库中的各种指令，下面附注一些对turtle库的几处简要说明，代码比较容易，可以尝试编写哦.</p>
+<h3 id="指令说明"><a href="#指令说明" class="headerlink" title="指令说明"></a>指令说明</h3><table>
+<thead>
+<tr>
+<th align="center">指令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">turtle.color(’color1‘,‘color2’)</td>
+<td align="center">color1画笔颜色,color2填充颜色,若无填充可省略’color2’</td>
+</tr>
+<tr>
+<td align="center">turtle.width(size)</td>
+<td align="center">画笔宽度，参数size</td>
+</tr>
+<tr>
+<td align="center">turtle.hideturtle()</td>
+<td align="center">hide，即隐藏画笔形状</td>
+</tr>
+<tr>
+<td align="center">turtle.pu()</td>
+<td align="center">put up，抬起画笔，之后画笔行进轨迹将不再显示</td>
+</tr>
+<tr>
+<td align="center">turtle.pd()</td>
+<td align="center">put down，放下画笔，画笔轨迹继续显示</td>
+</tr>
+<tr>
+<td align="center">turtle.fd(d)</td>
+<td align="center">forward，向正前方前进距离d</td>
+</tr>
+<tr>
+<td align="center">turtle.bd(d)</td>
+<td align="center">backward，向正后方移动距离d</td>
+</tr>
+<tr>
+<td align="center">turtle.left(angle)</td>
+<td align="center">画笔前进方向逆时针转动角度angle</td>
+</tr>
+<tr>
+<td align="center">turtle.right(angle)</td>
+<td align="center">画笔前进方向顺时针转动角度angle</td>
+</tr>
+<tr>
+<td align="center">turtle.goto(x,y)</td>
+<td align="center">画笔移动到坐标位置(x,y)，注意移动轨迹也会显示</td>
+</tr>
+<tr>
+<td align="center">turtle.circle(r,angle)</td>
+<td align="center">以当前画笔方向左侧某处为圆心进行曲线运行，r为曲线半径，angle是曲线圆心角度数（注意运行后画笔方向随之改变）</td>
+</tr>
+<tr>
+<td align="center">turtle.begin_fill()</td>
+<td align="center">开始填充</td>
+</tr>
+<tr>
+<td align="center">turtle.end_fill()</td>
+<td align="center">结束填充</td>
+</tr>
+<tr>
+<td align="center">turtle.speed(’speed‘)</td>
+<td align="center">画笔速度，’speed’可选择’fast’,’fastest’,’slow’等</td>
+</tr>
+</tbody></table>
+<h3 id="坐标体系"><a href="#坐标体系" class="headerlink" title="坐标体系"></a>坐标体系</h3><h4 id="1-绝对坐标"><a href="#1-绝对坐标" class="headerlink" title="1.绝对坐标"></a>1.绝对坐标</h4><img src="https://raw.githubusercontent.com/yixin-oss/Image/master/imgxy.png">
+
+<p>绝对坐标其实就是指平面直角坐标系，利用坐标表示平面中点的位置，与指令turtle.goto(x,y)对应，可以控制画笔移动到某一坐标位置，由于移动轨迹会显示，故可搭配turtle.pu()，turtle.pd()一起使用.</p>
+<h4 id="2-海龟坐标"><a href="#2-海龟坐标" class="headerlink" title="2.海龟坐标"></a>2.海龟坐标</h4><img src="https://raw.githubusercontent.com/yixin-oss/Image/master/imgturtle%E5%9D%90%E6%A0%87.png">
+
+<p>海龟坐标就是站在海龟的角度考虑方向问题，海龟可不认识坐标点哦，只需要考虑前进(forward)还是后退(backward)，向左(left)还是向右(right)，注意水平向右是海龟的默认初始方向，left和right指以当前海龟的方向向左转或者向右转，如果海龟方向比较奇怪的时候可能分不清左右(我个人如此)，故建议用顺(right)逆(left)时针来记(可看表的指针).</p>
+<h3 id="RGB色彩体系"><a href="#RGB色彩体系" class="headerlink" title="RGB色彩体系"></a>RGB色彩体系</h3><p>提到色彩最重要的当然就是画笔颜色和填充颜色，白+彩虹七色就不用多说了，下面介绍几种特殊颜色</p>
+<table>
+<thead>
+<tr>
+<th align="center">词汇</th>
+<th align="center">颜色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">pink</td>
+<td align="center">粉色</td>
+</tr>
+<tr>
+<td align="center">magenta</td>
+<td align="center">洋红</td>
+</tr>
+<tr>
+<td align="center">cyan</td>
+<td align="center">青色</td>
+</tr>
+<tr>
+<td align="center">seashell</td>
+<td align="center">海贝色(很浅)</td>
+</tr>
+<tr>
+<td align="center">gold</td>
+<td align="center">金色</td>
+</tr>
+<tr>
+<td align="center">brown</td>
+<td align="center">棕色</td>
+</tr>
+<tr>
+<td align="center">tomato</td>
+<td align="center">番茄色</td>
+</tr>
+</tbody></table>
+<p>当然还可以根据红蓝绿三个通道颜色组合设计自己想要的颜色，每种颜色的取值默认为小数值，举例用法：turtle.pencolor((0.63,0.12,0.94)) (紫色).</p>
+<h3 id="赞助"><a href="#赞助" class="headerlink" title="赞助"></a>赞助</h3><p>如果对本文有好感，可以点击下方打赏赞助我买包辣条嘛，一两块钱就可以哦，咦嘻嘻~</p>
+]]></content>
+      <categories>
+        <category>python学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -288,133 +415,6 @@
       <tags>
         <tag>TensorFlow</tag>
         <tag>软件安装</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python turtle库&quot;一箭穿心&quot;代码实现</title>
-    <url>/daytoy/2020/06/05/python%20turtle%E5%BA%93%E2%80%9C%E4%B8%80%E7%AE%AD%E7%A9%BF%E5%BF%83%E2%80%9D%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p>利用python中的turtle库实现“一箭穿心”简单绘图</p>
-<a id="more"></a>
-
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>源代码如下：</p>
-<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">turtle</span> <span class="selector-tag">as</span> <span class="selector-tag">t</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.color</span>(<span class="string">'red'</span>,<span class="string">'pink'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.hideturtle</span>()#隐藏画笔形状</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.speed</span>(<span class="string">'fast'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.begin_fill</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.width</span>(<span class="number">4</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.goto</span>(<span class="number">50</span>,-<span class="number">30</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">270</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.circle</span>(<span class="number">50</span>,<span class="number">180</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.end_fill</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.color</span>(<span class="string">'black'</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.goto</span>(<span class="number">230</span>,-<span class="number">100</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line">#尾<span class="selector-tag">1</span><span class="selector-class">.1</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">1</span><span class="selector-class">.2</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">80</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾间</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">2</span><span class="selector-class">.1</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#尾<span class="selector-tag">2</span><span class="selector-class">.2</span></span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">90</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(-<span class="number">40</span>)</span><br><span class="line">#箭身</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">145</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pu</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">135</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.pd</span>()</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">100</span>)</span><br><span class="line">#箭矢</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.left</span>(<span class="number">30</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">60</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">120</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.right</span>(<span class="number">60</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.fd</span>(<span class="number">40</span>)</span><br><span class="line"><span class="selector-tag">t</span><span class="selector-class">.done</span>()</span><br></pre></td></tr></table></figure>
-
-<p>整体的思路就是运用了turtle库中的各种指令，下面附注一些对turtle库的几处简要说明，代码比较容易，可以尝试编写哦.</p>
-<h3 id="指令说明"><a href="#指令说明" class="headerlink" title="指令说明"></a>指令说明</h3><table>
-<thead>
-<tr>
-<th align="center">指令</th>
-<th align="center">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">turtle.color(’color1‘,‘color2’)</td>
-<td align="center">color1画笔颜色,color2填充颜色,若无填充可省略’color2’</td>
-</tr>
-<tr>
-<td align="center">turtle.width(size)</td>
-<td align="center">画笔宽度，参数size</td>
-</tr>
-<tr>
-<td align="center">turtle.hideturtle()</td>
-<td align="center">hide，即隐藏画笔形状</td>
-</tr>
-<tr>
-<td align="center">turtle.pu()</td>
-<td align="center">put up，抬起画笔，之后画笔行进轨迹将不再显示</td>
-</tr>
-<tr>
-<td align="center">turtle.pd()</td>
-<td align="center">put down，放下画笔，画笔轨迹继续显示</td>
-</tr>
-<tr>
-<td align="center">turtle.fd(d)</td>
-<td align="center">forward，向正前方前进距离d</td>
-</tr>
-<tr>
-<td align="center">turtle.bd(d)</td>
-<td align="center">backward，向正后方移动距离d</td>
-</tr>
-<tr>
-<td align="center">turtle.left(angle)</td>
-<td align="center">画笔前进方向逆时针转动角度angle</td>
-</tr>
-<tr>
-<td align="center">turtle.right(angle)</td>
-<td align="center">画笔前进方向顺时针转动角度angle</td>
-</tr>
-<tr>
-<td align="center">turtle.goto(x,y)</td>
-<td align="center">画笔移动到坐标位置(x,y)，注意移动轨迹也会显示</td>
-</tr>
-<tr>
-<td align="center">turtle.circle(r,angle)</td>
-<td align="center">以当前画笔方向左侧某处为圆心进行曲线运行，r为曲线半径，angle是曲线圆心角度数（注意运行后画笔方向随之改变）</td>
-</tr>
-<tr>
-<td align="center">turtle.begin_fill()</td>
-<td align="center">开始填充</td>
-</tr>
-<tr>
-<td align="center">turtle.end_fill()</td>
-<td align="center">结束填充</td>
-</tr>
-<tr>
-<td align="center">turtle.speed(’speed‘)</td>
-<td align="center">画笔速度，’speed’可选择’fast’,’fastest’,’slow’等</td>
-</tr>
-</tbody></table>
-<h3 id="坐标体系"><a href="#坐标体系" class="headerlink" title="坐标体系"></a>坐标体系</h3><h4 id="1-绝对坐标"><a href="#1-绝对坐标" class="headerlink" title="1.绝对坐标"></a>1.绝对坐标</h4><img src="https://raw.githubusercontent.com/yixin-oss/Image/master/imgxy.png">
-
-<p>绝对坐标其实就是指平面直角坐标系，利用坐标表示平面中点的位置，与指令turtle.goto(x,y)对应，可以控制画笔移动到某一坐标位置，由于移动轨迹会显示，故可搭配turtle.pu()，turtle.pd()一起使用.</p>
-<h4 id="2-海龟坐标"><a href="#2-海龟坐标" class="headerlink" title="2.海龟坐标"></a>2.海龟坐标</h4><img src="https://raw.githubusercontent.com/yixin-oss/Image/master/imgturtle%E5%9D%90%E6%A0%87.png">
-
-<p>海龟坐标就是站在海龟的角度考虑方向问题，海龟可不认识坐标点哦，只需要考虑前进(forward)还是后退(backward)，向左(left)还是向右(right)，注意水平向右是海龟的默认初始方向，left和right指以当前海龟的方向向左转或者向右转，如果海龟方向比较奇怪的时候可能分不清左右(我个人如此)，故建议用顺(right)逆(left)时针来记(可看表的指针).</p>
-<h3 id="RGB色彩体系"><a href="#RGB色彩体系" class="headerlink" title="RGB色彩体系"></a>RGB色彩体系</h3><p>提到色彩最重要的当然就是画笔颜色和填充颜色，白+彩虹七色就不用多说了，下面介绍几种特殊颜色</p>
-<table>
-<thead>
-<tr>
-<th align="center">词汇</th>
-<th align="center">颜色</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">pink</td>
-<td align="center">粉色</td>
-</tr>
-<tr>
-<td align="center">magenta</td>
-<td align="center">洋红</td>
-</tr>
-<tr>
-<td align="center">cyan</td>
-<td align="center">青色</td>
-</tr>
-<tr>
-<td align="center">seashell</td>
-<td align="center">海贝色(很浅)</td>
-</tr>
-<tr>
-<td align="center">gold</td>
-<td align="center">金色</td>
-</tr>
-<tr>
-<td align="center">brown</td>
-<td align="center">棕色</td>
-</tr>
-<tr>
-<td align="center">tomato</td>
-<td align="center">番茄色</td>
-</tr>
-</tbody></table>
-<p>当然还可以根据红蓝绿三个通道颜色组合设计自己想要的颜色，每种颜色的取值默认为小数值，举例用法：turtle.pencolor((0.63,0.12,0.94)) (紫色).</p>
-<h3 id="赞助"><a href="#赞助" class="headerlink" title="赞助"></a>赞助</h3><p>如果对本文有好感，可以点击下方打赏赞助我买包辣条嘛，一两块钱就可以哦，咦嘻嘻~</p>
-]]></content>
-      <categories>
-        <category>python学习笔记</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
       </tags>
   </entry>
   <entry>
