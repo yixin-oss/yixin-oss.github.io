@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>DBSCAN聚类算法</title>
+    <url>/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="算法简介"><a href="#算法简介" class="headerlink" title="算法简介"></a>算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
+<p>在密集区域的点称为<strong>核心点</strong>，由DBSCAN的两个重要参数<strong>半径eps</strong>和<strong>最小采样点个数min_sample</strong>确定，其定义如下：如果在距一个给定数据点eps距离内至少有min_sample个数据点，那么这个数据点就是核心点。DBSCAN最终会将彼此距离小于eps的核心点分到同一簇中。</p>
+<a id="more"></a>
+
+<h3 id="算法过程描述"><a href="#算法过程描述" class="headerlink" title="算法过程描述"></a>算法过程描述</h3><p>首先任取一个点，找到这个点的距离小于等于eps的所有点，如果距起始点的距离在eps之内的数据点个数小于min_sample，那么这个点被标记为<strong>噪音点</strong>，也就是说它不属于任何簇。如果距离在eps之内的数据点个数大于min_sample，则这个点被标记为<strong>核心点</strong>，并分配一个新的<strong>簇标签</strong>。然后访问该点的所有eps以内的邻居，如果它们还没有被分配簇，那么就将刚才的簇标签分配给它们，如果它们也是核心点，那么继续依次访问其邻居，以此类推，否则即为<strong>边界点</strong>，不再访问其邻居。簇逐渐增大，直到簇的eps距离内没有更多的核心点为止。然后选取另一个尚未被访问的点，重复相同的过程。</p>
+<p>最后，一共有三种类型的点：核心点、边界点、噪音点。如果DBSCAN算法在特定数据集运行多次，那么核心点的聚类始终相同，同样的点也始终被标记为噪音点。但边界点可能与不止一个簇的核心点相邻，这与数据点的访问顺序有关。一般情况下，边界点较少，因此这种歧义并不是很重要。</p>
+<p>从上述描述中可以看到，DBSCAN算法不需要设置簇的个数，只需要确定两个参数eps、min_sample，实际上它们可以隐式地控制找到簇的个数。eps决定了点与点之间“接近”的含义，将eps设置过小，意味着没有核心点出现，可能导致所有点被标记为噪音点；eps设置过大，可能导致所有点形成单个簇。min_sample主要用于判断稀疏区域内点被标记为异常值还是形成自己的簇，决定了簇的最小尺寸。因此，两个参数的选取还是至关重要的。</p>
+<p><strong>注：</strong>采用缩放技术使数据特征具有相似的范围，有时会更便于找到eps较好的取值。</p>
+<h2 id="DBSCAN算法可视化展示"><a href="#DBSCAN算法可视化展示" class="headerlink" title="DBSCAN算法可视化展示"></a>DBSCAN算法可视化展示</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E5%87%A0%E4%BD%95%E7%9B%B4%E8%A7%82.png" alt></p>
+<p>DBSCAN聚类算法在二维平面中对数据点进行聚类的简化过程如图所示，选取min_sample=2，此时图中蓝色为噪音点，不属于任何簇；红色为核心点，黄色为边界点，它们均划分在同一簇中。</p>
+<p>国外有个网站，可以把DBSCAN的过程以<strong>动图</strong>展示出来，可以选择几种不同的数据集，还可以自行设置参数，很有趣.</p>
+<p><a href="https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/" target="_blank" rel="noopener">DBSCAN可视化网站</a></p>
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.jpg" style="zoom:80%;">
+
+<h3 id="算法实现-1"><a href="#算法实现-1" class="headerlink" title="算法实现"></a>算法实现</h3><p>DBSCAN可在python中的sklearn库调用实现，以下给出两个简单实例对算法的聚类效果进行展示.</p>
+<h4 id="实例一：半圆形数据分簇"><a href="#实例一：半圆形数据分簇" class="headerlink" title="实例一：半圆形数据分簇"></a>实例一：半圆形数据分簇</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_moons</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">X, y = make_moons(n_samples=<span class="number">200</span>, noise=<span class="number">0.05</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将数据缩放成平均值为0、方差为1</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">scaler.fit(X)</span><br><span class="line">X_scaled = scaler.transform(X)</span><br><span class="line"></span><br><span class="line">dbscan = DBSCAN()</span><br><span class="line">clusters = dbscan.fit_predict(X_scaled)</span><br><span class="line"><span class="comment">#绘制簇分配</span></span><br><span class="line">plt.scatter(X_scaled[:, <span class="number">0</span>], X_scaled[:, <span class="number">1</span>], c=clusters, s=<span class="number">60</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Feature 0"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Feature 1"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/two_moons.png" alt></p>
+<p>上图展示了在two_moons数据集上运行DBSCAN的结果，利用默认设置(eps=0.5)，算法找到了两个半圆形并将其分开.由于算法得到了2个簇，默认参数的设置效果似乎很好，若eps=0.2，将会得到8个簇，显然太多了；若eps=0.7，则会导致只有1个簇.</p>
+<h4 id="实例二：品牌啤酒聚类分析"><a href="#实例二：品牌啤酒聚类分析" class="headerlink" title="实例二：品牌啤酒聚类分析"></a>实例二：品牌啤酒聚类分析</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> colors</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入数据</span></span><br><span class="line">beer = pd.read_csv(<span class="string">'beer.txt'</span>, sep=<span class="string">' '</span>)</span><br><span class="line">print(beer)<span class="comment">#查看数据集</span></span><br><span class="line"></span><br><span class="line">X = beer[[<span class="string">'calories'</span>, <span class="string">'sodium'</span>, <span class="string">'alcohol'</span>, <span class="string">'cost'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置半径为10，最小样本量2</span></span><br><span class="line">db = DBSCAN(eps=<span class="number">10</span>, min_samples=<span class="number">2</span>).fit(X)</span><br><span class="line"></span><br><span class="line">labels = db.labels_</span><br><span class="line">beer[<span class="string">'cluster_db'</span>] = labels <span class="comment">#在数据集最后一列加上DBSCAN聚类后的结果</span></span><br><span class="line">beer.sort_values(<span class="string">'cluster_db'</span>)</span><br><span class="line">print(beer)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看根据DBSCAN聚类后的分组统计结果(均值)</span></span><br><span class="line">print(beer.groupby(<span class="string">'cluster_db'</span>).mean())</span><br><span class="line"></span><br><span class="line"><span class="comment">#画出在不同两个指标下样本的分布情况</span></span><br><span class="line">print(pd.plotting.scatter_matrix(X, figsize=(<span class="number">10</span>, <span class="number">10</span>), s=<span class="number">100</span>))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看数据集：</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310630(1).jpg" alt="数据集"></p>
+<p>聚类结果：</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310722(1).jpg" alt="聚类结果"></p>
+<p>下表给出了聚类后分组的均值结果.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618309915(1).jpg" alt></p>
+<p>图中展示了在不同两个指标下样本的分布情况.</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Figure_1.png" style="zoom: 80%;">
+
+<h2 id="算法优缺点"><a href="#算法优缺点" class="headerlink" title="算法优缺点"></a>算法优缺点</h2><h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ol>
+<li>不需要先验地指定簇的个数；</li>
+<li>可以处理任意形状大小的簇，且结果相对而言优于K均值聚类；</li>
+<li>基于密度定义，对噪音不敏感，可检测出数据异常点.</li>
+</ol>
+<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ol>
+<li>高维数据有些困难；</li>
+<li>sklearn中效率较低</li>
+<li>对于密度不均匀、距离相差较大的数据集，聚类结果较差；</li>
+<li>调参较为复杂，需要多次尝试，不同的参数组合对最终结果影响较大.</li>
+</ol>
+<h2 id="算法改进：自适应的DBSCAN算法"><a href="#算法改进：自适应的DBSCAN算法" class="headerlink" title="算法改进：自适应的DBSCAN算法"></a>算法改进：自适应的DBSCAN算法</h2><p>由于DBSCAN算法对eps和min_sample两个参数十分敏感，参数的确定是既重要又困难的事情，有学者进行了自适应确定DBSCAN算法参数的研究，即通过数据集自动确定两个参数.相应论文可以在知网查阅.</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">李文杰, 闫世强, 蒋莹,等. 自适应确定DBSCAN算法参数的算法研究[J]. 计算机工程与应用, 2019, 55(05):1-7.</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>聚类算法</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Matlab数据处理--数据降维</title>
     <url>/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
     <content><![CDATA[<p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
@@ -134,61 +192,103 @@
       </tags>
   </entry>
   <entry>
-    <title>DBSCAN聚类算法</title>
-    <url>/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="算法简介"><a href="#算法简介" class="headerlink" title="算法简介"></a>算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
-<p>在密集区域的点称为<strong>核心点</strong>，由DBSCAN的两个重要参数<strong>半径eps</strong>和<strong>最小采样点个数min_sample</strong>确定，其定义如下：如果在距一个给定数据点eps距离内至少有min_sample个数据点，那么这个数据点就是核心点。DBSCAN最终会将彼此距离小于eps的核心点分到同一簇中。</p>
+    <title>Windows10安装TensorFlow</title>
+    <url>/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/</url>
+    <content><![CDATA[<h2 id="1-Anaconda下载及安装"><a href="#1-Anaconda下载及安装" class="headerlink" title="1. Anaconda下载及安装"></a>1. Anaconda下载及安装</h2><p><a href="https://www.anaconda.com/products/individual#macos" target="_blank" rel="noopener">Anaconda官网</a></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.png" alt></p>
 <a id="more"></a>
 
-<h3 id="算法过程描述"><a href="#算法过程描述" class="headerlink" title="算法过程描述"></a>算法过程描述</h3><p>首先任取一个点，找到这个点的距离小于等于eps的所有点，如果距起始点的距离在eps之内的数据点个数小于min_sample，那么这个点被标记为<strong>噪音点</strong>，也就是说它不属于任何簇。如果距离在eps之内的数据点个数大于min_sample，则这个点被标记为<strong>核心点</strong>，并分配一个新的<strong>簇标签</strong>。然后访问该点的所有eps以内的邻居，如果它们还没有被分配簇，那么就将刚才的簇标签分配给它们，如果它们也是核心点，那么继续依次访问其邻居，以此类推，否则即为<strong>边界点</strong>，不再访问其邻居。簇逐渐增大，直到簇的eps距离内没有更多的核心点为止。然后选取另一个尚未被访问的点，重复相同的过程。</p>
-<p>最后，一共有三种类型的点：核心点、边界点、噪音点。如果DBSCAN算法在特定数据集运行多次，那么核心点的聚类始终相同，同样的点也始终被标记为噪音点。但边界点可能与不止一个簇的核心点相邻，这与数据点的访问顺序有关。一般情况下，边界点较少，因此这种歧义并不是很重要。</p>
-<p>从上述描述中可以看到，DBSCAN算法不需要设置簇的个数，只需要确定两个参数eps、min_sample，实际上它们可以隐式地控制找到簇的个数。eps决定了点与点之间“接近”的含义，将eps设置过小，意味着没有核心点出现，可能导致所有点被标记为噪音点；eps设置过大，可能导致所有点形成单个簇。min_sample主要用于判断稀疏区域内点被标记为异常值还是形成自己的簇，决定了簇的最小尺寸。因此，两个参数的选取还是至关重要的。</p>
-<p><strong>注：</strong>采用缩放技术使数据特征具有相似的范围，有时会更便于找到eps较好的取值。</p>
-<h2 id="DBSCAN算法可视化展示"><a href="#DBSCAN算法可视化展示" class="headerlink" title="DBSCAN算法可视化展示"></a>DBSCAN算法可视化展示</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E5%87%A0%E4%BD%95%E7%9B%B4%E8%A7%82.png" alt></p>
-<p>DBSCAN聚类算法在二维平面中对数据点进行聚类的简化过程如图所示，选取min_sample=2，此时图中蓝色为噪音点，不属于任何簇；红色为核心点，黄色为边界点，它们均划分在同一簇中。</p>
-<p>国外有个网站，可以把DBSCAN的过程以<strong>动图</strong>展示出来，可以选择几种不同的数据集，还可以自行设置参数，很有趣.</p>
-<p><a href="https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/" target="_blank" rel="noopener">DBSCAN可视化网站</a></p>
-<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.jpg" style="zoom:80%;">
+<p>下载Windows的相应版本</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052(1).jpg" alt></p>
+<p>下载安装包后双击按引导安装</p>
+<p>这里要<strong>勾选!</strong>将Anaconda加入环境变量.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.jpg" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066358(1).jpg" alt></p>
+<p>等待安装完成.</p>
+<h2 id="2-TensorFlow安装"><a href="#2-TensorFlow安装" class="headerlink" title="2. TensorFlow安装"></a>2. TensorFlow安装</h2><p>开始–&gt;Anaconda3(64-bit)–&gt;Anaconda Prompt(Anaconda3)</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066505(1).jpg" style="zoom: 67%;">
 
-<h3 id="算法实现-1"><a href="#算法实现-1" class="headerlink" title="算法实现"></a>算法实现</h3><p>DBSCAN可在python中的sklearn库调用实现，以下给出两个简单实例对算法的聚类效果进行展示.</p>
-<h4 id="实例一：半圆形数据分簇"><a href="#实例一：半圆形数据分簇" class="headerlink" title="实例一：半圆形数据分簇"></a>实例一：半圆形数据分簇</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_moons</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">X, y = make_moons(n_samples=<span class="number">200</span>, noise=<span class="number">0.05</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将数据缩放成平均值为0、方差为1</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">scaler.fit(X)</span><br><span class="line">X_scaled = scaler.transform(X)</span><br><span class="line"></span><br><span class="line">dbscan = DBSCAN()</span><br><span class="line">clusters = dbscan.fit_predict(X_scaled)</span><br><span class="line"><span class="comment">#绘制簇分配</span></span><br><span class="line">plt.scatter(X_scaled[:, <span class="number">0</span>], X_scaled[:, <span class="number">1</span>], c=clusters, s=<span class="number">60</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Feature 0"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Feature 1"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>用*<em>conda create -n *</em>新建一个名为tensorflow的环境，用python3.6版本(3.7也可)</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda create -n tensorflow <span class="attribute">python</span>=3.6</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/two_moons.png" alt></p>
-<p>上图展示了在two_moons数据集上运行DBSCAN的结果，利用默认设置(eps=0.5)，算法找到了两个半圆形并将其分开.由于算法得到了2个簇，默认参数的设置效果似乎很好，若eps=0.2，将会得到8个簇，显然太多了；若eps=0.7，则会导致只有1个簇.</p>
-<h4 id="实例二：品牌啤酒聚类分析"><a href="#实例二：品牌啤酒聚类分析" class="headerlink" title="实例二：品牌啤酒聚类分析"></a>实例二：品牌啤酒聚类分析</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> colors</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入数据</span></span><br><span class="line">beer = pd.read_csv(<span class="string">'beer.txt'</span>, sep=<span class="string">' '</span>)</span><br><span class="line">print(beer)<span class="comment">#查看数据集</span></span><br><span class="line"></span><br><span class="line">X = beer[[<span class="string">'calories'</span>, <span class="string">'sodium'</span>, <span class="string">'alcohol'</span>, <span class="string">'cost'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置半径为10，最小样本量2</span></span><br><span class="line">db = DBSCAN(eps=<span class="number">10</span>, min_samples=<span class="number">2</span>).fit(X)</span><br><span class="line"></span><br><span class="line">labels = db.labels_</span><br><span class="line">beer[<span class="string">'cluster_db'</span>] = labels <span class="comment">#在数据集最后一列加上DBSCAN聚类后的结果</span></span><br><span class="line">beer.sort_values(<span class="string">'cluster_db'</span>)</span><br><span class="line">print(beer)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看根据DBSCAN聚类后的分组统计结果(均值)</span></span><br><span class="line">print(beer.groupby(<span class="string">'cluster_db'</span>).mean())</span><br><span class="line"></span><br><span class="line"><span class="comment">#画出在不同两个指标下样本的分布情况</span></span><br><span class="line">print(pd.plotting.scatter_matrix(X, figsize=(<span class="number">10</span>, <span class="number">10</span>), s=<span class="number">100</span>))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1.png" style="zoom:80%;">
+
+<p>这里选择y表示同意安装相关软件包</p>
+<p><strong>conda activate tensorflow</strong>进入tensorflow虚拟环境环境</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">conda <span class="built_in">activate</span> tensorflow</span><br></pre></td></tr></table></figure>
 
 
 
-<p>查看数据集：</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310630(1).jpg" alt="数据集"></p>
-<p>聚类结果：</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310722(1).jpg" alt="聚类结果"></p>
-<p>下表给出了聚类后分组的均值结果.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618309915(1).jpg" alt></p>
-<p>图中展示了在不同两个指标下样本的分布情况.</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Figure_1.png" style="zoom: 80%;">
+<p>输入以下代码安装深度学习软件包</p>
+<p><strong>conda install cudatoolkit=10.1</strong></p>
+<p><strong>conda install cudnn=7.6</strong></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda install <span class="attribute">cudatoolkit</span>=10.1</span><br><span class="line"></span><br><span class="line">conda install <span class="attribute">cudnn</span>=7.6</span><br></pre></td></tr></table></figure>
 
-<h2 id="算法优缺点"><a href="#算法优缺点" class="headerlink" title="算法优缺点"></a>算法优缺点</h2><h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ol>
-<li>不需要先验地指定簇的个数；</li>
-<li>可以处理任意形状大小的簇，且结果相对而言优于K均值聚类；</li>
-<li>基于密度定义，对噪音不敏感，可检测出数据异常点.</li>
-</ol>
-<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ol>
-<li>高维数据有些困难；</li>
-<li>sklearn中效率较低</li>
-<li>对于密度不均匀、距离相差较大的数据集，聚类结果较差；</li>
-<li>调参较为复杂，需要多次尝试，不同的参数组合对最终结果影响较大.</li>
-</ol>
-<h2 id="算法改进：自适应的DBSCAN算法"><a href="#算法改进：自适应的DBSCAN算法" class="headerlink" title="算法改进：自适应的DBSCAN算法"></a>算法改进：自适应的DBSCAN算法</h2><p>由于DBSCAN算法对eps和min_sample两个参数十分敏感，参数的确定是既重要又困难的事情，有学者进行了自适应确定DBSCAN算法参数的研究，即通过数据集自动确定两个参数.相应论文可以在知网查阅.</p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">李文杰, 闫世强, 蒋莹,等. 自适应确定DBSCAN算法参数的算法研究[J]. 计算机工程与应用, 2019, 55(05):1-7.</span><br></pre></td></tr></table></figure>
+<p>如果两条安装语句报错，可能是电脑硬件不支持英伟达GPU，直接跳过这两步，安装tensorflow.</p>
+<p><strong>pip install tensflow==2.1</strong></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">pip install <span class="attribute">tensflow</span>==2.1</span><br></pre></td></tr></table></figure>
+
+<p>默认Google源，下载可能会很慢.</p>
+<p>这里注意要指定tensorflow为2.1版本，不然默认安装的是2.3版本，后续使用一些函数可能会报错，如tf.Variable(),如果已经安装了tensorflow2.3并且出现函数报错，可卸载重新安装2.1版本</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">pip</span> <span class="string">uninstall tensorflow</span></span><br><span class="line"><span class="attr">pip</span> <span class="string">install tensorflow==2.1</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，进入python验证是否成功</p>
+<p>依次输入</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">python</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight elm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tf</span><span class="selector-class">.__version__</span></span><br></pre></td></tr></table></figure>
+
+
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607067507(1).jpg" style="zoom:80%;">
+
+<p>如果显示2.1.0表示安装成功.</p>
+<h2 id="3-PyCharm集成开发环境"><a href="#3-PyCharm集成开发环境" class="headerlink" title="3. PyCharm集成开发环境"></a>3. PyCharm集成开发环境</h2><p><a href="https://www.jetbrains.com/" target="_blank" rel="noopener">PyCharm官网</a></p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212.jpg" style="zoom: 50%;">
+
+
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212(1).jpg" style="zoom: 50%;">
+
+<p>下载社区版PyCharm</p>
+<p>打开安装包进行安装</p>
+<p>这里右侧的添加环境变量要<strong>！勾选</strong>，左侧根据个人习惯(可以<strong>都选上！</strong>)</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068405(1).jpg" alt></p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068602(1).png" alt></p>
+<p>这里需要重启电脑</p>
+<p>重启后打开PYCharm，新建工程，可以使用默认路径，文件夹命名‘’AI‘’，设置环境变量</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069116(1).jpg" style="zoom:67%;">
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069143(1).jpg" style="zoom:67%;">
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069206(1).jpg" style="zoom:67%;">
+
+<p>新建文件</p>
+<p>右击文件夹AI–&gt;New–&gt;File</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069401.jpg" alt></p>
+<p>命名为test.py</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069432(1).jpg" alt></p>
+<p>输入测试代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">tensorflow_version=tf.__version__</span><br><span class="line">gpu_available = tf.test.is_gpu_available()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"tensorflow version:"</span>, tensorflow_version, <span class="string">"\tGPU available:"</span>, gpu_available)</span><br><span class="line"></span><br><span class="line">a = tf.constant([<span class="number">2.0</span>, <span class="number">2.0</span>], name=<span class="string">'a'</span>)</span><br><span class="line">b = tf.constant([<span class="number">4.0</span>, <span class="number">2.0</span>], name=<span class="string">'b'</span>)</span><br><span class="line">result = tf.add(a, b, name=<span class="string">'add'</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069567(1).jpg" style="zoom: 80%;">
+
+<p>点击<strong>Run ‘test’</strong>，或者<strong>Ctrl+Shift+F10</strong>运行代码</p>
+<p>如果出现<strong>tf.tensor</strong>,说明开发环境已安装成功.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069751(1).png" alt></p>
+<p>后续需要安装一些必要的包，如sklearn,numpy,matplotlib等，点击下方Terminal出现操作台，输入相应下载命令即可.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607342902(1).png" alt></p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> sklearn</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> numpy</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> matplotlib</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
-        <category>机器学习</category>
+        <category>Tensorflow学习笔记</category>
       </categories>
       <tags>
-        <tag>python</tag>
-        <tag>聚类算法</tag>
+        <tag>TensorFlow</tag>
+        <tag>软件安装</tag>
       </tags>
   </entry>
   <entry>
@@ -319,103 +419,129 @@
       </tags>
   </entry>
   <entry>
-    <title>Windows10安装TensorFlow</title>
-    <url>/daytoy/2020/12/04/Windows10%E5%AE%89%E8%A3%85TensorFlow/</url>
-    <content><![CDATA[<h2 id="1-Anaconda下载及安装"><a href="#1-Anaconda下载及安装" class="headerlink" title="1. Anaconda下载及安装"></a>1. Anaconda下载及安装</h2><p><a href="https://www.anaconda.com/products/individual#macos" target="_blank" rel="noopener">Anaconda官网</a></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.png" alt></p>
+    <title>python机器学习之鸢尾花分类问题</title>
+    <url>/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p><font size="4" face="楷体"><strong>已知：</strong>鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm.</font></p>
+<p><font size="4" face="楷体"><strong>目标：</strong>构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.</font></p>
 <a id="more"></a>
 
-<p>下载Windows的相应版本</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052(1).jpg" alt></p>
-<p>下载安装包后双击按引导安装</p>
-<p>这里要<strong>勾选!</strong>将Anaconda加入环境变量.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066052.jpg" alt></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066358(1).jpg" alt></p>
-<p>等待安装完成.</p>
-<h2 id="2-TensorFlow安装"><a href="#2-TensorFlow安装" class="headerlink" title="2. TensorFlow安装"></a>2. TensorFlow安装</h2><p>开始–&gt;Anaconda3(64-bit)–&gt;Anaconda Prompt(Anaconda3)</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607066505(1).jpg" style="zoom: 67%;">
+<p><font size="4" face="楷体"><strong>分析：</strong>有已知品种的测量数据，这是一个监督学习问题，数据集中每朵花分属于三个类别，这是三分类问题.</font></p>
+<p><font size="4" face="楷体">以下代码均在 <strong>Jupyter Notebook</strong>  中编写及运行.</font></p>
+<p><font size="5" face="楷体"> 必要的库调用</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> mglearn</span><br></pre></td></tr></table></figure>
 
-<p>用*<em>conda create -n *</em>新建一个名为tensorflow的环境，用python3.6版本(3.7也可)</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda create -n tensorflow <span class="attribute">python</span>=3.6</span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">mglearn库可在Jupyter Notebook 代码块中直接运行以下命令行下载，其它的库下载方式同理，下载成功后即可调用.</font></p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> mglearn</span><br></pre></td></tr></table></figure>
 
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1.png" style="zoom:80%;">
+<p><font size="5" face="楷体">数据准备</font></p>
+<p><font size="4" face="楷体">数据集包含在scikit-learn的datasets模块中，可调用load_iris函数加载数据.<br>    </font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line">iris_dataset=load_iris()</span><br><span class="line"><span class="comment">#这里返回的是Bunch对象，与字典类似，包含键和值.</span></span><br></pre></td></tr></table></figure>
 
-<p>这里选择y表示同意安装相关软件包</p>
-<p><strong>conda activate tensorflow</strong>进入tensorflow虚拟环境环境</p>
-<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">conda <span class="built_in">activate</span> tensorflow</span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">利用print和.format方法可以查看数据集的相关信息.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Keys of iris_dataset:\n&#123;&#125;'</span>.format(iris_dataset.keys()))</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">Keys of iris_dataset:</span><br><span class="line"><span class="function"><span class="title">dict_keys</span><span class="params">([<span class="string">'data'</span>, <span class="string">'target'</span>, <span class="string">'frame'</span>, <span class="string">'target_names'</span>, <span class="string">'DESCR'</span>, <span class="string">'feature_names'</span>, <span class="string">'filename'</span>])</span></span></span><br></pre></td></tr></table></figure>
 
+<p><font size="4" face="楷体">DESCR键对应的值是数据集的简要说明.</font></p>
+<p><font size="4" face="楷体">targets_names键对应的值是字符串数组，包含预测花的品种:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Target names:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>]))</span><br></pre></td></tr></table></figure>
 
-<p>输入以下代码安装深度学习软件包</p>
-<p><strong>conda install cudatoolkit=10.1</strong></p>
-<p><strong>conda install cudnn=7.6</strong></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">conda install <span class="attribute">cudatoolkit</span>=10.1</span><br><span class="line"></span><br><span class="line">conda install <span class="attribute">cudnn</span>=7.6</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Target</span> <span class="selector-tag">names</span>: <span class="selector-attr">[<span class="string">'setosa'</span> <span class="string">'versicolor'</span> <span class="string">'virginica'</span>]</span></span><br></pre></td></tr></table></figure>
 
-<p>如果两条安装语句报错，可能是电脑硬件不支持英伟达GPU，直接跳过这两步，安装tensorflow.</p>
-<p><strong>pip install tensflow==2.1</strong></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">pip install <span class="attribute">tensflow</span>==2.1</span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">feature_names键对应值是字符串列表，对每个特征进行说明:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'feature_names'</span>])</span><br></pre></td></tr></table></figure>
 
-<p>默认Google源，下载可能会很慢.</p>
-<p>这里注意要指定tensorflow为2.1版本，不然默认安装的是2.3版本，后续使用一些函数可能会报错，如tf.Variable(),如果已经安装了tensorflow2.3并且出现函数报错，可卸载重新安装2.1版本</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">pip</span> <span class="string">uninstall tensorflow</span></span><br><span class="line"><span class="attr">pip</span> <span class="string">install tensorflow==2.1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">[<span class="symbol">'sepal</span> length (<span class="name">cm</span>)', <span class="symbol">'sepal</span> width (<span class="name">cm</span>)', <span class="symbol">'petal</span> length (<span class="name">cm</span>)', <span class="symbol">'petal</span> width (<span class="name">cm</span>)']</span><br></pre></td></tr></table></figure>
 
-<p>安装完成后，进入python验证是否成功</p>
-<p>依次输入</p>
-<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">python</span></span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">数据包含在target和data字段中，data是测量数据，格式为Numpy数组:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(type(iris_dataset[<span class="string">'data'</span>]))</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight elm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'numpy.ndarray'</span>&gt;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tf</span><span class="selector-class">.__version__</span></span><br></pre></td></tr></table></figure>
+<p><font size="4" face="楷体">data数组每行对应一朵花，列代表每朵花四个测量数据:</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">iris_dataset[<span class="string">'data'</span>].shape</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">150</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
 
+<p><font size="4" face="楷体">数组中共包含150朵不同的花测量数据.</font></p>
+<p><font size="4" face="楷体">查看前5朵花数据：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'data'</span>][:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
 
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607067507(1).jpg" style="zoom:80%;">
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[[<span class="number">5.1</span> <span class="number">3.5</span> <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.9</span> <span class="number">3.</span>  <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.7</span> <span class="number">3.2</span> <span class="number">1.3</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.6</span> <span class="number">3.1</span> <span class="number">1.5</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">5.</span>  <span class="number">3.6</span> <span class="number">1.4</span> <span class="number">0.2</span>]]</span><br></pre></td></tr></table></figure>
 
-<p>如果显示2.1.0表示安装成功.</p>
-<h2 id="3-PyCharm集成开发环境"><a href="#3-PyCharm集成开发环境" class="headerlink" title="3. PyCharm集成开发环境"></a>3. PyCharm集成开发环境</h2><p><a href="https://www.jetbrains.com/" target="_blank" rel="noopener">PyCharm官网</a></p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212.jpg" style="zoom: 50%;">
+<p><font size="4" face="楷体">target数组包含每朵花测量的品种，是一维Numpy数组,每朵花对应其中一个数据：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>].shape)</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">150</span>,)</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>])</span><br></pre></td></tr></table></figure>
 
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068212(1).jpg" style="zoom: 50%;">
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
 
-<p>下载社区版PyCharm</p>
-<p>打开安装包进行安装</p>
-<p>这里右侧的添加环境变量要<strong>！勾选</strong>，左侧根据个人习惯(可以<strong>都选上！</strong>)</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068405(1).jpg" alt></p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607068602(1).png" alt></p>
-<p>这里需要重启电脑</p>
-<p>重启后打开PYCharm，新建工程，可以使用默认路径，文件夹命名‘’AI‘’，设置环境变量</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069116(1).jpg" style="zoom:67%;">
+<p><font size="4" face="楷体">品种已转换成0~2整数.</font></p>
+<p><font size="5" face="楷体">训练数据与测试数据</font></p>
+<p><font size="4" face="楷体">将收集好的带标签数据按比例分成两部分:<strong>训练数据</strong>（构建机器学习模型）、<strong>测试数据</strong>（评估模型性能）</font></p>
+<p><font size="4" face="楷体">由于原始数据点是按标签排序的，如果只取数据后一部分数据作测试，无法评估模型好坏，因此要将数据打乱，确保测试数据包含所有类别的数据.</font></p>
+<p><font size="4" face="楷体">这里用到了scikit-learn库中的train_test_split函数，将数据集打乱拆分，将75%数据作为训练集，其余25%数据为测试集.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069143(1).jpg" style="zoom:67%;">
+<p><font size="4" face="楷体">这里利用random_state参数指定随机数升成器种子，确保每次运行函数输出固定不变.</font></p>
+<p><font size="4" face="楷体">查看输出数据的形状</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'X_train shape:&#123;&#125;'</span>.format(X_train.shape))</span><br><span class="line">print(<span class="string">'y_train shape:&#123;&#125;'</span>.format(y_train.shape))</span><br></pre></td></tr></table></figure>
 
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069206(1).jpg" style="zoom:67%;">
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">X_train shape:(<span class="number">112</span>, <span class="number">4</span>)</span><br><span class="line">y_train shape:(<span class="number">112</span>,)</span><br></pre></td></tr></table></figure>
 
-<p>新建文件</p>
-<p>右击文件夹AI–&gt;New–&gt;File</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069401.jpg" alt></p>
-<p>命名为test.py</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069432(1).jpg" alt></p>
-<p>输入测试代码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">tensorflow_version=tf.__version__</span><br><span class="line">gpu_available = tf.test.is_gpu_available()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"tensorflow version:"</span>, tensorflow_version, <span class="string">"\tGPU available:"</span>, gpu_available)</span><br><span class="line"></span><br><span class="line">a = tf.constant([<span class="number">2.0</span>, <span class="number">2.0</span>], name=<span class="string">'a'</span>)</span><br><span class="line">b = tf.constant([<span class="number">4.0</span>, <span class="number">2.0</span>], name=<span class="string">'b'</span>)</span><br><span class="line">result = tf.add(a, b, name=<span class="string">'add'</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(X_test.shape)</span><br><span class="line">print(y_test.shape)</span><br></pre></td></tr></table></figure>
 
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069567(1).jpg" style="zoom: 80%;">
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">38</span>, <span class="number">4</span>)</span><br><span class="line">(<span class="name">38</span>,)</span><br></pre></td></tr></table></figure>
 
-<p>点击<strong>Run ‘test’</strong>，或者<strong>Ctrl+Shift+F10</strong>运行代码</p>
-<p>如果出现<strong>tf.tensor</strong>,说明开发环境已安装成功.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607069751(1).png" alt></p>
-<p>后续需要安装一些必要的包，如sklearn,numpy,matplotlib等，点击下方Terminal出现操作台，输入相应下载命令即可.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1607342902(1).png" alt></p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> sklearn</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> numpy</span><br><span class="line"></span><br><span class="line">pip <span class="keyword">install</span> matplotlib</span><br></pre></td></tr></table></figure>
+<p><font size="5" face="楷体">构建模型:k近邻算法</font></p>
+<p><font size="4" face="楷体">含义：考虑训练集中与新数据最近的任意k个邻居，而不是只考虑最近的一个.用这些邻居中数量最多的类别作出预测.<br></font></p>
+<p><font size="4" face="楷体">现在只考虑1个邻居的情况.</font></p>
+<p><font size="4" face="楷体">scikit-learn中所有机器学习模型都是在各自类中实现的，k近邻算法在neighbors模块的KNeighborsClassifiter类中实现.<br>    将类实化为对象需要设置模型参数.<br></font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(n_neighbors=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">knn对象对算法进行了封装，既包括用训练数据构建模型的算法，也包括对新数据点进行预测的算法，还包括算法从训练数据提取的信息.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#基于训练集构建模型，需要调用knn对象的fit方法</span></span><br><span class="line">knn.fit(X_train,y_train)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果：</font></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">KNeighborsClassifier</span><span class="params">(n_neighbors=<span class="number">1</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">作出预测</font></p>
+<p><font size="4" face="楷体">对一朵新的已知测量数据的鸢尾花进行预测:</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">x_new=np.<span class="built_in">array</span>([[<span class="number">5</span>,<span class="number">2.9</span>,<span class="number">1</span>,<span class="number">0.2</span>]])</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">调用knn对象predict方法进行预测：</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">prediction=knn.predict(x_new)</span><br><span class="line">print(<span class="string">'Prediction:&#123;&#125;'</span>.format(prediction))</span><br><span class="line">print(<span class="string">'Predicted target name:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>][prediction]))</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">预测结果：</font></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Prediction</span>:<span class="selector-attr">[0]</span></span><br><span class="line"><span class="selector-tag">Predicted</span> <span class="selector-tag">target</span> <span class="selector-tag">name</span>:<span class="selector-attr">[<span class="string">'setosa'</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="5" face="楷体">评估模型</font></p>
+<p><font size="4" face="楷体">对测试数据进行预测并与实际标签对比.</font></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_pred=knn.predict(X_test)</span><br><span class="line">print(y_pred)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果:</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">使用knn对象的score对象计算测试集精度：</font></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(score)</span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">运行结果</font></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">0.9736842105263158</span></span><br></pre></td></tr></table></figure>
+
+<p><font size="4" face="楷体">这个模型测试集的精度约为0.97，就是说对于测试集中鸢尾花的预测有97%是正确的.高精度意味着模型可信.</font></p>
+<p><font size="5" face="楷体">汇总</font></p>
+<p><font size="4" face="楷体">整个训练和评估过程所必需的代码：</font></p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets import load_iris</span><br><span class="line"><span class="attribute">iris_dataset</span>=load_iris()</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection import train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],<span class="attribute">random_state</span>=0)</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors import KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(<span class="attribute">n_neighbors</span>=1)</span><br><span class="line">knn.fit(X_train,y_train)</span><br><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">"Test set score:&#123;&#125;"</span>.format(score))</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
-        <category>Tensorflow学习笔记</category>
+        <category>python学习笔记</category>
       </categories>
       <tags>
-        <tag>TensorFlow</tag>
-        <tag>软件安装</tag>
+        <tag>python</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -563,132 +689,6 @@
       </categories>
       <tags>
         <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python机器学习之鸢尾花分类问题</title>
-    <url>/daytoy/2020/11/29/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p><font size="4" face="楷体"><strong>已知：</strong>鸢尾花有三个品种：setosa，versicolor,virginica，给出鸢尾花花瓣长度、宽度及花萼的长度宽度作为测量数据，测量结果单位都是cm.</font></p>
-<p><font size="4" face="楷体"><strong>目标：</strong>构建机器学习模型，从已知品种的鸢尾花测量数据中进行学习，预测新鸢尾花的品种.</font></p>
-<a id="more"></a>
-
-<p><font size="4" face="楷体"><strong>分析：</strong>有已知品种的测量数据，这是一个监督学习问题，数据集中每朵花分属于三个类别，这是三分类问题.</font></p>
-<p><font size="4" face="楷体">以下代码均在 <strong>Jupyter Notebook</strong>  中编写及运行.</font></p>
-<p><font size="5" face="楷体"> 必要的库调用</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> mglearn</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">mglearn库可在Jupyter Notebook 代码块中直接运行以下命令行下载，其它的库下载方式同理，下载成功后即可调用.</font></p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> mglearn</span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">数据准备</font></p>
-<p><font size="4" face="楷体">数据集包含在scikit-learn的datasets模块中，可调用load_iris函数加载数据.<br>    </font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line">iris_dataset=load_iris()</span><br><span class="line"><span class="comment">#这里返回的是Bunch对象，与字典类似，包含键和值.</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">利用print和.format方法可以查看数据集的相关信息.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Keys of iris_dataset:\n&#123;&#125;'</span>.format(iris_dataset.keys()))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">Keys of iris_dataset:</span><br><span class="line"><span class="function"><span class="title">dict_keys</span><span class="params">([<span class="string">'data'</span>, <span class="string">'target'</span>, <span class="string">'frame'</span>, <span class="string">'target_names'</span>, <span class="string">'DESCR'</span>, <span class="string">'feature_names'</span>, <span class="string">'filename'</span>])</span></span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">DESCR键对应的值是数据集的简要说明.</font></p>
-<p><font size="4" face="楷体">targets_names键对应的值是字符串数组，包含预测花的品种:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'Target names:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>]))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Target</span> <span class="selector-tag">names</span>: <span class="selector-attr">[<span class="string">'setosa'</span> <span class="string">'versicolor'</span> <span class="string">'virginica'</span>]</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">feature_names键对应值是字符串列表，对每个特征进行说明:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'feature_names'</span>])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">[<span class="symbol">'sepal</span> length (<span class="name">cm</span>)', <span class="symbol">'sepal</span> width (<span class="name">cm</span>)', <span class="symbol">'petal</span> length (<span class="name">cm</span>)', <span class="symbol">'petal</span> width (<span class="name">cm</span>)']</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">数据包含在target和data字段中，data是测量数据，格式为Numpy数组:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(type(iris_dataset[<span class="string">'data'</span>]))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'numpy.ndarray'</span>&gt;</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">data数组每行对应一朵花，列代表每朵花四个测量数据:</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">iris_dataset[<span class="string">'data'</span>].shape</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">(<span class="number">150</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">数组中共包含150朵不同的花测量数据.</font></p>
-<p><font size="4" face="楷体">查看前5朵花数据：</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'data'</span>][:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[[<span class="number">5.1</span> <span class="number">3.5</span> <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.9</span> <span class="number">3.</span>  <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.7</span> <span class="number">3.2</span> <span class="number">1.3</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.6</span> <span class="number">3.1</span> <span class="number">1.5</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">5.</span>  <span class="number">3.6</span> <span class="number">1.4</span> <span class="number">0.2</span>]]</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">target数组包含每朵花测量的品种，是一维Numpy数组,每朵花对应其中一个数据：</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>].shape)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">150</span>,)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(iris_dataset[<span class="string">'target'</span>])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">品种已转换成0~2整数.</font></p>
-<p><font size="5" face="楷体">训练数据与测试数据</font></p>
-<p><font size="4" face="楷体">将收集好的带标签数据按比例分成两部分:<strong>训练数据</strong>（构建机器学习模型）、<strong>测试数据</strong>（评估模型性能）</font></p>
-<p><font size="4" face="楷体">由于原始数据点是按标签排序的，如果只取数据后一部分数据作测试，无法评估模型好坏，因此要将数据打乱，确保测试数据包含所有类别的数据.</font></p>
-<p><font size="4" face="楷体">这里用到了scikit-learn库中的train_test_split函数，将数据集打乱拆分，将75%数据作为训练集，其余25%数据为测试集.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">这里利用random_state参数指定随机数升成器种子，确保每次运行函数输出固定不变.</font></p>
-<p><font size="4" face="楷体">查看输出数据的形状</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'X_train shape:&#123;&#125;'</span>.format(X_train.shape))</span><br><span class="line">print(<span class="string">'y_train shape:&#123;&#125;'</span>.format(y_train.shape))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">X_train shape:(<span class="number">112</span>, <span class="number">4</span>)</span><br><span class="line">y_train shape:(<span class="number">112</span>,)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(X_test.shape)</span><br><span class="line">print(y_test.shape)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">38</span>, <span class="number">4</span>)</span><br><span class="line">(<span class="name">38</span>,)</span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">构建模型:k近邻算法</font></p>
-<p><font size="4" face="楷体">含义：考虑训练集中与新数据最近的任意k个邻居，而不是只考虑最近的一个.用这些邻居中数量最多的类别作出预测.<br></font></p>
-<p><font size="4" face="楷体">现在只考虑1个邻居的情况.</font></p>
-<p><font size="4" face="楷体">scikit-learn中所有机器学习模型都是在各自类中实现的，k近邻算法在neighbors模块的KNeighborsClassifiter类中实现.<br>    将类实化为对象需要设置模型参数.<br></font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(n_neighbors=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">knn对象对算法进行了封装，既包括用训练数据构建模型的算法，也包括对新数据点进行预测的算法，还包括算法从训练数据提取的信息.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#基于训练集构建模型，需要调用knn对象的fit方法</span></span><br><span class="line">knn.fit(X_train,y_train)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">运行结果：</font></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">KNeighborsClassifier</span><span class="params">(n_neighbors=<span class="number">1</span>)</span></span></span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">作出预测</font></p>
-<p><font size="4" face="楷体">对一朵新的已知测量数据的鸢尾花进行预测:</font></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">x_new=np.<span class="built_in">array</span>([[<span class="number">5</span>,<span class="number">2.9</span>,<span class="number">1</span>,<span class="number">0.2</span>]])</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">调用knn对象predict方法进行预测：</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">prediction=knn.predict(x_new)</span><br><span class="line">print(<span class="string">'Prediction:&#123;&#125;'</span>.format(prediction))</span><br><span class="line">print(<span class="string">'Predicted target name:&#123;&#125;'</span>.format(iris_dataset[<span class="string">'target_names'</span>][prediction]))</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">预测结果：</font></p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">Prediction</span>:<span class="selector-attr">[0]</span></span><br><span class="line"><span class="selector-tag">Predicted</span> <span class="selector-tag">target</span> <span class="selector-tag">name</span>:<span class="selector-attr">[<span class="string">'setosa'</span>]</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="5" face="楷体">评估模型</font></p>
-<p><font size="4" face="楷体">对测试数据进行预测并与实际标签对比.</font></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_pred=knn.predict(X_test)</span><br><span class="line">print(y_pred)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">运行结果:</font></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">[<span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line"> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">使用knn对象的score对象计算测试集精度：</font></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(score)</span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">运行结果</font></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">0.9736842105263158</span></span><br></pre></td></tr></table></figure>
-
-<p><font size="4" face="楷体">这个模型测试集的精度约为0.97，就是说对于测试集中鸢尾花的预测有97%是正确的.高精度意味着模型可信.</font></p>
-<p><font size="5" face="楷体">汇总</font></p>
-<p><font size="4" face="楷体">整个训练和评估过程所必需的代码：</font></p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets import load_iris</span><br><span class="line"><span class="attribute">iris_dataset</span>=load_iris()</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection import train_test_split</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(</span><br><span class="line">    iris_dataset[<span class="string">'data'</span>],iris_dataset[<span class="string">'target'</span>],<span class="attribute">random_state</span>=0)</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors import KNeighborsClassifier</span><br><span class="line">knn = KNeighborsClassifier(<span class="attribute">n_neighbors</span>=1)</span><br><span class="line">knn.fit(X_train,y_train)</span><br><span class="line"><span class="attribute">score</span>=knn.score(X_test,y_test)</span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">"Test set score:&#123;&#125;"</span>.format(score))</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>python学习笔记</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -887,30 +887,6 @@
         <tag>深度学习</tag>
         <tag>Tensorflow</tag>
         <tag>人工智能</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>稀疏自编码器重构数据点的Matlab实现</title>
-    <url>/daytoy/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<p>以下代码源自MathWorks官方文档<a href="https://www.mathworks.com/help/deeplearning/ref/trainautoencoder.html?s_tid=gn_loc_drop" target="_blank" rel="noopener">trainAutoencoder</a>的Examples.目标是实现1000个数据点的重构,并给出重构与原数据对比图.</p>
-<a id="more"></a>
-
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">%Reconstruct Observations Using Sparse Autoencoder</span></span><br><span class="line"><span class="comment">%用稀疏自编码器重建对象</span></span><br><span class="line"><span class="comment">% 生成训练集，1000个点</span></span><br><span class="line">rng(<span class="number">0</span>,<span class="string">'twister'</span>); <span class="comment">%保证可重复性</span></span><br><span class="line">n = <span class="number">1000</span>;         <span class="comment">%训练数据个数</span></span><br><span class="line">r = <span class="built_in">linspace</span>(<span class="number">-10</span>,<span class="number">10</span>,n)';      <span class="comment">%训练集区间</span></span><br><span class="line">x = <span class="number">1</span> + r*<span class="number">5e-2</span> + <span class="built_in">sin</span>(r)./r + <span class="number">0.2</span>*<span class="built_in">randn</span>(n,<span class="number">1</span>); <span class="comment">%取值</span></span><br><span class="line"><span class="comment">% 使用训练数据训练自动编码器</span></span><br><span class="line">hiddenSize = <span class="number">25</span>;    <span class="comment">%隐藏单元数</span></span><br><span class="line">autoenc = trainAutoencoder(x',hiddenSize,...</span><br><span class="line">        <span class="string">'EncoderTransferFunction'</span>,<span class="string">'satlin'</span>,... <span class="comment">% 编码函数</span></span><br><span class="line">        <span class="string">'DecoderTransferFunction'</span>,<span class="string">'purelin'</span>,...<span class="comment">% 解码函数</span></span><br><span class="line">        <span class="string">'L2WeightRegularization'</span>,<span class="number">0.01</span>,...      <span class="comment">% L2权重调整器的系数</span></span><br><span class="line">        <span class="string">'SparsityRegularization'</span>,<span class="number">4</span>,...         <span class="comment">% 稀疏正则项的系数   </span></span><br><span class="line">        <span class="string">'SparsityProportion'</span>,<span class="number">0.10</span>);            <span class="comment">% 稀疏比例</span></span><br><span class="line"><span class="comment">% 生成测试集,1000个点</span></span><br><span class="line">n = <span class="number">1000</span>;</span><br><span class="line">r = <span class="built_in">sort</span>(<span class="number">-10</span> + <span class="number">20</span>*<span class="built_in">rand</span>(n,<span class="number">1</span>));</span><br><span class="line">xtest = <span class="number">1</span> + r*<span class="number">5e-2</span> + <span class="built_in">sin</span>(r)./r + <span class="number">0.4</span>*<span class="built_in">randn</span>(n,<span class="number">1</span>);</span><br><span class="line"><span class="comment">%利用训练后的网络对测试集进行预测</span></span><br><span class="line">xReconstructed = predict(autoenc,xtest');</span><br><span class="line"><span class="comment">% 绘制结果图</span></span><br><span class="line"><span class="built_in">figure</span>;</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>);<span class="built_in">plot</span>(xtest,<span class="string">'r.'</span>);title(<span class="string">'测试数据'</span>)</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>);<span class="built_in">plot</span>(xReconstructed,<span class="string">'go'</span>); title(<span class="string">'重构数据'</span>)</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,[<span class="number">3</span>,<span class="number">4</span>]);</span><br><span class="line"><span class="built_in">plot</span>(xtest,<span class="string">'r.'</span>);<span class="comment">% 红色圆点代表原数据</span></span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"><span class="built_in">plot</span>(xReconstructed,<span class="string">'go'</span>); <span class="comment">% 绿色圆圈代表新建数据</span></span><br><span class="line">title(<span class="string">'新旧数据对比'</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>运行结果</strong></p>
-<p>trainAutoencoder函数在运行时会显示训练窗口.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E8%AE%AD%E7%BB%83%E7%AA%97%E5%8F%A3.jpg" alt></p>
-<p>重构数据与原数据前后对比.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/compare.jpg" alt></p>
-<p>从图中可以看到重构数据与原数据的分布趋势基本相同，数据点位置与原数据也基本重合，稀疏自编码器对数据点的重构效果较好。</p>
-]]></content>
-      <categories>
-        <category>智能计算</category>
-      </categories>
-      <tags>
-        <tag>Matlab</tag>
-        <tag>机器学习</tag>
-        <tag>自编码器</tag>
       </tags>
   </entry>
   <entry>
@@ -1222,6 +1198,30 @@
         <tag>深度学习</tag>
         <tag>Tensorflow</tag>
         <tag>人工智能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>稀疏自编码器重构数据点的Matlab实现</title>
+    <url>/daytoy/2020/11/28/%E7%A8%80%E7%96%8F%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E9%87%8D%E6%9E%84%E6%95%B0%E6%8D%AE%E7%82%B9%E7%9A%84Matlab%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>以下代码源自MathWorks官方文档<a href="https://www.mathworks.com/help/deeplearning/ref/trainautoencoder.html?s_tid=gn_loc_drop" target="_blank" rel="noopener">trainAutoencoder</a>的Examples.目标是实现1000个数据点的重构,并给出重构与原数据对比图.</p>
+<a id="more"></a>
+
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">%Reconstruct Observations Using Sparse Autoencoder</span></span><br><span class="line"><span class="comment">%用稀疏自编码器重建对象</span></span><br><span class="line"><span class="comment">% 生成训练集，1000个点</span></span><br><span class="line">rng(<span class="number">0</span>,<span class="string">'twister'</span>); <span class="comment">%保证可重复性</span></span><br><span class="line">n = <span class="number">1000</span>;         <span class="comment">%训练数据个数</span></span><br><span class="line">r = <span class="built_in">linspace</span>(<span class="number">-10</span>,<span class="number">10</span>,n)';      <span class="comment">%训练集区间</span></span><br><span class="line">x = <span class="number">1</span> + r*<span class="number">5e-2</span> + <span class="built_in">sin</span>(r)./r + <span class="number">0.2</span>*<span class="built_in">randn</span>(n,<span class="number">1</span>); <span class="comment">%取值</span></span><br><span class="line"><span class="comment">% 使用训练数据训练自动编码器</span></span><br><span class="line">hiddenSize = <span class="number">25</span>;    <span class="comment">%隐藏单元数</span></span><br><span class="line">autoenc = trainAutoencoder(x',hiddenSize,...</span><br><span class="line">        <span class="string">'EncoderTransferFunction'</span>,<span class="string">'satlin'</span>,... <span class="comment">% 编码函数</span></span><br><span class="line">        <span class="string">'DecoderTransferFunction'</span>,<span class="string">'purelin'</span>,...<span class="comment">% 解码函数</span></span><br><span class="line">        <span class="string">'L2WeightRegularization'</span>,<span class="number">0.01</span>,...      <span class="comment">% L2权重调整器的系数</span></span><br><span class="line">        <span class="string">'SparsityRegularization'</span>,<span class="number">4</span>,...         <span class="comment">% 稀疏正则项的系数   </span></span><br><span class="line">        <span class="string">'SparsityProportion'</span>,<span class="number">0.10</span>);            <span class="comment">% 稀疏比例</span></span><br><span class="line"><span class="comment">% 生成测试集,1000个点</span></span><br><span class="line">n = <span class="number">1000</span>;</span><br><span class="line">r = <span class="built_in">sort</span>(<span class="number">-10</span> + <span class="number">20</span>*<span class="built_in">rand</span>(n,<span class="number">1</span>));</span><br><span class="line">xtest = <span class="number">1</span> + r*<span class="number">5e-2</span> + <span class="built_in">sin</span>(r)./r + <span class="number">0.4</span>*<span class="built_in">randn</span>(n,<span class="number">1</span>);</span><br><span class="line"><span class="comment">%利用训练后的网络对测试集进行预测</span></span><br><span class="line">xReconstructed = predict(autoenc,xtest');</span><br><span class="line"><span class="comment">% 绘制结果图</span></span><br><span class="line"><span class="built_in">figure</span>;</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>);<span class="built_in">plot</span>(xtest,<span class="string">'r.'</span>);title(<span class="string">'测试数据'</span>)</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>);<span class="built_in">plot</span>(xReconstructed,<span class="string">'go'</span>); title(<span class="string">'重构数据'</span>)</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,[<span class="number">3</span>,<span class="number">4</span>]);</span><br><span class="line"><span class="built_in">plot</span>(xtest,<span class="string">'r.'</span>);<span class="comment">% 红色圆点代表原数据</span></span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"><span class="built_in">plot</span>(xReconstructed,<span class="string">'go'</span>); <span class="comment">% 绿色圆圈代表新建数据</span></span><br><span class="line">title(<span class="string">'新旧数据对比'</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>运行结果</strong></p>
+<p>trainAutoencoder函数在运行时会显示训练窗口.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E8%AE%AD%E7%BB%83%E7%AA%97%E5%8F%A3.jpg" alt></p>
+<p>重构数据与原数据前后对比.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/compare.jpg" alt></p>
+<p>从图中可以看到重构数据与原数据的分布趋势基本相同，数据点位置与原数据也基本重合，稀疏自编码器对数据点的重构效果较好。</p>
+]]></content>
+      <categories>
+        <category>智能计算</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>机器学习</tag>
+        <tag>自编码器</tag>
       </tags>
   </entry>
 </search>
