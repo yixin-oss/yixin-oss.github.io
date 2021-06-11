@@ -1,125 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>DBSCAN聚类算法</title>
-    <url>/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="算法简介"><a href="#算法简介" class="headerlink" title="算法简介"></a>算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
-<p>在密集区域的点称为<strong>核心点</strong>，由DBSCAN的两个重要参数<strong>半径eps</strong>和<strong>最小采样点个数min_sample</strong>确定，其定义如下：如果在距一个给定数据点eps距离内至少有min_sample个数据点，那么这个数据点就是核心点。DBSCAN最终会将彼此距离小于eps的核心点分到同一簇中。</p>
-<a id="more"></a>
-
-<h3 id="算法过程描述"><a href="#算法过程描述" class="headerlink" title="算法过程描述"></a>算法过程描述</h3><p>首先任取一个点，找到这个点的距离小于等于eps的所有点，如果距起始点的距离在eps之内的数据点个数小于min_sample，那么这个点被标记为<strong>噪音点</strong>，也就是说它不属于任何簇。如果距离在eps之内的数据点个数大于min_sample，则这个点被标记为<strong>核心点</strong>，并分配一个新的<strong>簇标签</strong>。然后访问该点的所有eps以内的邻居，如果它们还没有被分配簇，那么就将刚才的簇标签分配给它们，如果它们也是核心点，那么继续依次访问其邻居，以此类推，否则即为<strong>边界点</strong>，不再访问其邻居。簇逐渐增大，直到簇的eps距离内没有更多的核心点为止。然后选取另一个尚未被访问的点，重复相同的过程。</p>
-<p>最后，一共有三种类型的点：核心点、边界点、噪音点。如果DBSCAN算法在特定数据集运行多次，那么核心点的聚类始终相同，同样的点也始终被标记为噪音点。但边界点可能与不止一个簇的核心点相邻，这与数据点的访问顺序有关。一般情况下，边界点较少，因此这种歧义并不是很重要。</p>
-<p>从上述描述中可以看到，DBSCAN算法不需要设置簇的个数，只需要确定两个参数eps、min_sample，实际上它们可以隐式地控制找到簇的个数。eps决定了点与点之间“接近”的含义，将eps设置过小，意味着没有核心点出现，可能导致所有点被标记为噪音点；eps设置过大，可能导致所有点形成单个簇。min_sample主要用于判断稀疏区域内点被标记为异常值还是形成自己的簇，决定了簇的最小尺寸。因此，两个参数的选取还是至关重要的。</p>
-<p><strong>注：</strong>采用缩放技术使数据特征具有相似的范围，有时会更便于找到eps较好的取值。</p>
-<h2 id="DBSCAN算法可视化展示"><a href="#DBSCAN算法可视化展示" class="headerlink" title="DBSCAN算法可视化展示"></a>DBSCAN算法可视化展示</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E5%87%A0%E4%BD%95%E7%9B%B4%E8%A7%82.png" alt></p>
-<p>DBSCAN聚类算法在二维平面中对数据点进行聚类的简化过程如图所示，选取min_sample=2，此时图中蓝色为噪音点，不属于任何簇；红色为核心点，黄色为边界点，它们均划分在同一簇中。</p>
-<p>国外有个网站，可以把DBSCAN的过程以<strong>动图</strong>展示出来，可以选择几种不同的数据集，还可以自行设置参数，很有趣.</p>
-<p><a href="https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/" target="_blank" rel="noopener">DBSCAN可视化网站</a></p>
-<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.jpg" style="zoom:80%;">
-
-<h3 id="算法实现-1"><a href="#算法实现-1" class="headerlink" title="算法实现"></a>算法实现</h3><p>DBSCAN可在python中的sklearn库调用实现，以下给出两个简单实例对算法的聚类效果进行展示.</p>
-<h4 id="实例一：半圆形数据分簇"><a href="#实例一：半圆形数据分簇" class="headerlink" title="实例一：半圆形数据分簇"></a>实例一：半圆形数据分簇</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_moons</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">X, y = make_moons(n_samples=<span class="number">200</span>, noise=<span class="number">0.05</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将数据缩放成平均值为0、方差为1</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">scaler.fit(X)</span><br><span class="line">X_scaled = scaler.transform(X)</span><br><span class="line"></span><br><span class="line">dbscan = DBSCAN()</span><br><span class="line">clusters = dbscan.fit_predict(X_scaled)</span><br><span class="line"><span class="comment">#绘制簇分配</span></span><br><span class="line">plt.scatter(X_scaled[:, <span class="number">0</span>], X_scaled[:, <span class="number">1</span>], c=clusters, s=<span class="number">60</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Feature 0"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Feature 1"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/two_moons.png" alt></p>
-<p>上图展示了在two_moons数据集上运行DBSCAN的结果，利用默认设置(eps=0.5)，算法找到了两个半圆形并将其分开.由于算法得到了2个簇，默认参数的设置效果似乎很好，若eps=0.2，将会得到8个簇，显然太多了；若eps=0.7，则会导致只有1个簇.</p>
-<h4 id="实例二：品牌啤酒聚类分析"><a href="#实例二：品牌啤酒聚类分析" class="headerlink" title="实例二：品牌啤酒聚类分析"></a>实例二：品牌啤酒聚类分析</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> colors</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入数据</span></span><br><span class="line">beer = pd.read_csv(<span class="string">'beer.txt'</span>, sep=<span class="string">' '</span>)</span><br><span class="line">print(beer)<span class="comment">#查看数据集</span></span><br><span class="line"></span><br><span class="line">X = beer[[<span class="string">'calories'</span>, <span class="string">'sodium'</span>, <span class="string">'alcohol'</span>, <span class="string">'cost'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置半径为10，最小样本量2</span></span><br><span class="line">db = DBSCAN(eps=<span class="number">10</span>, min_samples=<span class="number">2</span>).fit(X)</span><br><span class="line"></span><br><span class="line">labels = db.labels_</span><br><span class="line">beer[<span class="string">'cluster_db'</span>] = labels <span class="comment">#在数据集最后一列加上DBSCAN聚类后的结果</span></span><br><span class="line">beer.sort_values(<span class="string">'cluster_db'</span>)</span><br><span class="line">print(beer)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看根据DBSCAN聚类后的分组统计结果(均值)</span></span><br><span class="line">print(beer.groupby(<span class="string">'cluster_db'</span>).mean())</span><br><span class="line"></span><br><span class="line"><span class="comment">#画出在不同两个指标下样本的分布情况</span></span><br><span class="line">print(pd.plotting.scatter_matrix(X, figsize=(<span class="number">10</span>, <span class="number">10</span>), s=<span class="number">100</span>))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-
-
-<p>查看数据集：</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310630(1).jpg" alt="数据集"></p>
-<p>聚类结果：</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310722(1).jpg" alt="聚类结果"></p>
-<p>下表给出了聚类后分组的均值结果.</p>
-<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618309915(1).jpg" alt></p>
-<p>图中展示了在不同两个指标下样本的分布情况.</p>
-<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Figure_1.png" style="zoom: 80%;">
-
-<h2 id="算法优缺点"><a href="#算法优缺点" class="headerlink" title="算法优缺点"></a>算法优缺点</h2><h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ol>
-<li>不需要先验地指定簇的个数；</li>
-<li>可以处理任意形状大小的簇，且结果相对而言优于K均值聚类；</li>
-<li>基于密度定义，对噪音不敏感，可检测出数据异常点.</li>
-</ol>
-<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ol>
-<li>高维数据有些困难；</li>
-<li>sklearn中效率较低</li>
-<li>对于密度不均匀、距离相差较大的数据集，聚类结果较差；</li>
-<li>调参较为复杂，需要多次尝试，不同的参数组合对最终结果影响较大.</li>
-</ol>
-<h2 id="算法改进：自适应的DBSCAN算法"><a href="#算法改进：自适应的DBSCAN算法" class="headerlink" title="算法改进：自适应的DBSCAN算法"></a>算法改进：自适应的DBSCAN算法</h2><p>由于DBSCAN算法对eps和min_sample两个参数十分敏感，参数的确定是既重要又困难的事情，有学者进行了自适应确定DBSCAN算法参数的研究，即通过数据集自动确定两个参数.相应论文可以在知网查阅.</p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">李文杰, 闫世强, 蒋莹,等. 自适应确定DBSCAN算法参数的算法研究[J]. 计算机工程与应用, 2019, 55(05):1-7.</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>聚类算法</tag>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Matlab数据处理--数据降维</title>
-    <url>/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
-    <content><![CDATA[<p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
-<p>目前，常用的降维技术有两种，主成分分析、因子分析.</p>
-<a id="more"></a>
-
-<h2 id="一、主成分分析"><a href="#一、主成分分析" class="headerlink" title="一、主成分分析"></a>一、主成分分析</h2><p>有的问题变量之间存在相关性，它们包含的信息有所重叠，将变量进行线性组合后形成数量较少的新变量，新变量之间不相关，称为主成分.主成分反映原来变量的大量信息且所含信息不重叠，这种方法叫主成分分析.</p>
-<p>主成分分析用较少的变量代替了原来较多的变量，实现了有效的降维，可以使问题简化.</p>
-<p>Steps:</p>
-<ul>
-<li><p>对原数据进行标准化转换.</p>
-</li>
-<li><p>计算样本的相关系数矩阵.</p>
-</li>
-<li><p>计算相关系数矩阵的特征值和特征向量.</p>
-</li>
-<li><p>计算主成分贡献率和累积贡献率，选择重要主成分.主成分的贡献率越大，说明包含原始信息量越大.</p>
-</li>
-<li><p>计算主成分载荷和主成分得分.</p>
-<p><strong>[r,p]=corrcoef(x)</strong> 计算样本的相关系数矩阵</p>
-<h3 id="1-pcacov指令"><a href="#1-pcacov指令" class="headerlink" title="1.pcacov指令"></a>1.pcacov指令</h3><p><strong>[r,p]=corrcoef(x)</strong> 计算样本相关系数矩阵</p>
-<p><strong>coeff=pcacov(v)</strong> v是样本的协方差矩阵或相关系数矩阵，coeff是p个主成分的系数矩阵，第i列是第i个主成分的系数向量.</p>
-<p><strong>[coeff,latent]=pcacov(v)</strong> latent是p个主成分的方差构成的向量.</p>
-<p><strong>[coeff,latent,explained]=pcacov(v)</strong> explained是p个主成分向量的贡献率.</p>
-<h3 id="2-princomp指令"><a href="#2-princomp指令" class="headerlink" title="2.princomp指令"></a>2.princomp指令</h3><p>根据样本的观测值矩阵进行主成分分析.</p>
-<p><strong>[coeff,score]=princomp(x)</strong> x是主成分的系数矩阵，第i列是第i个主成分的系数向量，score是主成分得分矩阵，每行代表一个样本，每列代表一个主成分的得分.</p>
-<p><strong>[coeff,score,latent]=princomp(x)</strong>  latent指样本协方差矩阵的特征向量.</p>
-<p><strong>[coeff,score,latent,tsquare]=princomp(x)</strong> tsquare是样本的Hotelling T^2统计值，表示某样本和样本观测矩阵中心之间的距离，可以用它寻找远离中心的局端数据.</p>
-<p><strong>per=100*latent/sum(latent)</strong> 主成分的贡献率</p>
-<h2 id="二、因子分析"><a href="#二、因子分析" class="headerlink" title="二、因子分析"></a>二、因子分析</h2><p>目的：寻找隐含在现有变量里的若干更基本的有代表性的变量并提取出来.这些更基本的变量叫公共因子.</p>
-<p><strong>Steps:</strong></p>
-<ul>
-<li><p>求样本的相关矩阵</p>
-</li>
-<li><p>求特征值和特征向量.</p>
-</li>
-<li><p>计算方差贡献率和累积方差贡献率.</p>
-</li>
-<li><p>确定因子.</p>
-</li>
-<li><p>进行因子旋转，使因子变量更具有解释性.</p>
-</li>
-<li><p>计算因子得分.</p>
-<p><strong>[lambda,psi,T]=factoran(x,m,paraml,vall,param2,val2)</strong> lambda是因子载荷值；psi是方差值构成的向量；T是旋转矩阵；x是样本数据；m是公共因子数量</p>
-<p><strong>[lambda,psi,T,stats,F]=factoran(x,m)</strong> stats是相关信息统计；F是得分矩阵.</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">r=corrcoef(x)<span class="comment">%相关系数矩阵</span></span><br><span class="line">[lambda,<span class="built_in">psi</span>,T]=factoran(r,<span class="number">3</span>,<span class="string">'xtype'</span>,<span class="string">'covariance'</span>,<span class="string">'delta'</span>,<span class="number">0</span>,<span class="string">'rotate'</span>,<span class="string">'none'</span>)<span class="comment">%设三个公共因子</span></span><br><span class="line">ctb=<span class="number">100</span>*sum(lambda.^<span class="number">2</span>)/<span class="built_in">size</span>(x,<span class="number">2</span>) <span class="comment">%计算贡献率</span></span><br><span class="line">cumctb=cumsum(ctb) <span class="comment">%计算累积贡献率</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Matlab与数据分析</category>
-      </categories>
-      <tags>
-        <tag>Matlab</tag>
-        <tag>数据分析</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python函数及变量的定义和使用</title>
     <url>/daytoy/2020/11/14/Python%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="1-可选参数传递"><a href="#1-可选参数传递" class="headerlink" title="1.可选参数传递"></a>1.可选参数传递</h2><p>函数参数可有可无，但必须有括号.</p>
@@ -189,6 +70,125 @@
       </categories>
       <tags>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DBSCAN聚类算法</title>
+    <url>/daytoy/2021/04/13/DBSCAN%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="算法简介"><a href="#算法简介" class="headerlink" title="算法简介"></a>算法简介</h2><p><strong>DBSCAN</strong>(density-based spatial clustering of applications with noise)，即“具有噪声的基于密度的空间聚类应用”。它的原理是识别特征空间的“拥挤”区域中的点，在这些区域中许多点靠在一起，这些区域称为特征空间中的<strong>密集</strong>区域。密集区域最终将有相对较空的区域分隔开。</p>
+<p>在密集区域的点称为<strong>核心点</strong>，由DBSCAN的两个重要参数<strong>半径eps</strong>和<strong>最小采样点个数min_sample</strong>确定，其定义如下：如果在距一个给定数据点eps距离内至少有min_sample个数据点，那么这个数据点就是核心点。DBSCAN最终会将彼此距离小于eps的核心点分到同一簇中。</p>
+<a id="more"></a>
+
+<h3 id="算法过程描述"><a href="#算法过程描述" class="headerlink" title="算法过程描述"></a>算法过程描述</h3><p>首先任取一个点，找到这个点的距离小于等于eps的所有点，如果距起始点的距离在eps之内的数据点个数小于min_sample，那么这个点被标记为<strong>噪音点</strong>，也就是说它不属于任何簇。如果距离在eps之内的数据点个数大于min_sample，则这个点被标记为<strong>核心点</strong>，并分配一个新的<strong>簇标签</strong>。然后访问该点的所有eps以内的邻居，如果它们还没有被分配簇，那么就将刚才的簇标签分配给它们，如果它们也是核心点，那么继续依次访问其邻居，以此类推，否则即为<strong>边界点</strong>，不再访问其邻居。簇逐渐增大，直到簇的eps距离内没有更多的核心点为止。然后选取另一个尚未被访问的点，重复相同的过程。</p>
+<p>最后，一共有三种类型的点：核心点、边界点、噪音点。如果DBSCAN算法在特定数据集运行多次，那么核心点的聚类始终相同，同样的点也始终被标记为噪音点。但边界点可能与不止一个簇的核心点相邻，这与数据点的访问顺序有关。一般情况下，边界点较少，因此这种歧义并不是很重要。</p>
+<p>从上述描述中可以看到，DBSCAN算法不需要设置簇的个数，只需要确定两个参数eps、min_sample，实际上它们可以隐式地控制找到簇的个数。eps决定了点与点之间“接近”的含义，将eps设置过小，意味着没有核心点出现，可能导致所有点被标记为噪音点；eps设置过大，可能导致所有点形成单个簇。min_sample主要用于判断稀疏区域内点被标记为异常值还是形成自己的簇，决定了簇的最小尺寸。因此，两个参数的选取还是至关重要的。</p>
+<p><strong>注：</strong>采用缩放技术使数据特征具有相似的范围，有时会更便于找到eps较好的取值。</p>
+<h2 id="DBSCAN算法可视化展示"><a href="#DBSCAN算法可视化展示" class="headerlink" title="DBSCAN算法可视化展示"></a>DBSCAN算法可视化展示</h2><p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E5%87%A0%E4%BD%95%E7%9B%B4%E8%A7%82.png" alt></p>
+<p>DBSCAN聚类算法在二维平面中对数据点进行聚类的简化过程如图所示，选取min_sample=2，此时图中蓝色为噪音点，不属于任何簇；红色为核心点，黄色为边界点，它们均划分在同一簇中。</p>
+<p>国外有个网站，可以把DBSCAN的过程以<strong>动图</strong>展示出来，可以选择几种不同的数据集，还可以自行设置参数，很有趣.</p>
+<p><a href="https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/" target="_blank" rel="noopener">DBSCAN可视化网站</a></p>
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.jpg" style="zoom:80%;">
+
+<h3 id="算法实现-1"><a href="#算法实现-1" class="headerlink" title="算法实现"></a>算法实现</h3><p>DBSCAN可在python中的sklearn库调用实现，以下给出两个简单实例对算法的聚类效果进行展示.</p>
+<h4 id="实例一：半圆形数据分簇"><a href="#实例一：半圆形数据分簇" class="headerlink" title="实例一：半圆形数据分簇"></a>实例一：半圆形数据分簇</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_moons</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">X, y = make_moons(n_samples=<span class="number">200</span>, noise=<span class="number">0.05</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将数据缩放成平均值为0、方差为1</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">scaler.fit(X)</span><br><span class="line">X_scaled = scaler.transform(X)</span><br><span class="line"></span><br><span class="line">dbscan = DBSCAN()</span><br><span class="line">clusters = dbscan.fit_predict(X_scaled)</span><br><span class="line"><span class="comment">#绘制簇分配</span></span><br><span class="line">plt.scatter(X_scaled[:, <span class="number">0</span>], X_scaled[:, <span class="number">1</span>], c=clusters, s=<span class="number">60</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Feature 0"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Feature 1"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/two_moons.png" alt></p>
+<p>上图展示了在two_moons数据集上运行DBSCAN的结果，利用默认设置(eps=0.5)，算法找到了两个半圆形并将其分开.由于算法得到了2个簇，默认参数的设置效果似乎很好，若eps=0.2，将会得到8个簇，显然太多了；若eps=0.7，则会导致只有1个簇.</p>
+<h4 id="实例二：品牌啤酒聚类分析"><a href="#实例二：品牌啤酒聚类分析" class="headerlink" title="实例二：品牌啤酒聚类分析"></a>实例二：品牌啤酒聚类分析</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> colors</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入数据</span></span><br><span class="line">beer = pd.read_csv(<span class="string">'beer.txt'</span>, sep=<span class="string">' '</span>)</span><br><span class="line">print(beer)<span class="comment">#查看数据集</span></span><br><span class="line"></span><br><span class="line">X = beer[[<span class="string">'calories'</span>, <span class="string">'sodium'</span>, <span class="string">'alcohol'</span>, <span class="string">'cost'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置半径为10，最小样本量2</span></span><br><span class="line">db = DBSCAN(eps=<span class="number">10</span>, min_samples=<span class="number">2</span>).fit(X)</span><br><span class="line"></span><br><span class="line">labels = db.labels_</span><br><span class="line">beer[<span class="string">'cluster_db'</span>] = labels <span class="comment">#在数据集最后一列加上DBSCAN聚类后的结果</span></span><br><span class="line">beer.sort_values(<span class="string">'cluster_db'</span>)</span><br><span class="line">print(beer)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看根据DBSCAN聚类后的分组统计结果(均值)</span></span><br><span class="line">print(beer.groupby(<span class="string">'cluster_db'</span>).mean())</span><br><span class="line"></span><br><span class="line"><span class="comment">#画出在不同两个指标下样本的分布情况</span></span><br><span class="line">print(pd.plotting.scatter_matrix(X, figsize=(<span class="number">10</span>, <span class="number">10</span>), s=<span class="number">100</span>))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看数据集：</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310630(1).jpg" alt="数据集"></p>
+<p>聚类结果：</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618310722(1).jpg" alt="聚类结果"></p>
+<p>下表给出了聚类后分组的均值结果.</p>
+<p><img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/1618309915(1).jpg" alt></p>
+<p>图中展示了在不同两个指标下样本的分布情况.</p>
+<img src="https://gitee.com/yixin-oss/blogImage/raw/master/img/Figure_1.png" style="zoom: 80%;">
+
+<h2 id="算法优缺点"><a href="#算法优缺点" class="headerlink" title="算法优缺点"></a>算法优缺点</h2><h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ol>
+<li>不需要先验地指定簇的个数；</li>
+<li>可以处理任意形状大小的簇，且结果相对而言优于K均值聚类；</li>
+<li>基于密度定义，对噪音不敏感，可检测出数据异常点.</li>
+</ol>
+<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ol>
+<li>高维数据有些困难；</li>
+<li>sklearn中效率较低</li>
+<li>对于密度不均匀、距离相差较大的数据集，聚类结果较差；</li>
+<li>调参较为复杂，需要多次尝试，不同的参数组合对最终结果影响较大.</li>
+</ol>
+<h2 id="算法改进：自适应的DBSCAN算法"><a href="#算法改进：自适应的DBSCAN算法" class="headerlink" title="算法改进：自适应的DBSCAN算法"></a>算法改进：自适应的DBSCAN算法</h2><p>由于DBSCAN算法对eps和min_sample两个参数十分敏感，参数的确定是既重要又困难的事情，有学者进行了自适应确定DBSCAN算法参数的研究，即通过数据集自动确定两个参数.相应论文可以在知网查阅.</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">李文杰, 闫世强, 蒋莹,等. 自适应确定DBSCAN算法参数的算法研究[J]. 计算机工程与应用, 2019, 55(05):1-7.</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>聚类算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Matlab数据处理--数据降维</title>
+    <url>/daytoy/2020/11/14/Matlab%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86--%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4/</url>
+    <content><![CDATA[<p>“维数灾难”：随着维数的增加，数据分析技术会变得异常困难，是许多数据分析技术的瓶颈.</p>
+<p>目前，常用的降维技术有两种，主成分分析、因子分析.</p>
+<a id="more"></a>
+
+<h2 id="一、主成分分析"><a href="#一、主成分分析" class="headerlink" title="一、主成分分析"></a>一、主成分分析</h2><p>有的问题变量之间存在相关性，它们包含的信息有所重叠，将变量进行线性组合后形成数量较少的新变量，新变量之间不相关，称为主成分.主成分反映原来变量的大量信息且所含信息不重叠，这种方法叫主成分分析.</p>
+<p>主成分分析用较少的变量代替了原来较多的变量，实现了有效的降维，可以使问题简化.</p>
+<p>Steps:</p>
+<ul>
+<li><p>对原数据进行标准化转换.</p>
+</li>
+<li><p>计算样本的相关系数矩阵.</p>
+</li>
+<li><p>计算相关系数矩阵的特征值和特征向量.</p>
+</li>
+<li><p>计算主成分贡献率和累积贡献率，选择重要主成分.主成分的贡献率越大，说明包含原始信息量越大.</p>
+</li>
+<li><p>计算主成分载荷和主成分得分.</p>
+<p><strong>[r,p]=corrcoef(x)</strong> 计算样本的相关系数矩阵</p>
+<h3 id="1-pcacov指令"><a href="#1-pcacov指令" class="headerlink" title="1.pcacov指令"></a>1.pcacov指令</h3><p><strong>[r,p]=corrcoef(x)</strong> 计算样本相关系数矩阵</p>
+<p><strong>coeff=pcacov(v)</strong> v是样本的协方差矩阵或相关系数矩阵，coeff是p个主成分的系数矩阵，第i列是第i个主成分的系数向量.</p>
+<p><strong>[coeff,latent]=pcacov(v)</strong> latent是p个主成分的方差构成的向量.</p>
+<p><strong>[coeff,latent,explained]=pcacov(v)</strong> explained是p个主成分向量的贡献率.</p>
+<h3 id="2-princomp指令"><a href="#2-princomp指令" class="headerlink" title="2.princomp指令"></a>2.princomp指令</h3><p>根据样本的观测值矩阵进行主成分分析.</p>
+<p><strong>[coeff,score]=princomp(x)</strong> x是主成分的系数矩阵，第i列是第i个主成分的系数向量，score是主成分得分矩阵，每行代表一个样本，每列代表一个主成分的得分.</p>
+<p><strong>[coeff,score,latent]=princomp(x)</strong>  latent指样本协方差矩阵的特征向量.</p>
+<p><strong>[coeff,score,latent,tsquare]=princomp(x)</strong> tsquare是样本的Hotelling T^2统计值，表示某样本和样本观测矩阵中心之间的距离，可以用它寻找远离中心的局端数据.</p>
+<p><strong>per=100*latent/sum(latent)</strong> 主成分的贡献率</p>
+<h2 id="二、因子分析"><a href="#二、因子分析" class="headerlink" title="二、因子分析"></a>二、因子分析</h2><p>目的：寻找隐含在现有变量里的若干更基本的有代表性的变量并提取出来.这些更基本的变量叫公共因子.</p>
+<p><strong>Steps:</strong></p>
+<ul>
+<li><p>求样本的相关矩阵</p>
+</li>
+<li><p>求特征值和特征向量.</p>
+</li>
+<li><p>计算方差贡献率和累积方差贡献率.</p>
+</li>
+<li><p>确定因子.</p>
+</li>
+<li><p>进行因子旋转，使因子变量更具有解释性.</p>
+</li>
+<li><p>计算因子得分.</p>
+<p><strong>[lambda,psi,T]=factoran(x,m,paraml,vall,param2,val2)</strong> lambda是因子载荷值；psi是方差值构成的向量；T是旋转矩阵；x是样本数据；m是公共因子数量</p>
+<p><strong>[lambda,psi,T,stats,F]=factoran(x,m)</strong> stats是相关信息统计；F是得分矩阵.</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">r=corrcoef(x)<span class="comment">%相关系数矩阵</span></span><br><span class="line">[lambda,<span class="built_in">psi</span>,T]=factoran(r,<span class="number">3</span>,<span class="string">'xtype'</span>,<span class="string">'covariance'</span>,<span class="string">'delta'</span>,<span class="number">0</span>,<span class="string">'rotate'</span>,<span class="string">'none'</span>)<span class="comment">%设三个公共因子</span></span><br><span class="line">ctb=<span class="number">100</span>*sum(lambda.^<span class="number">2</span>)/<span class="built_in">size</span>(x,<span class="number">2</span>) <span class="comment">%计算贡献率</span></span><br><span class="line">cumctb=cumsum(ctb) <span class="comment">%计算累积贡献率</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Matlab与数据分析</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>数据分析</tag>
       </tags>
   </entry>
   <entry>
